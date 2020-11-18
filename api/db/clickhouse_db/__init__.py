@@ -6,14 +6,15 @@ from typing import Optional
 from api import config
 from clickhouse_driver import Client, connect
 
-__client = Client(host=config.clickhouse_ip, user=config.clickhouse_user, password=config.clickhouse_password,
-                  database=config.clickhouse_db)
-__conn = connect(host=config.clickhouse_ip, user=config.clickhouse_user, password=config.clickhouse_password,
-                 database=config.clickhouse_db)
+
+# __conn = connect(host=config.clickhouse_ip, user=config.clickhouse_user, password=config.clickhouse_password,
+#                  database=config.clickhouse_db)
 
 
-def execute(sql, params: dict = None, msg: str=None):
+def execute(sql, params: dict = None, msg: str = None):
     try:
+        __client = Client(host=config.clickhouse_ip, user=config.clickhouse_user, password=config.clickhouse_password,
+                          database=config.clickhouse_db)
         return __client.execute(sql, params=params)
     except Exception as e:
         print(e)

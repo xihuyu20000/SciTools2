@@ -21,6 +21,7 @@ class TestUtil(unittest.TestCase):
                 [entity1.to_dict(), entity2.to_dict()])
 
             result2 = dql.find_ods_cnki_bib()
+
             self.assertEqual(len(result2)-len(result1), 2, '插入应该是2条记录')
         except Exception as e:
             self.fail('批量插入表{}失败'.format(config.tbl_ods_cnki_bib))

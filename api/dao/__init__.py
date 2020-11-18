@@ -5,11 +5,6 @@ from api.model import FileModel
 from api import db
 
 
-def saveFileDao(data_source, doc_dir) -> FileModel:
-    sql = ''
-    params = {}
-    db.insert(sql, params)
-    return FileModel()
 
 def saveRawData(file_id, datas) -> None:
     sql = ''
