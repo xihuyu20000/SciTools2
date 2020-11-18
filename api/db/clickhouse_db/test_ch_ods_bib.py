@@ -24,11 +24,9 @@ class TestUtil(unittest.TestCase):
             entity2 = ods.OdsCnkiBib()
             entity2.fileid = util.gen_uuid()
 
-            ch_ods_bib.insert_ods_bib(
-                [entity1.to_dict(), entity2.to_dict()])
+            ch_ods_bib.insert_ods_bib([entity1.to_dict(), entity2.to_dict()])
 
             result2 = ch_ods_bib.find_ods_bib()
-
             self.assertEqual(len(result2) - len(result1), 2, '插入应该是2条记录')
         except Exception as e:
             self.fail('批量插入表{}失败'.format(config.tbl_ods_bib))

@@ -1,7 +1,7 @@
 from typing import Optional, List
 
 from api import config
-from api.db.clickhouse_db import __create, __drop, __truncate, __execute
+from api.db.clickhouse_db import __create, __drop, __truncate, __execute, __query
 
 
 def create_ods_bib():
@@ -49,6 +49,7 @@ def insert_ods_bib(params: Optional[List[dict]]):
     """.format(config.tbl_ods_bib)
     return __execute(sql, params=params, msg='插入{}失败'.format(config.tbl_ods_bib))
 
+
 def delete_ods_bib(file_id):
     sql = """
         DELETE FROM {} WHERE fileid={}
@@ -60,4 +61,8 @@ def find_ods_bib(params: Optional[dict] = None):
     sql = """
         SELECT * FROM {} WHERE 1=1 
     """.format(config.tbl_ods_bib)
-    return __execute(sql, params=params, msg='查询{}失败'.format(config.tbl_ods_bib))
+    if params:
+        for key, value in params.items():
+            sql += ' AND {}={}'.format(key, value)
+
+    return __query(sql, params=params, msg='查询{}失败'.format(config.tbl_ods_bib))

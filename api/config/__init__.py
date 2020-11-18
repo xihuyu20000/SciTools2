@@ -18,6 +18,11 @@ dict_country = 'dict_country'  # 国家字典
 dict_province = 'dict_province'  # 省份字典
 dict_org = 'dict_org'  # 机构字典
 
+# 数据去重
+clean_article_redu = 'clean_article_redu'   # 文献去重
+clean_split_words = 'clean_split_words' # 智能分词
+
+
 # 当前正在使用的数据库类型
 db_is_clickhouse = True
 db_is_pg = False

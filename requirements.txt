@@ -3,3 +3,4 @@ lxml
 scrapy
 clickhouse
 clickhouse_driver
+pandas

@@ -1,7 +1,7 @@
 from typing import Optional, List
 
 from api import config
-from api.db.clickhouse_db import __create, __drop, __truncate, __execute
+from api.db.clickhouse_db import __create, __drop, __truncate, __execute, __query
 
 
 def create_dim_threshold():
@@ -50,4 +50,4 @@ def find_dim_threshold(params: Optional[dict] = None):
     sql = """
         SELECT * FROM {} WHERE 1=1 
     """.format(config.tbl_dim_threshold)
-    return __execute(sql, params=params, msg='查询{}失败'.format(config.tbl_dim_threshold))
+    return __query(sql, params=params, msg='查询{}失败'.format(config.tbl_dim_threshold))
