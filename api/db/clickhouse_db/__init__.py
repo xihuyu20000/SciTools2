@@ -11,7 +11,7 @@ from clickhouse_driver import Client, connect
 #                  database=config.clickhouse_db)
 
 
-def execute(sql, params: dict = None, msg: str = None):
+def __execute(sql, params: dict = None, msg: str = None):
     try:
         __client = Client(host=config.clickhouse_ip, user=config.clickhouse_user, password=config.clickhouse_password,
                           database=config.clickhouse_db)
@@ -19,3 +19,20 @@ def execute(sql, params: dict = None, msg: str = None):
     except Exception as e:
         print(e)
         raise Exception(msg)
+
+def __create(sql, tbl_name):
+    return __execute(sql, msg='创建表{}失败'.format(tbl_name))
+
+
+def __drop(tbl_name):
+    sql = """
+            DROP TABLE IF EXISTS {};
+        """.format(tbl_name)
+    return __execute(sql, msg='删除表{}失败'.format(tbl_name))
+
+
+def __truncate(tbl_name):
+    sql = """
+        TRUNCATE TABLE IF EXISTS {};
+    """.format(tbl_name)
+    return __execute(sql, msg='截断表{}失败'.format(tbl_name))

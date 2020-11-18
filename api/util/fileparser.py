@@ -5,25 +5,8 @@ import os
 from typing import List
 from utils import strings_is_eng
 
-class CnkiEs5:
-    def __init__(self):
-        self.DataType = None
-        self.Title = None
-        self.Author = None
-        self.Source = None
-        self.Year = None
-        self.PubTime = None
-        self.Keyword = None
-        self.Summary = None
-        self.Period = None
-        self.Roll = None
-        self.PageCount = None
-        self.Page = None
-        self.Organ = None
-        self.Link = None
+from api.model import ods
 
-    def __repr__(self):
-        return '<CnkiEs5> Title:{}'.format(self.Title)
 
 def cnki_es5(filepath: str) -> List[dict]:
     """
@@ -44,62 +27,77 @@ def cnki_es5(filepath: str) -> List[dict]:
     cnkidatas = [cnkidata for cnkidata in cnkiliters]
     reader.close()
 
+    def __style(v):
+        v = str(v).strip()
+        if v == '1':
+            return '期刊'
+        elif v == '2':
+            return '学位论文'
+        elif v == '3':
+            return '会议'
+        elif v == '4':
+            return '报纸'
+        elif v == '5':
+            return '图书'
+        elif v == '6':
+            return '年鉴'
+        elif v == '60':
+            return '专利'
+        elif v == '61':
+            return '成果'
+        elif v == '62':
+            return '标准'
+        else:
+            return '不确定值' + v
+
     def __parse(cnkidata):
-        cnkiEs5 = CnkiEs5()
+        cnkiEs5 = ods.OdsCnkiBib()
         for child in cnkidata.getchildren():
             tag = child.tag.lower()
-            content = child.text
+            content = str(child.text).strip()
             if tag == 'DataType'.lower():
-                cnkiEs5.DataType = content
+                cnkiEs5.style = __style(content)
             if tag == 'Title'.lower():
-                cnkiEs5.Title = content
+                cnkiEs5.title = content
             if tag == 'Author'.lower():
-                cnkiEs5.Author = content
+                authors = content.split(';')
+                authors = [a.strip() for a in authors if a.strip()]
+                cnkiEs5.firstduty = authors[0]
+                cnkiEs5.authors = authors
             if tag == 'Source'.lower():
-                cnkiEs5.Source = content
-            if tag == 'Year'.lower():
-                cnkiEs5.Year = content
+                cnkiEs5.publication = content
             if tag == 'PubTime'.lower():
-                cnkiEs5.PubTime = content
+                if content:
+                    cnkiEs5.pubtime = content[:10]
+                    cnkiEs5.pubyear = int(content[:4])
             if tag == 'Keyword'.lower():
-                cnkiEs5.Keyword = content
+                kws = content.split(';')
+                kws = [a.strip() for a in kws if a.strip()]
+                cnkiEs5.kws = kws
             if tag == 'Summary'.lower():
-                cnkiEs5.Summary = content
-            if tag == 'Period'.lower():
-                cnkiEs5.Period = content
-            if tag == 'Roll'.lower():
-                cnkiEs5.Roll = content
-            if tag == 'PageCount'.lower():
-                cnkiEs5.PageCount = content
-            if tag == 'Page'.lower():
-                cnkiEs5.Page = content
+                cnkiEs5.summary = content
             if tag == 'Organ'.lower():
-                cnkiEs5.Organ = content
-            if tag == 'Link'.lower():
-                cnkiEs5.Link = content
+                orgs = content.split(';')
+                orgs = [a.strip() for a in orgs if a.strip()]
+                cnkiEs5.orgs = orgs
+            # if tag == 'Year'.lower():
+            #     cnkiEs5.pubyear = int(content)
+            # if tag == 'Period'.lower():
+            #     cnkiEs5.Period = content
+            # if tag == 'Roll'.lower():
+            #     cnkiEs5.Roll = content
+            # if tag == 'PageCount'.lower():
+            #     cnkiEs5.PageCount = content
+            # if tag == 'Page'.lower():
+            #     cnkiEs5.Page = content
+            # if tag == 'Link'.lower():
+            #     cnkiEs5.Link = content
+
         return cnkiEs5
 
     result = [__parse(cnkidata) for cnkidata in cnkidatas]
 
     return result
-
-
-class GBT77142015:
-    def __init__(self):
-        self.style = None
-        self.creator = None
-        self.title = None
-        self.publication = None
-        self.year = None
-        self.roll = None
-        self.period = None
-        self.pageno = None
-        self.pubtime = None
-        self.url = None
-        self.org = None
-
-    def __repr__(self):
-        return '<GBT77142015> title:{}'.format(self.title)
 
 
 def gbt_7714_2015(filepath) -> List[dict]:
@@ -120,22 +118,39 @@ def gbt_7714_2015(filepath) -> List[dict]:
     lines = [line[line.find(']') + 1:] for line in lines]
     reader.close()
 
+    def __style(v):
+        v = str(v).strip()
+        if v == 'J' or v == 'J/OL':
+            return '期刊'
+        elif v =='D':
+            return '学位论文'
+        elif v =='N':
+            return '报纸'
+        elif v == '':
+            return ''
+        else:
+            return '不确定类型' + v
+
     def __parse(line):
-        gbt77142015 = GBT77142015()
+        gbt77142015 = ods.OdsCnkiBib()
         if strings_is_eng(line):
             # 题名
             title = line[:line.find('[')]
-            line = line[line.find('[') + 1:]
+            gbt77142015.title = title
             # print(title)
+            line = line[line.find('[') + 1:]
             # 文献类型
             style = line[line.find('[') + 1:line.find(']')]
-            gbt77142015.style = style
+            gbt77142015.style = __style(style)
             line = line[line.find(']') + 2:]
             # print(style)
         else:
             # 主要责任者
             creator = line[:line.find('.')]
-            gbt77142015.creator = creator
+            authors = [a.strip() for a in creator.split(',') if a.strip()]
+            if authors:
+                gbt77142015.firstduty = authors[0]
+                gbt77142015.authors = authors
             line = line[line.find('.') + 1:]
             # 题名
             title = line[:line.find('[')]
@@ -143,7 +158,7 @@ def gbt_7714_2015(filepath) -> List[dict]:
             line = line[line.find('['):]
             # 文献类型
             style = line[line.find('[') + 1:line.find(']')]
-            gbt77142015.style = style
+            gbt77142015.style = __style(style)
             line = line[line.find(']') + 2:]
             if 'J' == style:  # 期刊
                 # 出版物
@@ -152,19 +167,19 @@ def gbt_7714_2015(filepath) -> List[dict]:
                 line = line[line.find(',') + 1:]
                 # 出版年
                 year = line[:line.find(',')]
-                gbt77142015.year = year
+                gbt77142015.pubyear = int(year[:4])
                 line = line[line.find(',') + 1:]
                 # 卷
                 roll = line[:line.find('(')]
-                gbt77142015.roll = roll
+                # gbt77142015.roll = roll
                 line = line[line.find('(') + 1:]
                 # （期）
                 period = line[:line.find('):')]
-                gbt77142015.period = period
+                # gbt77142015.period = period
                 line = line[line.find('):') + 2:]
                 # 页码
                 pageno = line[:line.find('.')]
-                gbt77142015.pageno = pageno
+                # gbt77142015.pageno = pageno
                 line = line[line.find('.') + 1:]
             elif 'J/OL' == style:  # 网络期刊
                 # 出版物
@@ -173,22 +188,24 @@ def gbt_7714_2015(filepath) -> List[dict]:
                 line = line[line.find(':') + 1:]
                 # 页码
                 pageno = line[:line.find('[')]
-                gbt77142015.pageno = pageno
+                # gbt77142015.pageno = pageno
                 line = line[line.find('[') + 1:]
                 # 出版日期
                 pubtime = line[line.find('[') + 1:line.find(']')]
                 gbt77142015.pubtime = pubtime
+                gbt77142015.pubyear = int(pubtime[:4])
                 line = line[line.find(']') + 2:]
                 # 获取方式
-                gbt77142015.url = line
+                # gbt77142015.url = line
             elif 'D' == style:  # 学位论文
                 # 授予单位
                 org = line[:line.find(',')]
-                gbt77142015.org = org
+                orgs = [a.strip() for a in org.split(';') if a.strip()]
+                gbt77142015.orgs = orgs
                 line = line[line.find(',') + 1:]
                 # 授予年
                 year = line[:line.find('.')]
-                gbt77142015.year = year
+                gbt77142015.pubyear = int(year)
             elif 'N' == style:  # 报纸文章
                 # 授予单位
                 publication = line[:line.find(',')]
@@ -202,27 +219,11 @@ def gbt_7714_2015(filepath) -> List[dict]:
 
                 # 获取和访问路径
                 url = line
-                gbt77142015.url = url
+                # gbt77142015.url = url
         return gbt77142015
 
     return [__parse(line) for line in lines]
 
-class NoteExpress:
-    def __init__(self):
-        self.title = None
-        self.tertiaryTile = None
-        self.author = None
-        self.authorAddress = None
-        self.secondaryTitle = None
-        self.placePublished = None
-        self.subsidiaryAuthor = None
-        self.year = None
-        self.pages = None
-        self.keywords = None
-        self.abstract = None
-
-    def __repr__(self):
-        return '<NoteExpress> title:{}'.format(self.title)
 
 def noteExpress(filepath) -> List[dict]:
     """
@@ -240,35 +241,43 @@ def noteExpress(filepath) -> List[dict]:
     result = []
     for line in lines:
         if line.startswith('{Reference Type}:'):
-            noteExpress = NoteExpress()
+            noteExpress = ods.OdsCnkiBib()
             result.append(noteExpress)
             noteExpress.referenceType = line[len('{Reference Type}:'):].strip()
         elif line.startswith('{Title}: '):
             noteExpress.title = line[len('{Title}: '):].strip()
         elif line.startswith('{Tertiary Title}: '):
-            noteExpress.tertiaryTile = line[len('{Tertiary Title}: '):].strip()
+            pass
+            # noteExpress.tertiaryTitle = line[len('{Tertiary Title}: '):].strip()
         elif line.startswith('{Author}: '):
-            noteExpress.author = line[len('{Author}: '):].strip()
+            author = line[len('{Author}: '):].strip()
+            authors = [a.strip() for a in author.split(';') if a.strip()]
+            noteExpress.authors = authors
+            noteExpress.firstduty = authors[0]
         elif line.startswith('{Author Address}: '):
-            noteExpress.authorAddress = line[len(
-                '{Author Address}: '):].strip()
+            orgs = line[len('{Author Address}: '):].strip()
+            orgs = [a.strip() for a in orgs.split(';') if a.strip()]
+            noteExpress.orgs = orgs
         elif line.startswith('{Secondary Title}: '):
-            noteExpress.secondaryTitle = line[len(
-                '{Secondary Title}: '):].strip()
+            pass
+            # noteExpress.secondaryTitle = line[len('{Secondary Title}: '):].strip()
         elif line.startswith('{Place Published}: '):
-            noteExpress.placePublished = line[len(
-                '{Place Published}: '):].strip()
+            pass
+            # noteExpress.placePublished = line[len('{Place Published}: '):].strip()
         elif line.startswith('{Subsidiary Author,}: '):
-            noteExpress.subsidiaryAuthor = line[len(
-                '{Subsidiary Author,}: '):].strip()
+            pass
+            # noteExpress.subsidiaryAuthor = line[len('{Subsidiary Author,}: '):].strip()
         elif line.startswith('{Year}: '):
-            noteExpress.year = line[len('{Year}: '):].strip()
+            noteExpress.pubyear = int(line[len('{Year}: '):].strip())
         elif line.startswith('{Pages}: '):
-            noteExpress.pages = line[len('{Pages}: '):].strip()
+            pass
+            # noteExpress.pages = line[len('{Pages}: '):].strip()
         elif line.startswith('{Keywords}: '):
-            noteExpress.keywords = line[len('{Keywords}: '):].strip()
+            kws = line[len('{Keywords}: '):].strip()
+            kws = [a.strip() for a in kws.split(';') if a.strip()]
+            noteExpress.kws = kws
         elif line.startswith('{Abstract}: '):
-            noteExpress.abstract = line[len('{Abstract}: '):].strip()
+            noteExpress.summary = line[len('{Abstract}: '):].strip()
 
     return result
 
@@ -327,4 +336,3 @@ def cnki_html(filepath) -> List[dict]:
         name = ref.xpath('a//text()').extract_first()
         url = ref.xpath('a/@href').extract_first()
         print('参考文献', name, url)
-

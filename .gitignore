@@ -6,3 +6,8 @@
 /api/db/__pycache__
 /api/db/clickhouse_db/.pytest_cache
 /api/db/clickhouse_db/__pycache__
+/api/biz/.pytest_cache
+/__pycache__/*.pyc
+/api/dao/__pycache__/*.pyc
+/api/model/__pycache__/*.pyc
+/api/util/__pycache__/*.pyc

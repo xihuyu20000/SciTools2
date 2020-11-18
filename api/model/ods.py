@@ -1,6 +1,7 @@
 class OdsCnkiBib:
     def __init__(self):
         self.fileid = ''
+        self.style = ''
         self.title = ''
         self.firstduty = ''
         self.authors = []
@@ -9,12 +10,12 @@ class OdsCnkiBib:
         self.summary = ''
         self.funds = []
         self.pubyear = 0
-        self.pubmonth = 0
         self.pubtime = ''
         self.clcs = []
+        self.format = ''
         self.publication = ''
 
     def to_dict(self):
-        return {'fileid': self.fileid, 'title': self.title, 'firstduty': self.firstduty, 'authors': self.authors,
-                'orgs': self.orgs, 'kws': self.kws, 'summary': self.summary, 'funds': self.funds, 'pubyear': self.pubyear, 'pubmonth': self.pubmonth,
-                'pubtime': self.pubtime, 'clcs': self.clcs, 'publication': self.publication}
+        return {'fileid': self.fileid, 'style':self.style, 'title': self.title, 'firstduty': self.firstduty, 'authors': self.authors,
+                'orgs': self.orgs, 'kws': self.kws, 'summary': self.summary, 'funds': self.funds, 'pubyear': self.pubyear,
+                'pubtime': self.pubtime, 'clcs': self.clcs, 'format':self.format, 'publication': self.publication}

@@ -1,17 +1,17 @@
 import unittest
 from api import config
-from api.db.clickhouse_db import ddl
+from api.db.clickhouse_db import ch_dim_dict
 
 
 class TestUtil(unittest.TestCase):
 
-    def test_ddl(self):
+    def test_dim_dict(self):
         try:
-            ddl.drop_cnki_bib()
-            ddl.create_cnki_bib()
-            ddl.truncate_cnki_bib()
+            ch_dim_dict.drop_dim_dict()
+            ch_dim_dict.create_dim_dict()
+            ch_dim_dict.truncate_dim_dict()
         except Exception as e:
-            self.fail('删除然后创建表{}失败'.format(config.tbl_ods_cnki_bib))
+            self.fail('删除然后创建表{}失败'.format(config.tbl_dim_dict))
 
 
 
