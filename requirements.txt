@@ -1,0 +1,5 @@
+pytest
+lxml
+scrapy
+clickhouse
+clickhouse_driver
