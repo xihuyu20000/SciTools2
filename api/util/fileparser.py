@@ -3,7 +3,7 @@ from scrapy import Selector
 
 import os
 from typing import List
-from utils import strings_is_eng
+from api.util.strutils import strings_is_eng
 
 from api.model import ods
 

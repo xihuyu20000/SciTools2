@@ -11,3 +11,6 @@
 /api/dao/__pycache__/*.pyc
 /api/model/__pycache__/*.pyc
 /api/util/__pycache__/*.pyc
+/apiserver/modules/__pycache__
+/apiserver/modules/common/__pycache__/*.pyc
+*.pyc

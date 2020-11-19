@@ -1,0 +1,1 @@
+Thu, 19 Nov 2020 09:11:18-modules.stat.manager-manager.py-[line:15]-INFO-[日志信息]: SELECT  year, COUNT(*) AS count FROM sci_cnki WHERE year>0 AND fileid=10 GROUP BY year ORDER BY year

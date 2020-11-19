@@ -1,0 +1,17 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #eee;
+}
+img {
+  margin: 0;
+}
+.el-popconfirm {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.el-divider--horizontal {
+  margin: 10px;
+}
