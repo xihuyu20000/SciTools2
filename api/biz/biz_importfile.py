@@ -1,8 +1,8 @@
 import os
 import zipfile
 import tempfile
-from api import util, config, model, dao
-from api.util import fileparser
+from api import util, config, dao
+from api.biz import helper_fileparser
 
 
 def import_file(format, tempfile_path):
@@ -18,11 +18,11 @@ def import_file(format, tempfile_path):
         for file in files:
             result = []
             if format == config.ds_gbt_7714_2015:
-                result = fileparser.gbt_7714_2015(file)
+                result = helper_fileparser.gbt_7714_2015(file)
             elif format == config.ds_cnki_es5:
-                result = fileparser.cnki_es5(file)
+                result = helper_fileparser.cnki_es5(file)
             elif format == config.ds_note_express:
-                result = fileparser.noteExpress(file)
+                result = helper_fileparser.noteExpress(file)
             else:
                 raise Exception('不识别的数据类型{}'.format(format))
             datas.extend(result)

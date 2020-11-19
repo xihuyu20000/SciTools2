@@ -1,30 +1,27 @@
 '''
 api/test负责所有的测试实例
 '''
-import os
-import tempfile
 import unittest
-import shutil
-from api import util
-from api.util import fileparser
+from api.biz import helper_fileparser
+
 
 class TestUtil(unittest.TestCase):
 
     def test_cnki_es5(self):
-        result = fileparser.cnki_es5('../biz/dataset/importfile_biz/CNKI-02.es5')
+        result = helper_fileparser.cnki_es5('dataset/importfile_biz/CNKI-02.es5')
         self.assertTrue(len(result)>0, '提取es5格式数据失败')
 
     def test_gbt_7714_2015(self):
-        result = fileparser.gbt_7714_2015('../biz/dataset/CNKI-03.txt')
+        result = helper_fileparser.gbt_7714_2015('../biz/dataset/CNKI-03.txt')
         self.assertTrue(len(result) > 0, '提取gbt_7714_2015格式数据失败')
 
     def test_noteExpress(self):
-        result = fileparser.noteExpress('../biz/dataset/CNKI-04.net')
+        result = helper_fileparser.noteExpress('../biz/dataset/CNKI-04.net')
         self.assertTrue(len(result) > 0, '提取NoteExpress格式数据失败')
 
     @unittest.skip
     def test_cnki_html(self):
-        result = fileparser.cnki_html('../biz/dataset/importfile_biz/1.html')
+        result = helper_fileparser.cnki_html('dataset/importfile_biz/1.html')
         self.assertTrue(len(result) > 0, '提取cnki的html格式数据失败')
 
 
