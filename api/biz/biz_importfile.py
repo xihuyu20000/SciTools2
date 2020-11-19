@@ -12,7 +12,6 @@ def import_file(format, tempfile_path):
     :param tempfile_path: 上传的临时文件
     :return:
     """
-
     def __parse(files):
         datas = []
         for file in files:
@@ -43,6 +42,7 @@ def import_file(format, tempfile_path):
 
     # 2、循环解析
     fileid = util.gen_uuid()
+
     def set_const(v):
         v.fileid = fileid
         v.format = format

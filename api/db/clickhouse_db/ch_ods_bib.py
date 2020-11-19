@@ -23,7 +23,8 @@ def create_ods_bib():
         pubtime String(16),
         clcs Array(String),
         format String(16),
-        publication String(100)
+        publication String(100),
+        country String(100)
         )ENGINE=MergeTree() ORDER BY (pubyear) PARTITION BY (fileid);
     """.format(config.tbl_ods_bib)
     return __create(sql, config.tbl_ods_bib)
@@ -45,7 +46,7 @@ def truncate_ods_bib():
 
 def insert_ods_bib(params: Optional[List[dict]]):
     sql = """
-        INSERT INTO {} (fileid, style, title, firstduty, authors, orgs, kws, summary, funds, pubyear, pubtime, clcs, format, publication) VALUES
+        INSERT INTO {} (fileid, style, title, firstduty, authors, orgs, kws, summary, funds, pubyear, pubtime, clcs, format, publication, country) VALUES
     """.format(config.tbl_ods_bib)
     return __execute(sql, params=params, msg='插入{}失败'.format(config.tbl_ods_bib))
 

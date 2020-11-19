@@ -12,11 +12,11 @@ class TestUtil(unittest.TestCase):
         self.assertTrue(len(result)>0, '提取es5格式数据失败')
 
     def test_gbt_7714_2015(self):
-        result = helper_fileparser.gbt_7714_2015('../biz/dataset/CNKI-03.txt')
+        result = helper_fileparser.gbt_7714_2015('dataset/CNKI-03.txt')
         self.assertTrue(len(result) > 0, '提取gbt_7714_2015格式数据失败')
 
     def test_noteExpress(self):
-        result = helper_fileparser.noteExpress('../biz/dataset/CNKI-04.net')
+        result = helper_fileparser.noteExpress('dataset/CNKI-04.net')
         self.assertTrue(len(result) > 0, '提取NoteExpress格式数据失败')
 
     @unittest.skip
