@@ -19,10 +19,10 @@ class TestUtil(unittest.TestCase):
             result1 = ch_ods_bib.find_ods_bib()
 
             entity1 = ods.OdsCnkiBib()
-            entity1.fileid = util.gen_uuid()
+            entity1.fileid = util.gen_uuid1()
 
             entity2 = ods.OdsCnkiBib()
-            entity2.fileid = util.gen_uuid()
+            entity2.fileid = util.gen_uuid1()
 
             ch_ods_bib.insert_ods_bib([entity1.to_dict(), entity2.to_dict()])
 

@@ -3,9 +3,30 @@ from scrapy import Selector
 
 import os
 from typing import List
+
+from api import util, config
 from api.util.strutils import strings_is_eng
 
 from api.model import ods
+
+
+def parsefiles(format, files):
+    """
+    根据文件类型，解析文件
+    """
+    datas = []
+    for file in files:
+        result = []
+        if format == config.ds_gbt_7714_2015:
+            result = gbt_7714_2015(file)
+        elif format == config.ds_cnki_es5:
+            result = cnki_es5(file)
+        elif format == config.ds_note_express:
+            result = noteExpress(file)
+        else:
+            raise Exception('不识别的数据类型{}'.format(format))
+        datas.extend(result)
+    return datas
 
 
 def cnki_es5(filepath: str) -> List[dict]:
@@ -52,6 +73,7 @@ def cnki_es5(filepath: str) -> List[dict]:
 
     def __parse(cnkidata):
         cnkiEs5 = ods.OdsCnkiBib()
+        cnkiEs5.id = util.gen_uuid4()
         for child in cnkidata.getchildren():
             tag = child.tag.lower()
             content = str(child.text).strip()
@@ -59,6 +81,8 @@ def cnki_es5(filepath: str) -> List[dict]:
                 cnkiEs5.style = __style(content)
             if tag == 'Title'.lower():
                 cnkiEs5.title = content
+                if strings_is_eng(cnkiEs5.title):
+                    cnkiEs5.lang = '外文'
             if tag == 'Author'.lower():
                 authors = content.split(';')
                 authors = [a.strip() for a in authors if a.strip()]
@@ -122,9 +146,9 @@ def gbt_7714_2015(filepath) -> List[dict]:
         v = str(v).strip()
         if v == 'J' or v == 'J/OL':
             return '期刊'
-        elif v =='D':
+        elif v == 'D':
             return '学位论文'
-        elif v =='N':
+        elif v == 'N':
             return '报纸'
         elif v == '':
             return ''
@@ -133,10 +157,12 @@ def gbt_7714_2015(filepath) -> List[dict]:
 
     def __parse(line):
         gbt77142015 = ods.OdsCnkiBib()
-        if strings_is_eng(line):
+        gbt77142015.id = util.gen_uuid4()
+        if strings_is_eng(line[:line.find('.http')] if line.find('.http') > 0 else line):  # 如果一行内容带有url，必须去掉url再判断
             # 题名
             title = line[:line.find('[')]
             gbt77142015.title = title
+            gbt77142015.lang = '外文'
             # print(title)
             line = line[line.find('[') + 1:]
             # 文献类型
@@ -242,10 +268,13 @@ def noteExpress(filepath) -> List[dict]:
     for line in lines:
         if line.startswith('{Reference Type}:'):
             noteExpress = ods.OdsCnkiBib()
+            noteExpress.id = util.gen_uuid4()
             result.append(noteExpress)
             noteExpress.referenceType = line[len('{Reference Type}:'):].strip()
         elif line.startswith('{Title}: '):
             noteExpress.title = line[len('{Title}: '):].strip()
+            if strings_is_eng(noteExpress.title):
+                noteExpress.lang = '外文'
         elif line.startswith('{Tertiary Title}: '):
             pass
             # noteExpress.tertiaryTitle = line[len('{Tertiary Title}: '):].strip()

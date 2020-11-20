@@ -4,3 +4,5 @@ scrapy
 clickhouse
 clickhouse_driver
 pandas
+jieba
+nltk

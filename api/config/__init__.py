@@ -3,6 +3,8 @@ api/config负责管理所有的配置信息
 '''
 
 # 存放数据文件的个目录
+import os
+
 base_file_dir = '.'
 
 # 数据源类型
@@ -19,9 +21,8 @@ dict_province = 'dict_province'  # 省份字典
 dict_org = 'dict_org'  # 机构字典
 
 # 数据去重
-clean_article_redu = 'clean_article_redu'   # 文献去重
-clean_split_words = 'clean_split_words' # 智能分词
-
+clean_article_redu = 'clean_article_redu'  # 文献去重
+clean_split_words = 'clean_split_words'  # 智能分词
 
 # 当前正在使用的数据库类型
 db_is_clickhouse = True
@@ -36,4 +37,10 @@ clickhouse_db = 'default'
 # 数据库表名称
 tbl_dim_threshold = 'default.dim_threshold'
 tbl_dim_dict = 'default.dim_dict'
+tbl_dim_year = 'default.dim_year'
 tbl_ods_bib = 'default.ods_bib'
+
+# 配置文件的路径
+_base = os.path.join(os.path.abspath('.').split(r"api")[0], 'api', 'config')
+stopwords_dict_path = os.path.join(_base, 'stopwords.dict')
+user_cut_dict_path = os.path.join(_base, 'user_cut.dict')

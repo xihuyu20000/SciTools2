@@ -12,31 +12,31 @@ class TestUtil(unittest.TestCase):
     def test_load_dict_stop_words(self):
         db.drop_dim_dict()
         db.create_dim_dict()
-        count = biz_loaddict.load_dict(util.gen_uuid(), config.dict_stop, 'dataset/loaddict_biz/dict_stop_words.txt')
+        count = biz_loaddict.load_dict(util.gen_uuid1(), config.dict_stop, 'dataset/loaddict_biz/dict_stop_words.txt')
         self.assertEqual(count, 3, '插入3条记录')
 
     def test_load_dict_synonym(self):
         db.drop_dim_dict()
         db.create_dim_dict()
-        count = biz_loaddict.load_dict(util.gen_uuid(), config.dict_stop, 'dataset/loaddict_biz/dict_synonym.txt')
+        count = biz_loaddict.load_dict(util.gen_uuid1(), config.dict_stop, 'dataset/loaddict_biz/dict_synonym.txt')
         self.assertEqual(count, 2, '插入2条记录')
 
     def test_load_dict_country(self):
         db.drop_dim_dict()
         db.create_dim_dict()
-        count = biz_loaddict.load_dict(util.gen_uuid(), config.dict_stop, 'dataset/loaddict_biz/dict_contry.txt')
+        count = biz_loaddict.load_dict(util.gen_uuid1(), config.dict_stop, 'dataset/loaddict_biz/dict_contry.txt')
         self.assertEqual(count, 1, '插入1条记录')
 
     def test_load_dict_province(self):
         db.drop_dim_dict()
         db.create_dim_dict()
-        count = biz_loaddict.load_dict(util.gen_uuid(), config.dict_stop, 'dataset/loaddict_biz/dict_province.txt')
+        count = biz_loaddict.load_dict(util.gen_uuid1(), config.dict_stop, 'dataset/loaddict_biz/dict_province.txt')
         self.assertEqual(count, 1, '插入1条记录')
 
     def test_load_dict_org(self):
         db.drop_dim_dict()
         db.create_dim_dict()
-        count = biz_loaddict.load_dict(util.gen_uuid(), config.dict_stop, 'dataset/loaddict_biz/dict_org.txt')
+        count = biz_loaddict.load_dict(util.gen_uuid1(), config.dict_stop, 'dataset/loaddict_biz/dict_org.txt')
         self.assertEqual(count, 1, '插入1条记录')
 
 

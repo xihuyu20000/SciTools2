@@ -1,6 +1,7 @@
 import unittest
 from api import config
 from api.db.clickhouse_db import ch_dim_dict
+from api.model.dim import DimDict
 
 
 class TestUtil(unittest.TestCase):
@@ -10,9 +11,14 @@ class TestUtil(unittest.TestCase):
             ch_dim_dict.drop_dim_dict()
             ch_dim_dict.create_dim_dict()
             ch_dim_dict.truncate_dim_dict()
+
+            year = DimDict()
+            year.fileid = 'default'
+            year.style = 'year'
+            year.values = [str(i) for i in range(1900, 2051)]
+            ch_dim_dict.insert_dim_dict([year.to_dict()])
         except Exception as e:
             self.fail('删除然后创建表{}失败'.format(config.tbl_dim_dict))
-
 
 
 if __name__ == '__main__':

@@ -19,12 +19,12 @@ class TestUtil(unittest.TestCase):
             result1 = ch_dim_threshold.find_dim_threshold()
 
             entity1 = dim.DimThreshold()
-            entity1.fileid = util.gen_uuid()
+            entity1.fileid = util.gen_uuid1()
             entity1.name = 'a'
             entity1.value = 'a'
 
             entity2 = dim.DimThreshold()
-            entity2.fileid = util.gen_uuid()
+            entity2.fileid = util.gen_uuid1()
             entity2.name = 'b'
             entity2.value = 'b'
 
