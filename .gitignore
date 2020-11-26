@@ -14,3 +14,5 @@
 /apiserver/modules/__pycache__
 /apiserver/modules/common/__pycache__/*.pyc
 *.pyc
+/.venv
+/.vscode

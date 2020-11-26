@@ -14,6 +14,7 @@
         </div>
       </div>
       <div class="nav-header">
+        <!-- 顶部导航 -->
         <el-menu :default-active="activeTopMenu" mode="horizontal" background-color="#1890ff" text-color="#fff" active-text-color="#ffd04b" @select="headerNav">
           <el-menu-item v-for="nav in headerMenus" :index="nav.id + ''" :key="nav.id">{{ nav.label }}</el-menu-item>
         </el-menu>

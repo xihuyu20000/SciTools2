@@ -1,7 +1,7 @@
 import Vue from 'vue'
 Vue.prototype.$config = {
   title: '科研助手',
-  subtitle: '争取做全天下最好的科研系统',
+  subtitle: '争取做最好用的科研助手',
   defaultOption: {
     tooltip: {
       //弹窗组件

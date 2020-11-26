@@ -1,3 +1,5 @@
+# 0 准备
+
 ##### 从 E:\workspace\workspace-js\scitools 复制来的项目
 
 ##### 西工大图书馆 http://login.lib-ycfw.xatu.edu.cn/frontend/web/index.php 
@@ -65,69 +67,96 @@
 ### 2.1.2 国家的产出分布
 计算方法：SELECT country , COUNT(1) AS count FROM ods_bib GROUP BY country ORDER BY count DESC 
 
-### 2.1.3 机构的产出分布
+### 2.1.3 地区的产出分布
+
+![image-20201126141301887](README.assets/image-20201126141301887.png)
+
+### 2.1.4 机构的产出分布
+
 计算方法：SELECT org, COUNT(1) AS count FROM (SELECT title, arrayJoin(orgs) AS org  FROM ods_bib) GROUP BY org ORDER BY count DESC
 注：如果多机构合著，则每个机构一篇
 
-### 2.1.4 著者的产出分布
+### 2.1.5 著者的产出分布
 计算方法：SELECT author, COUNT(1) AS count FROM (SELECT title, arrayJoin(authors) AS author FROM ods_bib) GROUP BY author ORDER BY count DESC
 注：尚未对著者去重，没有去重冗余数据，如“本刊”、“编辑部”
 
-### 2.1.5 期刊来源分布
+### 2.1.6 期刊来源分布
 计算方法:SELECT publication , COUNT(1) AS count FROM ods_bib GROUP BY publication ORDER BY count DESC 
 
-### 2.1.6 基金来源分布
+![image-20201126141116460](README.assets/image-20201126141116460.png)
+
+### 2.1.7 基金历年分布
+
+基金也要从多角度多维度分析。
+
+### 2.1.8 基金来源分布
+
 计算方法：SELECT fund, COUNT(1) AS count FROM (SELECT title, arrayJoin(funds) AS fund FROM ods_bib) GROUP BY fund ORDER BY count DESC
 
-### 2.1.7 学科分布
+![image-20201126134321389](README.assets/image-20201126134321389.png)
+
+### 2.1.9 学科分布
 应该根据分类号，确定具体的一二级学科
 计算方法: 
 
-### 2.1.8 关键词的词频分布
+![image-20201126140826959](README.assets/image-20201126140826959.png)
+
+### 2.1.10 关键词的词频分布
 计算方法: SELECT kw, COUNT(1) AS count FROM (SELECT title, arrayJoin(kws) AS kw FROM ods_bib) GROUP BY kw ORDER BY count DESC
 
-### 2.1.9 主题词的词频分布
+### 2.1.11 主题词的词频分布
 主题词指的是从标题、摘要中切词，并加入关键词
 计算方法: SELECT tw, COUNT(1) AS count FROM (SELECT title, arrayJoin(arrayConcat(title_words, kws, summary_words)) AS tw FROM ods_bib) GROUP BY tw ORDER BY count DESC
 
-### 2.1.10 关键词的时间分布
+### 2.1.12 关键词的时间分布
 按照年份、关键词分组汇总
 计算方法: SELECT kw, pubyear ,COUNT(1) AS count FROM (SELECT pubyear ,arrayJoin(kws) AS kw FROM ods_bib) GROUP BY kw, pubyear ORDER BY kw, pubyear
 
-### 2.1.11 主题词的时间分布
+### 2.1.13 主题词的时间分布
 主题词指的是从标题、摘要中切词，并加入关键词
 按照年份、主题词分组汇总
 计算方法: SELECT tw, pubyear, COUNT(1) AS count FROM (SELECT pubyear , arrayJoin(arrayConcat(title_words, kws, summary_words)) AS tw FROM ods_bib) GROUP BY tw, pubyear ORDER BY tw, pubyear
 
-### 2.1.10 关键词共现
+### 2.1.14 关键词共现
 这里的关键词必须是高频词，否则数据量太大
 计算方法: SELECT kws, hasAll(['aa','bb'], kws) from default.ods_bib ob 
 
-### 2.1.11 主题词共现
+### 2.1.15 主题词共现
 计算方法:
 
-### 2.1.12 基金共现
+### 2.1.16 基金共现
 
 
-### 2.1.13 国家合作分布
+### 2.1.17 国家合作分布
 计算方法:
 
-### 2.1.14 机构合作分布
+![image-20201126141232684](README.assets/image-20201126141232684.png)
+
+### 2.1.18 机构合作分布
 这里的机构必须是高产机构，否则计算量太大
 计算方法: SELECT orgs ,hasAll(['aa','bb'], orgs) from default.ods_bib ob 
 
-### 2.1.15 作者合作分布
+### 2.1.19 作者合作分布
 这里的作者必须是高产作者，否则计算量太大
 计算方法: SELECT authors ,hasAll(['aa','bb'], authors) from default.ods_bib ob 
 
-### 2.1.16 共词、合著的社会网络分析
+### 2.1.20 共词、合著的社会网络分析
 中心性分析包括点度中心性、接近中心性、中间中心性。
 
-### 2.1.17 相关分析
+### 2.1.21 相关分析
 
-### 2.1.18 社团分析
+### 2.1.22 社团分析
 
-### 2.1.19 聚类分析
+### 2.1.23 关键词的时间聚类分析
+
+![image-20201126141012274](README.assets/image-20201126141012274.png)
+
+![image-20201126141044814](README.assets/image-20201126141044814.png)
+
+### 2.1.24 关键词的行业领域聚类
+
+![image-20201126141209226](README.assets/image-20201126141209226.png)
+
 
 
 ## 2.2 期刊评价指标
