@@ -1,7 +1,7 @@
 import unittest
 
 from api import db, config, dao
-from api.biz import biz_analyzefile, biz_parsefile
+from api.biz import biz_analyzefile, biz_cleaningfiles
 
 
 class TestUtil(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestUtil(unittest.TestCase):
         try:
             db.drop_ods_bib()
             db.create_ods_bib()
-            fileid, count = biz_parsefile.import_file(config.ds_cnki_es5, 'dataset/importfile_biz/CNKI-02.es5')
+            fileid, count = biz_cleaningfiles.import_file(config.ds_cnki_es5, 'dataset/importfile_biz/CNKI-02.es5')
 
             biz_analyzefile.analyzefile(fileid)
         except Exception as e:

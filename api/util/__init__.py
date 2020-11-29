@@ -50,10 +50,10 @@ def move_file(srcFile, dstDir) -> str:
     return dstFile
 
 
-def stopwords(path: str = None):
-    if not path:
-        path = config.stopwords_dict_path
-    reader = open(path, encoding='utf8')
+def stopwords(splitwords_userdict_path: str = None):
+    if not os.path.exists(splitwords_userdict_path):
+        return set()
+    reader = open(splitwords_userdict_path, encoding='utf8')
     lines = reader.readlines()
     reader.close()
     lines = [w.lower().strip() for w in lines]
@@ -63,10 +63,11 @@ def stopwords(path: str = None):
     # return set(lines) | nltk_stop_words
     return set(lines)
 
+
 class CutWords:
-    def __init__(self, userdict_path: str = ''):
-        if os.path.exists(userdict_path):
-            jieba.load_userdict(userdict_path)
+    def __init__(self, splitwords_userdict_path: str = ''):
+        if os.path.exists(splitwords_userdict_path):
+            jieba.load_userdict(splitwords_userdict_path)
         nltk.download('punkt')
         nltk.download('wordnet')
 
@@ -92,6 +93,6 @@ class CutWords:
                 # pos参数 是词性
                 lemma_word.append(word3)
             # todo 英文切词后，还会有一个单引号在里面，这是不正确的
-            words = [w for w in lemma_word if str(w).find("'")==-1]
+            words = [w for w in lemma_word if str(w).find("'") == -1]
 
         return words

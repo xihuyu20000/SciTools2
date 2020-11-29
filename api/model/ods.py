@@ -28,3 +28,6 @@ class OdsCnkiBib:
                 'summary': self.summary, 'summary_words':self.summary_words, 'funds': self.funds,
                 'pubyear': self.pubyear,'pubtime': self.pubtime, 'clcs': self.clcs,'clc1':self.clc1,
                 'clc2':self.clc2, 'format':self.format, 'publication': self.publication,'country':self.country, 'lang':self.lang}
+
+    def __repr__(self):
+        return str(self.to_dict())

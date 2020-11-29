@@ -8,9 +8,9 @@ import os
 base_file_dir = '.'
 
 # 数据源类型
-ds_cnki_es5 = 'cnki_es5'
-ds_gbt_7714_2015 = 'gbt_7714_2015'
-ds_note_express = 'note_express'
+ds_cnki_es5 = '题录—知网—es5'
+ds_gbt_7714_2015 = '题录—GBT 7714-2015'
+ds_note_express = '题录—知网—NoteExpress'
 ds_cnki_html = 'cnki_html'
 
 # 数据字典
@@ -42,5 +42,4 @@ tbl_ods_bib = 'default.ods_bib'
 
 # 配置文件的路径
 _base = os.path.join(os.path.abspath('.').split(r"api")[0], 'api', 'config')
-stopwords_dict_path = os.path.join(_base, 'stopwords.dict')
 user_cut_dict_path = os.path.join(_base, 'user_cut.dict')

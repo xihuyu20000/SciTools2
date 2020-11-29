@@ -5,12 +5,14 @@ import os
 from typing import List
 
 from api import util, config
+from api.model.ods import OdsCnkiBib
+from api.util import CutWords
 from api.util.strutils import strings_is_eng
 
 from api.model import ods
 
 
-def parsefiles(format, files):
+def parsefiles(format, files:List[str]) -> List[OdsCnkiBib]:
     """
     根据文件类型，解析文件
     """
@@ -28,6 +30,19 @@ def parsefiles(format, files):
         datas.extend(result)
     return datas
 
+def cut_words(datas, stopwords_dict_path = '', splitwords_dict_path = ''):
+    """
+    针对title和summary切词，填充title_words和summary_words两个字段
+    """
+    stopwords = util.stopwords(stopwords_dict_path)
+    cutwords = CutWords(splitwords_dict_path)
+
+    def split_row(row):
+        row.title_words = cutwords.cut_words(row.title, stopwords=stopwords)
+        row.summary_words = cutwords.cut_words(row.summary, stopwords=stopwords)
+        return row
+
+    return [split_row(x) for x in datas]
 
 def cnki_es5(filepath: str) -> List[dict]:
     """
@@ -313,10 +328,10 @@ def noteExpress(filepath) -> List[dict]:
 
 def cnki_html(filepath) -> List[dict]:
     """
-            解析cnki的html格式
-            :param filepath: 文件路径
-            :return: 解析后的数据列表
-            """
+    解析cnki的html格式
+    :param filepath: 文件路径
+    :return: 解析后的数据列表
+    """
     assert os.path.exists(filepath), 'CNKI的html文件{}必须存在'.format(filepath)
     reader = open(filepath, 'r', encoding='utf8')
     content = reader.read()
@@ -365,3 +380,5 @@ def cnki_html(filepath) -> List[dict]:
         name = ref.xpath('a//text()').extract_first()
         url = ref.xpath('a/@href').extract_first()
         print('参考文献', name, url)
+
+

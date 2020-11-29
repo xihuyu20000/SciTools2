@@ -2,16 +2,6 @@ from api import util, config, dao
 from api.util import CutWords
 
 
-def cut_words(df):
-    """
-    针对title和summary切词，填充title_words和summary_words两个字段
-    """
-    stopwords = util.stopwords()
-    cutwords = CutWords(config.user_cut_dict_path)
-    for index, row in df.iterrows():
-        title_words = cutwords.cut_words(row['title'], stopwords=stopwords)
-        summary_words = cutwords.cut_words(row['summary'], stopwords=stopwords)
-        dao.updateOdsData(row['id'], {'title_words': title_words, 'summary_words': summary_words})
 
 
 def co_keywords(df):
