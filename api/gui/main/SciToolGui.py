@@ -89,7 +89,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.webEngineView.sizePolicy().hasHeightForWidth())
         self.webEngineView.setSizePolicy(sizePolicy)
-        self.webEngineView.setUrl(QtCore.QUrl("file:///E:/workspace/workspace-python/SciTools2/api/gui/docs/index.html"))
+        self.webEngineView.setUrl(QtCore.QUrl("http://localhost:22222/"))
         self.webEngineView.setObjectName("webEngineView")
         self.verticalLayout_3.addWidget(self.webEngineView)
         self.verticalLayout.addLayout(self.verticalLayout_3)

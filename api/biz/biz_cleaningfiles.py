@@ -30,19 +30,7 @@ def parsefiles(format, files:List[str]) -> List[OdsCnkiBib]:
         datas.extend(result)
     return datas
 
-def cut_words(datas, stopwords_dict_path = '', splitwords_dict_path = ''):
-    """
-    针对title和summary切词，填充title_words和summary_words两个字段
-    """
-    stopwords = util.stopwords(stopwords_dict_path)
-    cutwords = CutWords(splitwords_dict_path)
 
-    def split_row(row):
-        row.title_words = cutwords.cut_words(row.title, stopwords=stopwords)
-        row.summary_words = cutwords.cut_words(row.summary, stopwords=stopwords)
-        return row
-
-    return [split_row(x) for x in datas]
 
 def cnki_es5(filepath: str) -> List[dict]:
     """
