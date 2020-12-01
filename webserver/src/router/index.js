@@ -77,7 +77,11 @@ const router = new VueRouter({
   routes
 })
 
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   // console.log("from", from);
   // 获取token
   const token = sessionStorage.getItem('token')
@@ -86,7 +90,9 @@ router.beforeEach((to, from, next) => {
   console.error('未授权用户，请登录')
   next('/login')
 })
-
+router.afterEach(() => {
+  NProgress.done()
+})
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)

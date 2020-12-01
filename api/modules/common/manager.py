@@ -1,8 +1,11 @@
 from pydantic.main import BaseModel
 
-from api.common.utils import Logger
-from api.common.dbhelper import db
+from api.util.utils import Logger
+from api.util.dbhelper import db
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 class LoginForm(BaseModel):
     username: str = None
@@ -15,8 +18,8 @@ class CommonManager:
         self.db = db
 
     # 登录验证
-    def getUser(self, form: LoginForm):
-        sql = 'SELECT * FROM sys_user WHERE username="{}" AND PASSWORD="{}"'.format(form.username, form.password)
+    def getUser(self, username, password):
+        sql = 'SELECT * FROM sys_user WHERE username="{}" AND PASSWORD="{}"'.format(username, password)
         all = self.db.fetch_all(sql)
         if all:
             return all[0]
