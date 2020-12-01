@@ -1,8 +1,8 @@
 import time
 
-from api.common.utils import Logger
+from api.util.utils import Logger
 from .util import parseWos, parseCnki, parseCnkiCite, parseCssci, updateDatafileStatus, writeExcel
-from api.common.dbhelper import db
+from api.util.dbhelper import db
 
 
 class FileManager:

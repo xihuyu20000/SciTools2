@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import '@/plugins/api.js'
 import '@/plugins/axios.js'
 import '@/plugins/config'
 import '@/plugins/element.js'

@@ -7,8 +7,8 @@ from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 import xlwt
 from bs4 import BeautifulSoup
 
-from api.common.dbhelper import db
-from api.common.utils import buildsql
+from api.util.dbhelper import db
+from api.util.utils import buildsql
 
 def updateDatafileStatus(msg, fileId):
     # 修改数据文件的状态

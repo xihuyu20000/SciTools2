@@ -4,9 +4,8 @@ import Home from '@/views/common/Home.vue'
 import Default from '@/views/common/Default.vue'
 import Login from '@/views/common/Login.vue'
 import V404 from '@/views/common/404.vue'
-import IndexUser from '@/views/sys/IndexUser.vue'
 
-import ParsingIndex from '@/views/parsing/ParsingIndex.vue'
+import ParsingIndex from '@/views/file/ParsingIndex.vue'
 import ShowingIndex from '@/views/showing/ShowingIndex.vue'
 import GraphIndex from '@/views/graph/GraphIndex.vue'
 import EchartsLine from '@/views/graph/line/EchartsLine.vue'
@@ -26,22 +25,18 @@ const routes = [
         name: '首页',
         component: Default
       },
+
       {
-        path: '/sys/user/index',
-        name: '用户列表',
-        component: IndexUser
-      },
-      {
-        path: '/parsing/index',
+        path: '/file/index',
         name: '分析数据',
         component: ParsingIndex
       },
       {
-        path: '/showing/index',
+        path: '/dataset/index',
         name: '数据显示',
         component: ShowingIndex
       },
-      { path: '/to/showing/index', redirect: '/showing/index' },
+      { path: '/to/showing/index', redirect: '/dataset/index' },
       {
         path: '/graph/index',
         name: '知识图谱',
@@ -54,7 +49,6 @@ const routes = [
           }
         ]
       },
-
       {
         path: '/config/index',
         name: '配置信息',

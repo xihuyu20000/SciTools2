@@ -1,5 +1,5 @@
-from api.common.utils import Logger
-from api.common.dbhelper import db
+from api.util.utils import Logger
+from api.util.dbhelper import db
 
 class KGraphData:
     def __init__(self, all_rows):
