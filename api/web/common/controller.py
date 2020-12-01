@@ -73,7 +73,7 @@ def login(form : LoginForm):
     return ok(user)
 
 # 导航菜单
-@router.get('/navs')
-def navs():
-    menus = commonManager.findMenu()
-    return ok(menus)
+# @router.get('/navs')
+# def navs():
+#     menus = commonManager.findMenu()
+#     return ok(menus)

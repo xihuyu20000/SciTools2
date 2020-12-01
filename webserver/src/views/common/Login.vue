@@ -41,8 +41,8 @@ export default {
         // 写入session
         window.sessionStorage.setItem('token', resp.token)
         // 获取导航菜单
-        const { data: resp1 } = await this.$http.get(this.$api.navs)
-        localStorage.setItem('menuTree', JSON.stringify(resp1.data))
+        // const { data: resp1 } = await this.$http.get(this.$api.navs)
+        // localStorage.setItem('menuTree', JSON.stringify(resp1.data))
         // this.$store.commit("home/setMenuTree", resp1.data);
         // 动态添加路由 ，参考https://refined-x.com/2017/09/01/%E7%94%A8addRoutes%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1/
         // this.$router.addRoutes([])

@@ -37,9 +37,10 @@ clickhouse_db = 'default'
 # 数据库表名称
 tbl_dim_threshold = 'default.dim_threshold'
 tbl_dim_dict = 'default.dim_dict'
+tbl_dim_user = 'default.dim_user'
 tbl_dim_year = 'default.dim_year'
 tbl_ods_bib = 'default.ods_bib'
 
 # 配置文件的路径
-_base = os.path.join(os.path.abspath('.').split(r"api")[0], 'api', 'config')
-user_cut_dict_path = os.path.join(_base, 'user_cut.dict')
+# _base = os.path.join(os.path.abspath('.').split(r"api")[0], 'api', 'config')
+# user_cut_dict_path = os.path.join(_base, 'user_cut.dict')

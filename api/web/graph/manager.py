@@ -1,5 +1,5 @@
 from api.util.utils import Logger
-from api.util.dbhelper import db
+from api import dao
 
 class KGraphData:
     def __init__(self, all_rows):
@@ -131,7 +131,7 @@ class KGraphData:
 class KgManager:
     def __init__(self):
         self.log = Logger(__name__).get_log
-        self.db = db
+        self.dao = dao
 
     def kg(self, userId, fileId, count):
         sql = "SELECT title,author,organ,source,keyword,summary,firstduty,fund,year FROM sci_cnki  WHERE usercode='{}' AND fileid={}  limit {}".format(

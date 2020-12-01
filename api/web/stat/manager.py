@@ -1,13 +1,13 @@
 import sys
 from collections import defaultdict
 from api.util.utils import Logger
-from api.util.dbhelper import db
+from api import dao
 
 
 class StatManager:
     def __init__(self):
         self.log = Logger(__name__).get_log
-        self.db = db
+        self.dao = dao
 
     # 按照年份统计论文数量
     def statArticlesByYear(self, fileId):

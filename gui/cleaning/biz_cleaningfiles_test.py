@@ -2,7 +2,7 @@
 api/test负责所有的测试实例
 '''
 import unittest
-from api.web import biz_cleaningfiles
+from . import biz_cleaningfiles
 
 
 class TestUtil(unittest.TestCase):

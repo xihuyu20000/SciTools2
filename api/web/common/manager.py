@@ -1,5 +1,6 @@
 from pydantic.main import BaseModel
 
+from api import dao
 from api.util.utils import Logger
 
 class Token(BaseModel):
@@ -14,14 +15,13 @@ class LoginForm(BaseModel):
 class CommonManager:
     def __init__(self):
         self.log = Logger(__name__).get_log
-        self.db = db
+        self.dao = dao
 
     # 登录验证
     def getUser(self, username, password):
-        sql = 'SELECT * FROM sys_user WHERE username="{}" AND PASSWORD="{}"'.format(username, password)
-        all = self.db.fetch_all(sql)
-        if all:
-            return all[0]
+        users = self.dao.get_user(username, password)
+        if users:
+            return users[0]
         else:
             return {}
 

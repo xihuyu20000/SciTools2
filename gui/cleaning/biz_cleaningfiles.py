@@ -6,7 +6,6 @@ from typing import List
 
 from api import util, config
 from api.model.ods import OdsCnkiBib
-from api.util import CutWords
 from api.util.strutils import strings_is_eng
 
 from api.model import ods

@@ -31,6 +31,10 @@ class TestUtil(unittest.TestCase):
         except Exception as e:
             self.fail('批量插入表{}失败'.format(config.tbl_ods_bib))
 
+    def test_query(self):
+        result = ods_bib.find_ods_bib()
+        print(result)
+
 
 if __name__ == '__main__':
     # verbosity=*：默认是1；设为0，则不输出每一个用例的执行结果；2-输出详细的执行结果

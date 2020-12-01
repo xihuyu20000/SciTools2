@@ -6,7 +6,7 @@ from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QMessageBox
 
 from gui.cleaning.CleaningDialog import Ui_CleaningDialog
-from api.web import biz_cleaningfiles
+from . import biz_cleaningfiles
 
 
 class CleaningDialogStub(Ui_CleaningDialog):

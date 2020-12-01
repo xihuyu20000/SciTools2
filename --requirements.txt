@@ -1,7 +1,7 @@
-pyqtwebengine
+
 pyqt5
 pyqt5-tools
-pyqtgraph
+
 pytest
 lxml
 scrapy

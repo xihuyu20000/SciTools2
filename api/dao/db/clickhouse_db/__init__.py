@@ -23,20 +23,15 @@ def __execute(sql, params: dict = None, msg: str = None):
         raise Exception(msg)
 
 
-def __query(sql, params: dict = None, msg: str = None):
-    # 150，设置打印宽度
-    pd.set_option('display.width', 180)
-    # 显示所有列
-    pd.set_option('display.max_columns', None)
-    # 显示所有行
-    pd.set_option('display.max_rows', None)
-    # 设置value的显示长度为100，默认为50
-    pd.set_option('max_colwidth', 100)
-
+def __query(sql, params: dict = None, msg: str = None, result_style: str = 'dict'):
     try:
         result, columns = __client.execute(sql, params=params, with_column_types=True)
-        df = pd.DataFrame(result, columns=[t[0] for t in columns])
-        return df
+        labels = [x[0] for x in columns]
+        if result_style == 'dict':
+            return [dict(zip(labels, x)) for x in result]
+        if result_style == 'list':
+            return labels + result[:]
+        return result
     except Exception as e:
         print(e)
         raise Exception(msg)
