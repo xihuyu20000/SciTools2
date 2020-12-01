@@ -38,7 +38,7 @@ clickhouse_db = 'default'
 tbl_dim_threshold = 'default.dim_threshold'
 tbl_dim_dict = 'default.dim_dict'
 tbl_dim_user = 'default.dim_user'
-tbl_dim_year = 'default.dim_year'
+tbl_dim_file = 'default.dim_file'
 tbl_ods_bib = 'default.ods_bib'
 
 # 配置文件的路径

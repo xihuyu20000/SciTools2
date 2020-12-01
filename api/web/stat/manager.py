@@ -9,6 +9,12 @@ class StatManager:
         self.log = Logger(__name__).get_log
         self.dao = dao
 
+    def list_files(self):
+        return self.dao.find_all_files()
+
+    def list_dataset(self):
+        return self.dao.find_ods_bib()
+
     # 按照年份统计论文数量
     def statArticlesByYear(self, fileId):
         sql = 'SELECT  year, COUNT(*) AS count FROM sci_cnki WHERE year>0 AND fileid={} GROUP BY year ORDER BY year'.format(fileId)

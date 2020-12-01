@@ -14,11 +14,6 @@ router = APIRouter()
 
 from .manager import fileManager
 
-@router.get('/list')
-def list():
-    all = fileManager.list()
-    return {'data':all}
-
 # 上传文件，只接收一个压缩文件
 @router.post('/upload')
 async def upload(files: List[UploadFile] = File(...)):
@@ -42,27 +37,3 @@ async def upload(files: List[UploadFile] = File(...)):
     # fileManager.saveUpload(source, file_name, file_size, raw_name, save_path)
 
     return {"status": 200}
-
-# 解析数据文件
-@router.get('/parse/{fileId}')
-def parseDatafile(fileId):
-    Thread(target=fileManager.parseDatafile, args=(fileId,)).start()
-    return {'status': 200}
-
-# 删除
-@router.delete('/{fileId}')
-def delete(fileId):
-    file = fileManager.get(fileId)
-    fileManager.remove(fileId)
-    try:
-        Path(file['save_path']).unlink()
-        remove_dir(file['save_path']+'_dir')
-    except Exception as e:
-        print(e)
-    return {'status':200}
-
-# 生成WOS的excel格式
-@router.get("/genWosExcel/{userId}/{fileId}")
-def generateWosExcel(userId, fileId):
-    path = fileManager.generateWosExcel(userId, fileId)
-    return path

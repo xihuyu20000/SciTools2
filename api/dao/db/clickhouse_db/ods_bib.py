@@ -4,6 +4,8 @@ from api import config
 from api.dao.db.clickhouse_db import __create, __drop, __truncate, __execute, __query
 
 TBL_NAME = config.tbl_ods_bib
+
+
 def create_ods_bib():
     """
     创建ods_bib表
@@ -60,6 +62,7 @@ def insert_ods_bib(params: Optional[List[dict]]):
     """.format(TBL_NAME)
     return params[0]['fileid'], __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
 
+
 def update_ods_bib(id, params):
     sql = """
         ALTER TABLE {} UPDATE  
@@ -72,6 +75,7 @@ def update_ods_bib(id, params):
     sql += " WHERE id='{}'".format(id)
 
     return __execute(sql, msg='插入{}失败'.format(TBL_NAME))
+
 
 def delete_ods_bib(file_id):
     sql = """

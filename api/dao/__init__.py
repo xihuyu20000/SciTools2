@@ -2,7 +2,7 @@
 api/db 所有的数据库操作，不区分数据库
 '''
 from api import config
-from api.dao.db.clickhouse_db import dim_dict, dim_user, ods_bib
+from api.dao.db.clickhouse_db import dim_dict, dim_file, dim_user, ods_bib
 
 ##################################################################################
 
@@ -11,7 +11,13 @@ drop_dim_dict = dim_dict.drop_dim_dict if config.db_is_clickhouse else None
 truncate_dim_dict = dim_dict.truncate_dim_dict if config.db_is_clickhouse else None
 insert_dim_dict = dim_dict.insert_dim_dict if config.db_is_clickhouse else None
 delete_dim_dict = dim_dict.delete_dim_dict if config.db_is_clickhouse else None
+##################################################################################
 
+create_dim_file = dim_file.create_dim_file if config.db_is_clickhouse else None
+drop_dim_file = dim_file.drop_dim_file if config.db_is_clickhouse else None
+truncate_dim_file = dim_file.truncate_dim_file if config.db_is_clickhouse else None
+insert_dim_file = dim_file.insert_dim_file if config.db_is_clickhouse else None
+find_all_files = dim_file.find_all_files if config.db_is_clickhouse else None
 ##################################################################################
 
 create_dim_user = dim_user.create_dim_user if config.db_is_clickhouse else None

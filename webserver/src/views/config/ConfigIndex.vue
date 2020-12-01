@@ -56,6 +56,11 @@ export default {
       const { data: resp } = await this.$http.get(this.$api.configIndex)
       if (resp.status == 400) return this.$message.error(resp.msg)
       this.configForm = resp.data
+    },
+    reload() {
+      // 清除所有状态
+      this.$refs.xTree.clearAll()
+      return this.fetch()
     }
   },
   mounted() {

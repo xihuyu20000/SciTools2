@@ -19,3 +19,5 @@
 /dist
 /build
 /api/upload
+/gui/dist
+/gui/build

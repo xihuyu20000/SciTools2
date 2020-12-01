@@ -1,4 +1,4 @@
-from pdfminer.high_level import extract_text
+# from pdfminer.high_level import extract_text
 import hashlib
 import logging
 import os
@@ -17,18 +17,18 @@ def remove_dir(dir):
         if(os.path.exists(dir)):
             os.remove(dir)
 
-def pdf2text(pdffilepath):
-    '''
-    pdf转text
-    :param pdffilepath: pdf文件路径
-    :return: 内容
-    '''
-    text = extract_text(pdf_file=pdffilepath)
-    txtfilepath = str(pdffilepath).replace('.pdf', '.txt')
-    with open(txtfilepath, 'w', encoding='utf-8') as f:
-        f.write(text)
-
-    print(text)
+# def pdf2text(pdffilepath):
+#     '''
+#     pdf转text
+#     :param pdffilepath: pdf文件路径
+#     :return: 内容
+#     '''
+#     text = extract_text(pdf_file=pdffilepath)
+#     txtfilepath = str(pdffilepath).replace('.pdf', '.txt')
+#     with open(txtfilepath, 'w', encoding='utf-8') as f:
+#         f.write(text)
+#
+#     print(text)
 
 # def getFileMd5(filename):
 #     # 生成文件的MD5

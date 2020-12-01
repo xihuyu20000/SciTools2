@@ -1,9 +1,20 @@
 from fastapi import APIRouter
 
+from ...util.base import ok
+
 router = APIRouter()
 
 from .manager import statManager
 
+@router.get('/list_files')
+def list_files():
+    datas = statManager.list_files()
+    return ok(data=datas)
+
+@router.get('/list_dataset')
+def list_dataset():
+    datas = statManager.list_dataset()
+    return ok(data=datas)
 
 # 论文历年发文量
 @router.get("/statArticlesByYear/{fileId}")
