@@ -5,12 +5,12 @@ import Default from '@/views/common/Default.vue'
 import Login from '@/views/common/Login.vue'
 import V404 from '@/views/common/404.vue'
 import IndexUser from '@/views/sys/IndexUser.vue'
-import TemplateLoader from '@/views/common/TemplateLoader.vue'
 
-import DataFileList from '@/views/da/datafile/DataFileList.vue'
-import DataSetList from '@/views/da/dataset/DataSetList.vue'
-
+import ParsingIndex from '@/views/parsing/ParsingIndex.vue'
+import ShowingIndex from '@/views/showing/ShowingIndex.vue'
+import GraphIndex from '@/views/graph/GraphIndex.vue'
 import EchartsLine from '@/views/graph/line/EchartsLine.vue'
+import ConfigIndex from '@/views/config/ConfigIndex.vue'
 
 Vue.use(VueRouter)
 
@@ -27,29 +27,35 @@ const routes = [
         component: Default
       },
       {
-        path: '/dt/:id/index',
-        name: '加载模板',
-        component: TemplateLoader
-      },
-      {
         path: '/sys/user/index',
         name: '用户列表',
         component: IndexUser
       },
       {
-        path: '/da/datafile/list',
-        name: '数据文件列表',
-        component: DataFileList
+        path: '/parsing/index',
+        name: '分析数据',
+        component: ParsingIndex
       },
       {
-        path: '/da/dataset/list',
-        name: '数据集列表',
-        component: DataSetList
+        path: '/showing/index',
+        name: '数据显示',
+        component: ShowingIndex
+      },
+      { path: '/to/showing/index', redirect: '/showing/index' },
+      {
+        path: '/graph/index',
+        name: '知识图谱',
+        component: GraphIndex
       },
       {
         path: '/graph/line/echartsLine',
         name: '折线图',
         component: EchartsLine
+      },
+      {
+        path: '/config/index',
+        name: '配置信息',
+        component: ConfigIndex
       }
     ]
   },

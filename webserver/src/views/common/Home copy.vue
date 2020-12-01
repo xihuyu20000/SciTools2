@@ -15,8 +15,8 @@
       </div>
       <div class="nav-header">
         <!-- 顶部导航 -->
-        <el-menu router :default-active="activeTopMenu" mode="horizontal" background-color="#1890ff" text-color="#fff" active-text-color="#ffd04b">
-          <el-menu-item v-for="nav in headerMenus" :index="nav.path + ''" :key="nav.id">{{ nav.label }}</el-menu-item>
+        <el-menu :default-active="activeTopMenu" mode="horizontal" background-color="#1890ff" text-color="#fff" active-text-color="#ffd04b" @select="headerNav">
+          <el-menu-item v-for="nav in headerMenus" :index="nav.id + ''" :key="nav.id">{{ nav.label }}</el-menu-item>
         </el-menu>
       </div>
       <div class="right-header">
@@ -34,7 +34,24 @@
       </div>
     </el-header>
     <el-container>
-      <router-view />
+      <el-aside :width="collapsed ? '64px' : '200px'" style="background-color: rgb(238, 241, 246)">
+        <el-menu router :default-active="activeLeftActive" :unique-opened="true" :collapse="collapsed" :collapse-transition="false" size="mini">
+          <el-menu-item index="/default"><i class="el-icon-s-home"></i><span v-show="!collapsed">首页</span></el-menu-item>
+          <el-submenu :index="menu1.id + ''" v-for="menu1 of leftMenus" :key="menu1.id">
+            <template slot="title"
+              ><i :class="menu1.icon"></i><span v-show="!collapsed">{{ menu1.label }}</span></template
+            >
+            <el-menu-item :index="menu2.path" v-for="menu2 of menu1.children" :key="menu2.id" @click="selectLeftMenu(menu2)">{{ menu2.label }}</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <el-tabs editable v-model="activeTabName" @tab-click="selectTab" @tab-remove="removeTab">
+          <el-tab-pane label="首页" name="首页" closable></el-tab-pane>
+          <el-tab-pane v-for="item in tabs" :label="item.label" :name="item.name" :key="item.label"></el-tab-pane>
+        </el-tabs>
+        <router-view
+      /></el-main>
     </el-container>
   </el-container>
 </template>
@@ -62,6 +79,12 @@ export default {
     toggle() {
       this.collapsed = !this.collapsed
     },
+    headerNav(index) {
+      sessionStorage.setItem('top_menu', index)
+      let m = this.menuTree.filter(item => item.id == index)
+      if (m[0].children) this.leftMenus = m[0].children
+      else this.leftMenus = []
+    },
     chpwd() {
       this.$message.success('修改密码')
     },
@@ -71,6 +94,38 @@ export default {
     logout() {
       window.sessionStorage.clear()
       this.$router.push('/login')
+    },
+    selectLeftMenu(menu) {
+      if (!menu.path) return this.$message.error('没有配置菜单路径')
+      this.activeLeftActive = menu.path
+      sessionStorage.setItem('active_left_menu', this.activeLeftActive)
+      // 判断是否已经打开该菜单
+      let existed = this.tabs.filter(item => item.label == menu.label)
+      if (existed.length == 0) {
+        this.tabs.push({ label: menu.label, name: this.activeLeftActive })
+      }
+      this.activeTabName = this.activeLeftActive
+    },
+    selectTab() {
+      this.$router.push(this.activeTabName)
+      sessionStorage.setItem('active_left_menu', this.activeTabName)
+    },
+    removeTab(targetName) {
+      let tabs = this.tabs
+      let _activeName = this.activeTabName
+      if (_activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1]
+            if (nextTab) {
+              _activeName = nextTab.name
+            }
+          }
+        })
+      }
+
+      this.activeName = _activeName
+      this.tabs = tabs.filter(tab => tab.name !== targetName)
     }
   },
   created() {
@@ -81,7 +136,7 @@ export default {
     // 顶级激活菜单
     this.activeTopMenu = sessionStorage.getItem('top_menu') || '1'
     // 导航左侧菜单
-    // this.headerNav(this.activeTopMenu)
+    this.headerNav(this.activeTopMenu)
     // 左侧激活菜单
     this.activeLeftActive = sessionStorage.getItem('active_left_menu')
     // 显示tab
@@ -104,7 +159,7 @@ export default {
   line-height: 60px;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+
   .left-header {
     .big-title {
       display: flex;

@@ -10,6 +10,7 @@ import '@/plugins/element.js'
 import '@/plugins/markdown.js'
 import '@/plugins/vxetable'
 import '@/plugins/echarts.js'
+import '@/plugins/jstree.js'
 import '@/components/_globals.js'
 
 import '@/assets/fonts/iconfont.css'

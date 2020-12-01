@@ -10,7 +10,7 @@
           <el-input prefix-icon="iconfont alilock" type="password" v-model="loginForm.password" placeholder="密码" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item class="actions">
-          <el-button type="primary" @click="submitForm('loginForm')">提交</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
           <el-button @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
       </el-form>
