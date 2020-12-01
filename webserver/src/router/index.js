@@ -45,13 +45,16 @@ const routes = [
       {
         path: '/graph/index',
         name: '知识图谱',
-        component: GraphIndex
+        component: GraphIndex,
+        children: [
+          {
+            path: '/graph/line/echartsLine',
+            name: '折线图',
+            component: EchartsLine
+          }
+        ]
       },
-      {
-        path: '/graph/line/echartsLine',
-        name: '折线图',
-        component: EchartsLine
-      },
+
       {
         path: '/config/index',
         name: '配置信息',

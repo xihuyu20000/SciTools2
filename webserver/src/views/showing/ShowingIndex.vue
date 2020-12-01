@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="200px">
+    <el-aside width="300px">
       <dataset-tree></dataset-tree>
     </el-aside>
     <el-main> <dataset-table></dataset-table></el-main>
@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import DatasetTree from './DatasetTree'
-import DatasetTable from './DatasetTable'
+import DatasetTree from './components/DatasetTree'
+import DatasetTable from './components/DatasetTable'
 export default {
   data() {
     return {}
