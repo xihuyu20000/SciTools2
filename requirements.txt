@@ -1,3 +1,7 @@
+pyqtwebengine
+pyqt5
+pyqt5-tools
+pyqtgraph
 pytest
 lxml
 scrapy
@@ -6,3 +10,5 @@ clickhouse_driver
 pandas
 jieba
 nltk
+pyinstaller
+msgpack

@@ -46,8 +46,8 @@ export default {
       if (resp.status == 400) return this.$message.error(resp.msg)
 
       this.$notify({
-        title: '登录成功',
-        message: '欢迎登录系统',
+        title: '保存成功',
+        message: '可以在分析数据时自动使用配置',
         position: 'bottom-right',
         type: 'success'
       })

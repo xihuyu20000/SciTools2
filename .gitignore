@@ -3,9 +3,9 @@
 /.idea
 /api/__pycache__
 /api/config/__pycache__
-/api/db/__pycache__
-/api/db/clickhouse_db/.pytest_cache
-/api/db/clickhouse_db/__pycache__
+/api/dao/db/__pycache__
+/api/dao/db/clickhouse_db/.pytest_cache
+/api/dao/db/clickhouse_db/__pycache__
 /api/biz/.pytest_cache
 /__pycache__/*.pyc
 /api/dao/__pycache__/*.pyc
@@ -16,3 +16,6 @@
 *.pyc
 /.venv
 /.vscode
+/dist
+/build
+/api/upload

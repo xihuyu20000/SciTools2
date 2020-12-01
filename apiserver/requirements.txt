@@ -1,9 +1,0 @@
-fastapi
-xlwt
-uvicorn
-pymysql
-DBUtils
-pdfminer.six
-beautifulsoup4
-python-multipart
-pathlib

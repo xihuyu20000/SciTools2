@@ -3,11 +3,11 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.modules.common.controller import router as common
-from api.modules.file.controller import router as file
-from api.modules.graph.controller import router as kg
-from api.modules.stat.controller import router as stat
-from api.modules.config.controller import router as config
+from api.web.common.controller import router as common
+from api.web.file.controller import router as file
+from api.web.graph.controller import router as kg
+from api.web.stat.controller import router as stat
+from api.web.config.controller import router as config
 
 app = FastAPI()
 origins = [
