@@ -59,7 +59,24 @@ export default {
             { title: '关键词', path: '/wordclound/keyword' },
             { title: '主题词', path: '/wordclound/topicword' }
           ]
-        }
+        },
+        {
+          title: '共现指标',
+          children: [
+            { title: '关键词共现矩阵', path: '' },
+            { title: '主题词共现矩阵', path: '' },
+            { title: '作者共现矩阵', path: '' },
+            { title: '基金共现矩阵', path: '' },
+            { title: '机构共现矩阵', path: '' },
+            { title: '国家共现矩阵', path: '' }
+          ]
+        },
+        { title: '网络聚类', children: [{ title: '', path: '' }] },
+        { title: '知识图谱', children: [{ title: '', path: '' }] },
+        { title: '作者评价', children: [{ title: '', path: '' }] },
+        { title: '机构评价', children: [{ title: '', path: '' }] },
+        { title: '国家评价', children: [{ title: '', path: '' }] },
+        { title: '期刊评价', children: [{ title: '', path: '' }] }
       ]
     }
   },

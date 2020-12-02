@@ -50,7 +50,7 @@ export default {
       headerMenus: [
         { label: '分析数据', path: '/file/index' },
         { label: '数据展示', path: '/dataset/index' },
-        { label: '知识图谱', path: '/stat/index' },
+        { label: '知识展现', path: '/stat/index' },
         { label: '配置参数', path: '/config/index' }
       ],
       activeTopMenu: '2',
