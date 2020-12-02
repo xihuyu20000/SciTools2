@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.web.common.controller import router as common
 from api.web.file.controller import router as file
-from api.web.graph.controller import router as kg
 from api.web.stat.controller import router as stat
+from api.web.dataset.controller import router as dataset
 from api.web.config.controller import router as config
 
 app = FastAPI()
@@ -14,7 +14,7 @@ origins = [
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
     "http://localhost",
-    "http://localhost:8080",
+    "http://localhost:22222",
 ]
 
 app.add_middleware(
@@ -28,8 +28,8 @@ app.add_middleware(
 
 app.include_router(common, prefix='/api')
 app.include_router(file, prefix='/api/file')
-app.include_router(kg, prefix='/api/graph')
 app.include_router(stat, prefix='/api/stat')
+app.include_router(dataset, prefix='/api/dataset')
 app.include_router(config, prefix='/api/config')
 
 def start():

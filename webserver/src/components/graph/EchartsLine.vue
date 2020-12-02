@@ -16,6 +16,7 @@
 
 <script>
 export default {
+  props: ['cfg'],
   data: function() {
     return {
       optionData: {},
@@ -111,9 +112,10 @@ export default {
       }
     }
   },
+  watch: {},
   methods: {
     async fetch() {
-      const { data: res } = await this.$http.get('/stat/statArticlesByYear/10')
+      const { data: res } = await this.$http.get(this.cfg.url)
       // 标题名称
       this.option.title.text = res.config.titleText
       // 横轴名称

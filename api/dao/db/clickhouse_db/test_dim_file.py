@@ -11,7 +11,7 @@ class TestUtil(unittest.TestCase):
             dim_file.create_dim_file()
             dim_file.truncate_dim_file()
             dim_file.insert_dim_file([{'fileid':util.gen_uuid1(),'filename':'数据集'}])
-            file = dim_file.find_all_files()
+            file = dim_file.find_all_names()
             self.assertIsNotNone(file, '应该存在一个文件')
         except Exception as e:
             self.fail('批量插入表{}失败'.format(config.tbl_dim_file))

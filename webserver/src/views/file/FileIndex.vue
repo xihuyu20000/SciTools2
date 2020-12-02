@@ -64,7 +64,7 @@ export default {
         this.param.append(x, _form[x])
       }
       this.param.append('files', this.fileList[0].raw)
-      const { data: resp } = await this.$http.post(this.$api.upload, this.param)
+      const { data: resp } = await this.$http.post(this.$api.file_upload, this.param)
       if (resp.status != 200) return this.$message.error('上传失败')
       this.$refs['form'].resetFields()
       this.fileList = []

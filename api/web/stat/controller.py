@@ -1,20 +1,24 @@
 from fastapi import APIRouter
-
-from ...util.base import ok
+from pydantic import BaseModel
 
 router = APIRouter()
 
 from .manager import statManager
 
-@router.get('/list_files')
-def list_files():
-    datas = statManager.list_files()
-    return ok(data=datas)
 
-@router.get('/list_dataset')
-def list_dataset():
-    datas = statManager.list_dataset()
-    return ok(data=datas)
+class Item(BaseModel):
+    name: str
+    price: float
+    is_offer: bool = None
+
+
+# 知识图谱
+@router.get("/{userId}/{fileId}/{count}")
+def kg(userId, fileId, count: int = 10):
+    kg = statManager.kg(userId, fileId, count)
+    return kg
+
+
 
 # 论文历年发文量
 @router.get("/statArticlesByYear/{fileId}")
@@ -22,6 +26,13 @@ def statArticlesByYear(fileId):
     xList, yList = statManager.statArticlesByYear(fileId)
     return {'config': {'titleText': '论文历年发文量', 'xAxisName': '年', 'yAxisName': '发文量(篇)'},
             'data': {'xData': xList, 'series': [{'type': 'line', 'data': yList}]}}
+
+# 论文国别发文量
+@router.get("/statArticlesByCountry/{fileId}")
+def statArticlesByCountry(fileId):
+    xList, yList = statManager.statArticlesByCountry(fileId)
+    return {'config': {'titleText': '不同国家论文发文量', 'xAxisName': '国家', 'yAxisName': '发文量(篇)'},
+            'data': {'xData': xList, 'series': [{'type': 'bar', 'data': yList}]}}
 
 
 # 著者历年统计
@@ -85,3 +96,14 @@ def statTopKeywordsByYear(fileId, count: int = 10):
         'legendData': kws,
         'series': series
     }
+
+
+
+@router.get("/items/{item_id}")
+def read_item(item_id: int, q: str = None):  # 此处q为query的字段
+    return {"item_id": item_id, "q": q}
+
+@router.put("/items/{item_id}")
+def update_item(item_id: int, item: Item):  # 此处Item为body的schema
+    return {"item_name": item.name, "item_id": item_id}
+

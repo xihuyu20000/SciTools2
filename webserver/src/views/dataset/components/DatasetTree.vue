@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async fetch() {
-      const { data: resp } = await this.$http.get(this.$api.listFiles)
+      const { data: resp } = await this.$http.get(this.$api.dataset_list_names)
       if (resp.status == 400) return this.$message.error(resp.msg)
       this.dataarr = resp.data.map(item => {
         let json = {}

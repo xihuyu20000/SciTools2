@@ -47,7 +47,12 @@ export default {
       avatar: require('@/assets/images/avator.jpg'),
       collapsed: false,
       menuTree: [],
-      headerMenus: [],
+      headerMenus: [
+        { label: '分析数据', path: '/file/index' },
+        { label: '数据展示', path: '/dataset/index' },
+        { label: '知识图谱', path: '/stat/index' },
+        { label: '配置参数', path: '/config/index' }
+      ],
       activeTopMenu: '2',
       activeLeftActive: '',
       activeTabName: '首页',
@@ -74,18 +79,10 @@ export default {
     }
   },
   created() {
-    // 加载全部菜单
-    this.menuTree = JSON.parse(localStorage.getItem('menuTree'))
-    // 过滤顶级菜单
-    this.headerMenus = this.menuTree.filter(item => item.pid == 0)
     // 顶级激活菜单
     this.activeTopMenu = sessionStorage.getItem('top_menu') || '1'
-    // 导航左侧菜单
-    // this.headerNav(this.activeTopMenu)
     // 左侧激活菜单
     this.activeLeftActive = sessionStorage.getItem('active_left_menu')
-    // 显示tab
-    // this.selectTab()
   }
 }
 </script>

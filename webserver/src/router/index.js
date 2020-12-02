@@ -5,10 +5,11 @@ import Default from '@/views/common/Default.vue'
 import Login from '@/views/common/Login.vue'
 import V404 from '@/views/common/404.vue'
 
-import ParsingIndex from '@/views/file/ParsingIndex.vue'
-import ShowingIndex from '@/views/showing/ShowingIndex.vue'
-import GraphIndex from '@/views/graph/GraphIndex.vue'
-import EchartsLine from '@/views/graph/line/EchartsLine.vue'
+import FileIndex from '@/views/file/FileIndex.vue'
+import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
+import StatIndex from '@/views/stat/StatIndex.vue'
+import statArticlesByYear from '@/views/stat/graph/statArticlesByYear.vue'
+import statArticlesByCountry from '@/views/stat/graph/statArticlesByCountry.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 
 Vue.use(VueRouter)
@@ -29,23 +30,28 @@ const routes = [
       {
         path: '/file/index',
         name: '分析数据',
-        component: ParsingIndex
+        component: FileIndex
       },
       {
         path: '/dataset/index',
         name: '数据显示',
-        component: ShowingIndex
+        component: DatasetIndex
       },
       { path: '/to/showing/index', redirect: '/dataset/index' },
       {
-        path: '/graph/index',
+        path: '/stat/index',
         name: '知识图谱',
-        component: GraphIndex,
+        component: StatIndex,
         children: [
           {
-            path: '/graph/line/echartsLine',
-            name: '折线图',
-            component: EchartsLine
+            path: '/stat/statArticlesByYear',
+            name: '历年发文量',
+            component: statArticlesByYear
+          },
+          {
+            path: '/stat/statArticlesByCountry',
+            name: '国家发文量',
+            component: statArticlesByCountry
           }
         ]
       },

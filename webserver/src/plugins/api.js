@@ -1,10 +1,9 @@
 import Vue from 'vue'
 Vue.prototype.$api = {
   login: '/api/login',
-  // navs: '/api/navs',
-  upload: '/api/file/upload',
-  configIndex: '/api/config/',
-  configSave: '/api/config/save',
-  listDataset: '/api/stat/list_dataset',
-  listFiles: '/api/stat/list_files'
+  file_upload: '/api/file/upload',
+  config: '/api/config/',
+  config_save: '/api/config/save',
+  dataset_list_names: '/api/dataset/list/names',
+  dataset_list: '/api/dataset/list'
 }

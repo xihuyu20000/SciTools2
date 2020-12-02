@@ -17,7 +17,7 @@ create_dim_file = dim_file.create_dim_file if config.db_is_clickhouse else None
 drop_dim_file = dim_file.drop_dim_file if config.db_is_clickhouse else None
 truncate_dim_file = dim_file.truncate_dim_file if config.db_is_clickhouse else None
 insert_dim_file = dim_file.insert_dim_file if config.db_is_clickhouse else None
-find_all_files = dim_file.find_all_files if config.db_is_clickhouse else None
+find_all_names = dim_file.find_all_names if config.db_is_clickhouse else None
 ##################################################################################
 
 create_dim_user = dim_user.create_dim_user if config.db_is_clickhouse else None

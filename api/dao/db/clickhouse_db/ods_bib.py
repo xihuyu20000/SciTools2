@@ -84,12 +84,5 @@ def delete_ods_bib(file_id):
     return __execute(sql, msg='根据{}删除{}失败'.format(file_id, TBL_NAME))
 
 
-def find_ods_bib(params: Optional[dict] = None):
-    sql = """
-        SELECT * FROM {} WHERE 1=1 
-    """.format(TBL_NAME)
-    if params:
-        for key, value in params.items():
-            sql += ' AND {}={}'.format(key, value)
-
-    return __query(sql, params=params, msg='查询{}失败'.format(TBL_NAME))
+def find_ods_bib(sql):
+    return __query(sql, params=None, msg='查询{}失败'.format(TBL_NAME))

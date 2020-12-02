@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     async submitForm() {
-      const { data: resp } = await this.$http.post(this.$api.configSave, this.configForm)
+      const { data: resp } = await this.$http.post(this.$api.config_save, this.configForm)
       if (resp.status == 400) return this.$message.error(resp.msg)
 
       this.$notify({
@@ -53,7 +53,7 @@ export default {
       })
     },
     async fetch() {
-      const { data: resp } = await this.$http.get(this.$api.configIndex)
+      const { data: resp } = await this.$http.get(this.$api.config)
       if (resp.status == 400) return this.$message.error(resp.msg)
       this.configForm = resp.data
     },

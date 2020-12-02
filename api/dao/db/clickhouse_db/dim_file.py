@@ -41,9 +41,5 @@ def insert_dim_file(params: Optional[List[dict]]):
     sql = """ INSERT INTO {} (fileid, filename) VALUES """.format(TBL_NAME)
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
 
-def find_all_files():
-    sql = """
-        SELECT * FROM {} 
-    """.format(TBL_NAME)
-
+def find_all_names(sql):
     return __query(sql, params=None, msg='查询{}失败'.format(TBL_NAME))
