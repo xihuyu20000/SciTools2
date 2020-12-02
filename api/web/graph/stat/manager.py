@@ -187,53 +187,11 @@ class StatManager:
             yList.append(row['count'])
         return xList, yList
 
-    # 按照年份统计关键词
-    def statTopKeywordsByYear(self, fileId, count):
-        sql = 'SELECT year,keyword FROM sci_cnki WHERE year>0 AND fileid={} order by year'.format(fileId)
-        print(sql)
-        all = self.db.fetch_all(sql)
-
-        kw_dict = defaultdict(int)
-        min_year = sys.maxsize
-        max_year = 0 - sys.maxsize
-
-        for row in all:
-            year = int(row['year'])
-            if year < min_year:
-                min_year = year
-            if year > max_year:
-                max_year = year
-            kw_arr = row['keyword'].split(';')
-            for kw in kw_arr:
-                if str(kw).strip() != '':
-                    kw_dict[kw] += 1
-        kw_dict = sorted(kw_dict.items(), key=lambda x: x[1], reverse=True)
-        '''
-        [('数字人文', 309), ('图书馆', 37), ('高校图书馆', 27), ('数字学术', 22), ('人文计算', 21), ('可视化', 15), ('大数据', 13), ('美国', 13), ('数字图书馆', 12), ('关联数据', 12)]
-        '''
-
-        topkws = [item[0] for item in kw_dict[:count]]
-        years = [x for x in range(min_year, max_year + 1)]
-
-        topkw_dict = dict()
-        for kw in topkws:
-            topkw_dict[kw] = defaultdict(int)
-            for year in years:
-                topkw_dict[kw][year] = 0
-
-        for row in all:
-            year = row['year']
-            kw_arr = row['keyword'].split(';')
-            for kw in kw_arr:
-                if str(kw).strip() != '' and kw in topkws:
-                    topkw_dict[kw][year] += 1
-        return years, topkws, topkw_dict
-
-    # 按照第一作者统计论文数量
+    # 按照一作统计论文数量
     def statArticlesByFirstDuty(self, fileId):
-        sql = 'SELECT firstduty, COUNT(*) AS count FROM sci_cnki WHERE fileid={} GROUP BY FIRSTDUTY ORDER BY COUNT DESC'.format(fileId)
+        sql = "SELECT firstduty, COUNT(*) AS count FROM {} WHERE fileid ='{}'  GROUP BY firstduty ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
         print(sql)
-        all = self.db.fetch_all(sql)
+        all = self.dao.find_ods_bib(sql)
         xList = []
         yList = []
         for row in all:
@@ -241,66 +199,99 @@ class StatManager:
             yList.append(row['count'])
         return xList, yList
 
-    def statArticlesByCoAuthors(self, fileId):
-        sql = 'SELECT author FROM sci_cnki WHERE fileid={}'.format(fileId)
+    # 按照作者统计论文数量
+    def statArticlesByAuthor(self, fileId):
+        sql = "SELECT author, COUNT(1) AS count FROM (SELECT title, arrayJoin(authors) AS author FROM {} WHERE fileid ='{}') GROUP BY author ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
         print(sql)
-        all = self.db.fetch_all(sql)
-        dd = defaultdict(int)
-        for row in all:
-            author = row['author']
-            if author and author.strip():
-                dd[author.count(';')] += 1
-        if 0 in dd.keys():
-            del dd[0]
-        dd = sorted(dd.items(), key=lambda x: x[0])
-        xList = [str(item[0]) + '人合著' for item in dd]
-        xList[0] = '独著'
-        yList = [item[1] for item in dd]
-        return xList, yList
-
-    def statArticlesByFirstDutyTable(self):
-        sql = 'SELECT firstduty, COUNT(*) AS count FROM sci_cnki GROUP BY FIRSTDUTY ORDER BY COUNT DESC'
-        print(sql)
-        all = self.db.fetch_all(sql)
-        dd = defaultdict(int)
-        for row in all:
-            dd[row['firstduty']] += row['count']
-
-        ll = [{'author': k.replace(';', ''), 'count': v} for k, v in dd.items() if k]
-        return ll
-
-    def statPubFrequencyByAuthor(self, fileId):
-        sql = 'SELECT firstduty, COUNT(*) AS count FROM sci_cnki WHERE fileid={} GROUP BY FIRSTDUTY ORDER BY COUNT DESC'.format(fileId)
-        print(sql)
-        all = self.db.fetch_all(sql)
-        dd = defaultdict(int)
-        for row in all:
-            dd[row['firstduty']] += row['count']
-
-        ll = defaultdict(int)
-        for k, v in dd.items():
-            ll[v] += 1
-        return list(ll.keys()), list(ll.values())
-
-    def statCoauthorByYear(self, fileId):
-        sql = 'SELECT year, author FROM sci_cnki WHERE year>0 AND fileid={}'.format(fileId)
-        print(sql)
-        all = self.db.fetch_all(sql)
-        year_arts_dict = defaultdict(int)
-        year_authors_dict = defaultdict(int)
-        for row in all:
-            year = row['year']
-            year_arts_dict[year] += 1
-            if row['author']:
-                year_authors_dict[year] += len(row['author'].split(';'))
-
-        xList = list(year_arts_dict.keys())
+        all = self.dao.find_ods_bib(sql)
+        xList = []
         yList = []
-        for year in xList:
-            yList.append('%.2f' % (year_authors_dict[year] / year_arts_dict[year]))
-
+        for row in all:
+            xList.append(row['author'])
+            yList.append(row['count'])
         return xList, yList
 
+    # 按照出版物统计论文数量
+    def statArticlesByJournal(self, fileId):
+        sql = "SELECT publication , COUNT(1) AS count FROM {} WHERE fileid ='{}' GROUP BY publication ORDER BY count DESC ".format(config.tbl_ods_bib, fileId)
+        print(sql)
+        all = self.dao.find_ods_bib(sql)
+        xList = []
+        yList = []
+        for row in all:
+            xList.append(row['publication'])
+            yList.append(row['count'])
+        return xList, yList
+
+
+    # 基金支持论文历年统计
+    def statArticlesByFund(self, fileId):
+        sql = "SELECT pubyear , COUNT(1) AS count FROM  {} WHERE LENGTH(funds)>0 AND fileid ='{}' GROUP BY pubyear ORDER BY pubyear ".format(config.tbl_ods_bib, fileId)
+        print(sql)
+        all = self.dao.find_ods_bib(sql)
+        xList = []
+        yList = []
+        for row in all:
+            xList.append(row['pubyear'])
+            yList.append(row['count'])
+        return xList, yList
+
+    # 基金类型统计
+    def statStyleByFund(self, fileId):
+        sql = "SELECT fund, COUNT(1) AS count FROM (SELECT arrayJoin(funds) AS fund FROM {} WHERE fileid ='{}' ) GROUP BY fund ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+        print(sql)
+        all = self.dao.find_ods_bib(sql)
+        xList = []
+        yList = []
+        for row in all:
+            xList.append(row['fund'])
+            yList.append(row['count'])
+        return xList, yList
+
+    # 学科分布统计
+    def statArticlesBySubject(self, fileId):
+        xList = []
+        yList = []
+        for row in []:
+            xList.append(row['persons'])
+            yList.append(row['count'])
+        return xList, yList
+
+    # 合著人数统计
+    def statPersonsByCoAuthor(self, fileId):
+        sql = "SELECT LENGTH (authors) as persons, COUNT(1) AS count FROM   {} WHERE fileid ='{}' AND LENGTH(authors)>0 GROUP BY persons ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+        print(sql)
+        all = self.dao.find_ods_bib(sql)
+        xList = []
+        yList = []
+        for row in all:
+            xList.append(row['persons'])
+            yList.append(row['count'])
+        return xList, yList
+
+    # 关键词词频统计
+    def statKwsByCount(self, fileId):
+        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE fileid ='{}') GROUP BY kw ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+        print(sql)
+        all = self.dao.find_ods_bib(sql)
+        xList = []
+        yList = []
+        for row in all:
+            xList.append(row['kw'])
+            yList.append(row['count'])
+        return xList, yList
+
+    # 主题词词频统计
+    def statTwsByCount(self, fileId):
+        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE fileid ='{}') GROUP BY kw ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+        print(sql)
+        all = self.dao.find_ods_bib(sql)
+        xList = []
+        yList = []
+        for row in all:
+            xList.append(row['kw'])
+            yList.append(row['count'])
+        return xList, yList
 
     def kg(self, userId, fileId, count):
         sql = "SELECT title,author,organ,source,keyword,summary,firstduty,fund,year FROM sci_cnki  WHERE usercode='{}' AND fileid={}  limit {}".format(

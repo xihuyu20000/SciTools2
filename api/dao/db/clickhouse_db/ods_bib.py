@@ -24,6 +24,8 @@ def create_ods_bib():
         summary String(2048),
         summary_words Array(String),
         funds Array(String),
+        subject1 Array(String),
+        subject2 Array(String),
         pubyear Int16,
         pubtime String(16),
         clcs Array(String),

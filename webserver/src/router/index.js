@@ -8,9 +8,24 @@ import V404 from '@/views/common/404.vue'
 import FileIndex from '@/views/file/FileIndex.vue'
 import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
-import statArticlesByYear from '@/views/stat/graph/statArticlesByYear.vue'
-import statArticlesByCountry from '@/views/stat/graph/statArticlesByCountry.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
+
+import statArticlesByAuthor from '@/views/stat/graph/statArticlesByAuthor.vue'
+import statArticlesByCountry from '@/views/stat/graph/statArticlesByCountry.vue'
+import statArticlesByFirstDuty from '@/views/stat/graph/statArticlesByFirstDuty.vue'
+import statArticlesByFund from '@/views/stat/graph/statArticlesByFund.vue'
+import statArticlesByJournal from '@/views/stat/graph/statArticlesByJournal.vue'
+import statArticlesByOrg from '@/views/stat/graph/statArticlesByOrg.vue'
+import statArticlesByProvince from '@/views/stat/graph/statArticlesByProvince.vue'
+import statArticlesBySubject from '@/views/stat/graph/statArticlesBySubject.vue'
+import statArticlesByYear from '@/views/stat/graph/statArticlesByYear.vue'
+import statKwsByCount from '@/views/stat/graph/statKwsByCount.vue'
+import statPersonsByCoAuthor from '@/views/stat/graph/statPersonsByCoAuthor.vue'
+import statStyleByFund from '@/views/stat/graph/statStyleByFund.vue'
+import statTwsByCount from '@/views/stat/graph/statTwsByCount.vue'
+
+import wordCloundForKeyWord from '@/views/stat/graph/wordCloundForKeyWord.vue'
+import wordCloundForTopicWord from '@/views/stat/graph/wordCloundForTopicWord.vue'
 
 Vue.use(VueRouter)
 
@@ -44,14 +59,79 @@ const routes = [
         component: StatIndex,
         children: [
           {
-            path: '/stat/statArticlesByYear',
-            name: '历年发文量',
-            component: statArticlesByYear
+            path: '/stat/statArticlesByAuthor',
+            name: '作者发文量',
+            component: statArticlesByAuthor
           },
           {
             path: '/stat/statArticlesByCountry',
             name: '国家发文量',
             component: statArticlesByCountry
+          },
+          {
+            path: '/stat/statArticlesByFirstDuty',
+            name: '一作发文量',
+            component: statArticlesByFirstDuty
+          },
+          {
+            path: '/stat/statArticlesByFund',
+            name: '基金支持发文量',
+            component: statArticlesByFund
+          },
+          {
+            path: '/stat/statArticlesByJournal',
+            name: '期刊来源统计',
+            component: statArticlesByJournal
+          },
+          {
+            path: '/stat/statArticlesByOrg',
+            name: '机构发文量',
+            component: statArticlesByOrg
+          },
+          {
+            path: '/stat/statArticlesByProvince',
+            name: '地区发文量',
+            component: statArticlesByProvince
+          },
+          {
+            path: '/stat/statArticlesBySubject',
+            name: '学科分布统计',
+            component: statArticlesBySubject
+          },
+          {
+            path: '/stat/statArticlesByYear',
+            name: '历年发文量',
+            component: statArticlesByYear
+          },
+          {
+            path: '/stat/statKwsByCount',
+            name: '关键词词频',
+            component: statKwsByCount
+          },
+          {
+            path: '/stat/statPersonsByCoAuthor',
+            name: '合著人数统计',
+            component: statPersonsByCoAuthor
+          },
+          {
+            path: '/stat/statStyleByFund',
+            name: '基金类型统计',
+            component: statStyleByFund
+          },
+          {
+            path: '/stat/statTwsByCount',
+            name: '主题词词频',
+            component: statTwsByCount
+          },
+          {
+            path: '/wordclound/keyword',
+            name: '关键词词频',
+            component: wordCloundForKeyWord
+          },
+          {
+            path: '/wordclound/topicword',
+            name: '主题词词频',
+            component: wordCloundForTopicWord
           }
         ]
       },
