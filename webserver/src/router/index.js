@@ -10,6 +10,11 @@ import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 
+import kgConnect from '@/views/stat/graph/kgConnect'
+// import kgIndexHtml from '@/views/stat/graph/kgIndex.html'
+import kgIndex from '@/views/stat/graph/kgIndex'
+import kgSearch from '@/views/stat/graph/kgSearch'
+
 import statArticlesByAuthor from '@/views/stat/graph/statArticlesByAuthor.vue'
 import statArticlesByCountry from '@/views/stat/graph/statArticlesByCountry.vue'
 import statArticlesByFirstDuty from '@/views/stat/graph/statArticlesByFirstDuty.vue'
@@ -58,6 +63,21 @@ const routes = [
         name: '知识图谱',
         component: StatIndex,
         children: [
+          {
+            path: '/kg/connect',
+            name: '知识关联',
+            component: kgConnect
+          },
+          {
+            path: '/kg/index',
+            name: '全局图谱',
+            component: kgIndex
+          },
+          {
+            path: '/kg/search',
+            name: '知识搜索',
+            component: kgSearch
+          },
           {
             path: '/stat/statArticlesByAuthor',
             name: '作者发文量',

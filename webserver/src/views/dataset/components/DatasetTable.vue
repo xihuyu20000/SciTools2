@@ -2,9 +2,27 @@
   <div>
     <vxe-toolbar ref="xToolbar" :refresh="{ query: fetch }" export print custom>
       <template v-slot:buttons>
-        <vxe-button status="danger" :round="true" @click="saveDataset">另存为</vxe-button>
+        <vxe-button status="danger" :round="true" @click="showFilter">数据过滤</vxe-button>
+        <vxe-button :round="true" @click="saveDataset">另存为</vxe-button>
       </template>
     </vxe-toolbar>
+    <el-card class="box-card">
+      <el-row>
+        <el-col :span="4">
+          <el-select clearable placeholder="请选择字段">
+            <el-option v-for="item in 10" :key="item" :label="item" :value="item"> </el-option>
+          </el-select>
+          <el-select clearable placeholder="请选择函数">
+            <el-option v-for="item in 10" :key="item" :label="item" :value="item"> </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="18"><el-input type="textarea" :rows="4" placeholder="请输入内容"> </el-input></el-col>
+        <el-col :span="2">
+          <el-link type="success">语法检查</el-link>
+          <el-button>执行过滤</el-button>
+        </el-col>
+      </el-row>
+    </el-card>
     <vxe-table
       ref="xGrid"
       border
@@ -38,8 +56,10 @@
       <vxe-table-column field="firstduty" title="第一责任人" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
       <vxe-table-column field="pubyear" title="出版年" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
       <vxe-table-column field="summary" title="摘要" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-    </vxe-table></div
-></template>
+    </vxe-table>
+    共有条{{ tableData.length }}数据
+  </div></template
+>
 
 <script>
 export default {
@@ -68,6 +88,7 @@ export default {
     dbclickCell({ row, column }) {
       console.log('单元格', row, column)
     },
+    showFilter() {},
     saveDataset() {
       setTimeout(() => {
         const { fullData, visibleData, tableData, footerData } = this.$refs.xGrid.getTableData()

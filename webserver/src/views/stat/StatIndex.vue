@@ -72,7 +72,14 @@ export default {
           ]
         },
         { title: '网络聚类', children: [{ title: '', path: '' }] },
-        { title: '知识图谱', children: [{ title: '', path: '' }] },
+        {
+          title: '知识图谱',
+          children: [
+            { title: '全局图谱', path: '/kg/index' },
+            { title: '知识搜索', path: '/kg/search' },
+            { title: '知识关联', path: '/kg/connect' }
+          ]
+        },
         { title: '作者评价', children: [{ title: '', path: '' }] },
         { title: '机构评价', children: [{ title: '', path: '' }] },
         { title: '国家评价', children: [{ title: '', path: '' }] },
