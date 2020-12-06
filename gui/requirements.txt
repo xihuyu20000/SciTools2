@@ -1,7 +1,0 @@
-PyInstaller
-PyQt5
-msgpack
-lxml
-scrapy
-jieba
-nltk
