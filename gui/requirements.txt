@@ -1,3 +1,4 @@
+PyInstaller
 PyQt5
 msgpack
 lxml

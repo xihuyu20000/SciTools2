@@ -5,6 +5,9 @@
 ##### 西工大图书馆 http://login.lib-ycfw.xatu.edu.cn/frontend/web/index.php 
 ##### 用户名 2000021563 密码 zn2000021563
 
+d3 词云  https://www.jasondavies.com/wordcloud/
+共词
+
 # 1 原则
 
 ## 1.1 流程化

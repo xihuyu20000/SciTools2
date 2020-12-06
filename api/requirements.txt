@@ -7,3 +7,5 @@ pdfminer.six
 beautifulsoup4
 python-multipart
 pathlib
+clickhouse
+clickhouse_driver

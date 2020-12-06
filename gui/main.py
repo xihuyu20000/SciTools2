@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 
-from gui.cleaning import CleaningDialogStub
+from gui.cleaning.CleaningDialogStub import CleaningDialogStub
 
 '''
 使用 PyQt5 创建客户端程序

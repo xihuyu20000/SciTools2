@@ -5,8 +5,9 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QMessageBox
 
-from gui.cleaning.CleaningDialog import Ui_CleaningDialog
+
 from . import biz_cleaningfiles
+from .CleaningDialog import Ui_CleaningDialog
 
 
 class CleaningDialogStub(Ui_CleaningDialog):
