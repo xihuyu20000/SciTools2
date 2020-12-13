@@ -1,1 +1,2 @@
-Sun, 13 Dec 2020 23:24:06-api.web.graph.stat.manager-manager.py-[line:144]-INFO-[日志信息]: SELECT pubyear, COUNT(1) AS count FROM default.ods_bib WHERE dsid ='c7659463a00844bbaa8925b00dc3bd15' AND pubyear!='' GROUP BY pubyear ORDER BY pubyear
+Mon, 14 Dec 2020 00:24:41-api.web.stat.manager-manager.py-[line:144]-INFO-[日志信息]: SELECT pubyear, COUNT(1) AS count FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0' AND pubyear!='' GROUP BY pubyear ORDER BY pubyear
+Mon, 14 Dec 2020 00:25:19-api.web.stat.manager-manager.py-[line:168]-INFO-[日志信息]: SELECT country, COUNT(1) AS count FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0' GROUP BY country  ORDER BY count  

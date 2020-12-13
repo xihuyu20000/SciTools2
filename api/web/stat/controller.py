@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
-from .manager import statManager
+from api.web.stat.manager import statManager
 
 
 class Item(BaseModel):

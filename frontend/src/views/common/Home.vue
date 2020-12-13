@@ -49,7 +49,7 @@ export default {
       menuTree: [],
       headerMenus: [
         { label: '分析数据', path: '/file/index' },
-        { label: '数据展示', path: '/dataset/index' },
+        { label: '数据表格', path: '/dataset/index' },
         { label: '图形展现', path: '/stat/index' },
         { label: '配置参数', path: '/config/index' }
       ],

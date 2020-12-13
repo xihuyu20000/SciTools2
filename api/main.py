@@ -3,15 +3,13 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from scrapy import Request
-from scrapy.http import Response
 from starlette.responses import JSONResponse
 
-from api import fail
 from api.web.common.controller import router as common
 from api.web.config.controller import router as config
 from api.web.dataset.controller import router as dataset
 from api.web.file.controller import router as file
-from api.web.graph.stat.controller import router as stat
+from api.web.stat.controller import router as stat
 
 
 

@@ -39,17 +39,17 @@ class File_cnki_es5_Parser:
             :param filepath: 文件路径
             :return: 解析后的数据列表
             """
-        assert os.path.exists(filepath), 'es5文件{}必须存在'.format(filepath)
-        # 读取内容
-        text = utils.read_lines(filepath)
-        text = ''.join(text)
-        xml = text[:text.find('</CNKINOTE>') + len('</CNKINOTE>')]
-        xml = bytes(bytearray(xml, encoding='utf-8'))
-        root = etree.XML(xml)
-        if 'CNKINOTE' != root.tag:
-            raise Exception('不是es5格式')
-        cnkiliters = root.getchildren()[0]
-        self.cnkidata = [cnkidata for cnkidata in cnkiliters]
+        if os.path.exists(filepath):
+            # 读取内容
+            text = utils.read_lines(filepath)
+            text = ''.join(text)
+            xml = text[:text.find('</CNKINOTE>') + len('</CNKINOTE>')]
+            xml = bytes(bytearray(xml, encoding='utf-8'))
+            root = etree.XML(xml)
+            if 'CNKINOTE' != root.tag:
+                raise Exception('不是es5格式')
+            cnkiliters = root.getchildren()[0]
+            self.cnkidata = [cnkidata for cnkidata in cnkiliters]
 
     def parse(self):
         return [self.__parse(cnkidata) for cnkidata in self.cnkidatas]
@@ -121,20 +121,20 @@ class File_gbt_7714_2015_Parser:
         :param filepath: 文件路径
         :return: 解析后的数据列表
         """
-        assert os.path.exists(filepath), 'gbt/7714-2015文件{}必须存在'.format(filepath)
-        # 读取内容
-        lines = utils.read_lines(filepath)
-        # 去掉开头的序号
-        lines = [line[line.find(']') + 1:].strip() for line in lines]
-        # 如果一行内容带有url，必须去掉url再判断
-        self.lines = [line[:line.find('.http')] if line.find('.http') > 0 else line for line in lines]
-        # 如果一行内容中带有DOI，去掉
-        self.lines = [line[:line.find('DOI:')] if line.find('DOI:') > 0 else line for line in lines]
+        if os.path.exists(filepath):
+            # 读取内容
+            lines = utils.read_lines(filepath)
+            # 去掉开头的序号
+            lines = [line[line.find(']') + 1:].strip() for line in lines]
+            # 如果一行内容带有url，必须去掉url再判断
+            self.lines = [line[:line.find('.http')] if line.find('.http') > 0 else line for line in lines]
+            # 如果一行内容中带有DOI，去掉
+            self.lines = [line[:line.find('DOI:')] if line.find('DOI:') > 0 else line for line in lines]
 
     def parse(self):
-        return [self.__parse(line) for line in self.lines]
+        return [self._parse(line) for line in self.lines]
 
-    def __parse(self, line):
+    def _parse(self, line):
         if utils.strings_is_eng(line):
             return self.__parse_eng(line)
         else:
@@ -152,9 +152,9 @@ class File_gbt_7714_2015_Parser:
             return '不确定类型'
 
     def __parse_eng(self, line):
-        print(line)
         entity = OdsCnkiBib()
         entity.id = utils.gen_uuid4()
+        entity.line = line
         # 语种
         entity.lang = '外文'
         # 题名
@@ -194,9 +194,10 @@ class File_gbt_7714_2015_Parser:
 
     def __parse_cn_publication_pubyear(self, s):
         s22 = s.split(',')
-        if len(s22) == 2:
+        if len(s22) ==1:
+            return s22[0], ''
+        else:
             return s22[0], s22[1].split(':')[0].strip()
-        return s22[0], ''
 
 class File_noteExpress_Parser:
     def __init__(self, filepath):
@@ -205,9 +206,9 @@ class File_noteExpress_Parser:
             :param filepath: 文件路径
             :return: 解析后的数据列表
             """
-        assert os.path.exists(filepath), 'NoteExpress文件{}必须存在'.format(filepath)
-        # 读取内容
-        self.lines = utils.read_lines(filepath)
+        if os.path.exists(filepath):
+            # 读取内容
+            self.lines = utils.read_lines(filepath)
 
     def parse(self):
 
@@ -264,9 +265,9 @@ class File_cnki_html_Parser:
         :param filepath: 文件路径
         :return: 解析后的数据列表
         """
-        assert os.path.exists(filepath), 'CNKI的html文件{}必须存在'.format(filepath)
-        content = utils.read_lines(filepath)
-        self.content = ''.join(content)
+        if os.path.exists(filepath):
+            content = utils.read_lines(filepath)
+            self.content = ''.join(content)
 
     def parse(self):
         selector = Selector(text=self.content)
@@ -358,3 +359,7 @@ class CutWords:
             words = [w for w in lemma_word if str(w).find("'") == -1]
 
         return words
+
+
+# parser = File_gbt_7714_2015_Parser('')
+# print(parser._parse('.山西档案,2020,(6):79-88.'))
