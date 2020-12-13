@@ -7,6 +7,7 @@
             <el-select v-model="form.style" placeholder="请选择类型">
               <el-option label="题录—GBT 7714-2015" value="题录—GBT 7714-2015"></el-option>
               <el-option label="题录—知网—es5" value="题录—知网—es5"></el-option>
+              <el-option label="题录—知网—自定义格式" value="题录—知网—自定义格式"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="上传文件" prop="files">

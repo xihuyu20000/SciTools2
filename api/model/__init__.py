@@ -3,7 +3,7 @@ class OdsCnkiBib:
     def __init__(self):
         self.dsid = ''
         self.id = ''
-        self.style = ''
+        self.style = '期刊'
         self.title = ''
         self.title_words = []
         self.firstduty = ''

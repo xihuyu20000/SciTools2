@@ -3,6 +3,7 @@ api/util负责管理所有的工具类代码
 '''
 from typing import List, Set
 import os
+import copy
 import jieba
 import nltk
 from lxml import etree
@@ -25,6 +26,8 @@ def parsefiles(format, files: List[str]) -> List[OdsCnkiBib]:
             result = File_cnki_es5_Parser(file).parse()
         elif format == config.ds_note_express:
             result = File_noteExpress_Parser(file).parse()
+        elif format == config.ds_cnki_self:
+            result = File_cnki_self_Parser(file).parse()
         return result
 
     datas = []
@@ -314,6 +317,78 @@ class File_cnki_html_Parser:
             url = ref.xpath('a/@href').extract_first()
             print('参考文献', name, url)
 
+class File_cnki_self_Parser:
+    def __init__(self, filepath):
+        """
+        解析cnki的自定义格式
+        :param filepath: 文件路径
+        :return: 解析后的数据列表
+        """
+        if os.path.exists(filepath):
+            self.lines = utils.read_lines(filepath)
+
+
+    def parse(self):
+        art_lines = self.__build_raw_articles()
+        return [self.__parse_raw_article(art) for art in art_lines]
+
+    def __build_raw_articles(self):
+        arts = []
+        temp_art = []
+        for line in self.lines:
+            if line.startswith('SrcDatabase-来源库'):
+                if temp_art:
+                    arts.append(copy.deepcopy(temp_art))
+                temp_art = [line]
+            temp_art.append(line)
+        return arts
+
+
+    def __parse_raw_article(self, lines):
+        model = OdsCnkiBib()
+        model.id = utils.gen_uuid4()
+        model.line = '\t'.join(lines)
+
+        for line in lines:
+            if line.startswith('Title-题名'):
+                model.title = line[len('Title-题名:'):].strip()
+            elif line.startswith('Author-作者:'):
+                authors = line[len('Author-作者:'):].strip()
+                authors = authors.split(';')
+                authors = [x.strip() for x in authors if x.strip()]
+                model.authors = authors
+            elif line.startswith('Organ-单位:'):
+                orgs = line[len('Organ-单位:'):].strip()
+                orgs = orgs.split(';')
+                orgs = [x.strip() for x in orgs if x.strip()]
+                model.orgs = orgs
+            elif line.startswith('Source-文献来源:'):
+                publication = line[len('Source-文献来源:'):].strip()
+                model.publication = publication
+            elif line.startswith('Keyword-关键词:'):
+                kws = line[len('Keyword-关键词:'):].strip()
+                kws = kws.split(';')
+                kws = [x.strip() for x in kws if x.strip()]
+                model.kws = kws
+            elif line.startswith('Summary-摘要:'):
+                summary = line[len('Summary-摘要:'):].strip()
+                model.summary = summary
+            elif line.startswith('PubTime-发表时间:'):
+                pubtime = line[len('PubTime-发表时间:'):].strip()
+                pubtime = line[:10]
+                model.pubtime = pubtime
+            elif line.startswith('FirstDuty-第一责任人:'):
+                firstduty = str(line[len('FirstDuty-第一责任人:'):]).strip()
+                firstduty = firstduty.split(';')[0]
+                model.firstduty = firstduty
+            elif line.startswith('Year-年:'):
+                pubyear = str(line[len('Year-年:'):]).strip()
+                model.pubyear = pubyear
+            elif line.startswith('CLC-中图分类号:'):
+                clc = str(line[len('CLC-中图分类号:'):]).strip()
+                model.clc1 = clc
+
+        return model
 def stopwords(splitwords_userdict_path: str = None):
     if not os.path.exists(splitwords_userdict_path):
         return set()
@@ -361,5 +436,5 @@ class CutWords:
         return words
 
 
-# parser = File_gbt_7714_2015_Parser('')
-# print(parser._parse('.山西档案,2020,(6):79-88.'))
+# parser = File_cnki_self_Parser('./examples/CNKI-637277584491521250_自定义_1.txt')
+# print(parser.parse())

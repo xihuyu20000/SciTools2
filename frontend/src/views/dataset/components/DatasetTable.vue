@@ -17,6 +17,7 @@
       border
       resizable
       keep-source
+      show-footer
       show-overflow
       show-header-overflow
       highlight-current-row
@@ -29,6 +30,7 @@
       :mouse-config="{ selected: true }"
       :edit-config="{ trigger: 'dblclick', mode: 'cell', showStatus: true }"
       :keyboard-config="{ isArrow: true }"
+      :footer-method="footerMethod"
       :customs="[
         { field: 'fileid', visible: false },
         { field: 'id', visible: false }
@@ -40,17 +42,17 @@
       <vxe-table-column type="checkbox" width="60" fixed="left"></vxe-table-column>
       <vxe-table-column field="fileid" fixed="left"></vxe-table-column>
       <vxe-table-column field="id" fixed="left"></vxe-table-column>
-      <vxe-table-column field="title" title="标题" min-width="350" fixed="left" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
+      <vxe-table-column field="title" title="标题" min-width="300" fixed="left" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="firstduty" title="一作" min-width="150" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="pubyear" title="出版年" min-width="150" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="publication" title="出版物" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="authors" title="作者" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="orgs" title="机构" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="funds" title="基金" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="summary" title="摘要" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="style" title="类型" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"> </vxe-table-column>
       <vxe-table-column field="country" title="国别" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="lang" title="语种" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="summary" title="摘要" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="line" title="原始数据" min-width="400" :edit-render="{ name: 'input', attrs: { disabled: editDisabled } }"></vxe-table-column>
     </vxe-table>
   </div>
@@ -144,6 +146,44 @@ export default {
     FilterPubyear({ value, row }) {
       console.log('过滤条件', value, row)
       return true
+    },
+    footerMethod({ columns, data }) {
+      return [
+        columns.map((column, columnIndex) => {
+          if (columnIndex === 0) {
+            return '空值'
+          }
+          if (['title', 'firstduty', 'pubyear', 'publication'].includes(column.property)) {
+            let count = 0
+            if (column.property == 'title') {
+              count = 0
+              data.forEach(ele => {
+                if (ele.title.length == 0) count += 1
+              })
+            }
+            if (column.property == 'firstduty') {
+              count = 0
+              data.forEach(ele => {
+                if (ele.firstduty.length == 0) count += 1
+              })
+            }
+            if (column.property == 'pubyear') {
+              count = 0
+              data.forEach(ele => {
+                if (ele.pubyear.length == 0) count += 1
+              })
+            }
+            if (column.property == 'publication') {
+              count = 0
+              data.forEach(ele => {
+                if (ele.publication.length == 0) count += 1
+              })
+            }
+            return count
+          }
+          return null
+        })
+      ]
     }
   }
 }
