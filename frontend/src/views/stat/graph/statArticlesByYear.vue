@@ -6,7 +6,7 @@ export default {
   data: function() {
     return {
       cfg: {
-        url: '/api/stat/statArticlesByYear/a1738a9d2b1511eb9066e8b1fca4ff37'
+        url: '/api/stat/statArticlesByYear/' + this.$route.params.dsid
       }
     }
   },

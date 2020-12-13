@@ -22,10 +22,10 @@ export default {
       optionData: {},
       option: {
         grid: {
-          show: true,
-          height: 'auto',
-          width: 'auto',
-          top: 60,
+          show: false,
+          containLabel: true,
+          height: '50%',
+          top: '10%',
           right: 50,
           bottom: 50,
           left: 80
@@ -57,10 +57,6 @@ export default {
             saveAsImage: {
               // 保存图片
               show: true
-            },
-            magicType: {
-              // 动态类型切换
-              type: ['bar', 'line']
             }
           }
         },
@@ -68,45 +64,44 @@ export default {
           // 弹窗组件
           show: true,
           trigger: 'item',
-          formatter: '{b}: {c}'
+          formatter: '{a}:{b}: {c}'
         },
         legend: {
           show: true
         },
         xAxis: {
-          show: true,
           type: 'category',
-          name: '',
-          nameLocation: 'end',
-          interval: 1,
-          axisLabel: {
-            rotate: 35,
-            fontSize: 20,
-            fontFamily: '微软雅黑',
-            marginTop: '35px',
+          splitLine: {
             show: true,
-            interval: 0
-          },
-          data: []
+            lineStyle: {
+              color: '#999',
+              type: 'dashed'
+            }
+          }
         },
         yAxis: {
-          show: true,
-          name: '',
-          nameLocation: 'end',
-          type: 'value',
-          axisLabel: {
-            fontSize: 20,
-            fontFamily: '微软雅黑',
-            marginTop: '35px',
-            show: true
+          type: 'category',
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#999',
+              type: 'dashed'
+            }
           }
         },
         series: [
           {
             name: '',
-            data: [],
-            type: 'line',
-            itemStyle: { normal: { label: { show: true, fontSize: 20, color: '#333' } } }
+            type: 'scatter',
+            label: {
+              show: true
+            },
+            symbolSize: function(val) {
+              return val[2] * 2
+            },
+            animationDelay: function(idx) {
+              return idx * 5
+            }
           }
         ]
       }
@@ -125,7 +120,8 @@ export default {
       // 横轴数据
       this.option.xAxis.data = res.data.xData
       // 纵轴数据
-      this.option.series = res.data.series
+      this.option.yAxis.data = res.data.yData
+      this.option.series[0].data = res.data.value
       // 更新数据
       this.optionData = { option: this.option }
       // 更新图像
@@ -135,7 +131,7 @@ export default {
   mounted() {
     // 基于准备好的dom，初始化echarts实例
     let myChart = this.$echarts.init(document.getElementById('chart'), null, { renderer: 'svg' })
-    myChart.showLoading({ text: '正在加载数据' })
+    myChart.showLoading()
     // 绘制图表
     myChart.setOption(this.option)
 

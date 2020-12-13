@@ -2,23 +2,32 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from scrapy import Request
+from scrapy.http import Response
+from starlette.responses import JSONResponse
 
+from api import fail
 from api.web.common.controller import router as common
 from api.web.config.controller import router as config
 from api.web.dataset.controller import router as dataset
 from api.web.file.controller import router as file
 from api.web.graph.stat.controller import router as stat
-from api.web.graph.wordcloud.controller import router as wordcloud
 
 
 
 app = FastAPI()
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:22222",
-]
+
+
+
+# 全局统一异常处理
+async def catch_exceptions_middleware(request: Request, call_next):
+    try:
+        return await call_next(request)
+    except BaseException as e:
+        return JSONResponse(status_code=200, content={"status":400,"msg":f"错误信息："+str(e),"data":{}})
+
+# 使用下面这种方式，可以让CORS有效
+# app.middleware('http')(catch_exceptions_middleware)
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,7 +43,6 @@ app.include_router(config, prefix='/api/config')
 app.include_router(dataset, prefix='/api/dataset')
 app.include_router(file, prefix='/api/file')
 app.include_router(stat, prefix='/api/stat')
-app.include_router(wordcloud, prefix='/api/wordcloud')
 
 
 

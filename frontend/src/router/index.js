@@ -10,10 +10,18 @@ import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 
+import clusterForKeyWord from '@/views/stat/graph/clusterForKeyWord.vue'
+import clustertrendForKeyWord from '@/views/stat/graph/clustertrendForKeyWord.vue'
+
+import coocMatrixForKeyWord from '@/views/stat/graph/coocMatrixForKeyWord.vue'
+import coocMatrixForTopicWord from '@/views/stat/graph/coocMatrixForTopicWord.vue'
+
 import kgConnect from '@/views/stat/graph/kgConnect'
 // import kgIndexHtml from '@/views/stat/graph/kgIndex.html'
 import kgIndex from '@/views/stat/graph/kgIndex'
 import kgSearch from '@/views/stat/graph/kgSearch'
+
+import scatterCoocKeyWord from '@/views/stat/graph/scatterCoocKeyWord.vue'
 
 import statArticlesByAuthor from '@/views/stat/graph/statArticlesByAuthor.vue'
 import statArticlesByCountry from '@/views/stat/graph/statArticlesByCountry.vue'
@@ -27,10 +35,8 @@ import statArticlesByYear from '@/views/stat/graph/statArticlesByYear.vue'
 import statKwsByCount from '@/views/stat/graph/statKwsByCount.vue'
 import statPersonsByCoAuthor from '@/views/stat/graph/statPersonsByCoAuthor.vue'
 import statStyleByFund from '@/views/stat/graph/statStyleByFund.vue'
-import statTwsByCount from '@/views/stat/graph/statTwsByCount.vue'
 
 import wordCloundForKeyWord from '@/views/stat/graph/wordCloundForKeyWord.vue'
-import wordCloundForTopicWord from '@/views/stat/graph/wordCloundForTopicWord.vue'
 
 Vue.use(VueRouter)
 
@@ -64,94 +70,111 @@ const routes = [
         component: StatIndex,
         children: [
           {
-            path: '/kg/connect',
+            path: '/cluster/keyword/:dsid',
+            name: '关键词聚类',
+            component: clusterForKeyWord
+          },
+          {
+            path: '/clustertrend/keyword/:dsid',
+            name: '关键词聚类趋势',
+            component: clustertrendForKeyWord
+          },
+          {
+            path: '/coocMatrix/keyword/:dsid',
+            name: '关键词共现矩阵',
+            component: coocMatrixForKeyWord
+          },
+          {
+            path: '/coocMatrix/topicword/:dsid',
+            name: '主题词共现矩阵',
+            component: coocMatrixForTopicWord
+          },
+
+          {
+            path: '/kg/connect/:dsid',
             name: '知识关联',
             component: kgConnect
           },
           {
-            path: '/kg/index',
+            path: '/kg/index/:dsid',
             name: '全局图谱',
             component: kgIndex
           },
           {
-            path: '/kg/search',
+            path: '/kg/search/:dsid',
             name: '知识搜索',
             component: kgSearch
           },
           {
-            path: '/stat/statArticlesByAuthor',
+            path: '/scatter/coockeyword/:dsid',
+            name: '共现关键词散点图',
+            component: scatterCoocKeyWord
+          },
+
+          {
+            path: '/stat/statArticlesByAuthor/:dsid',
             name: '作者发文量',
             component: statArticlesByAuthor
           },
           {
-            path: '/stat/statArticlesByCountry',
+            path: '/stat/statArticlesByCountry/:dsid',
             name: '国家发文量',
             component: statArticlesByCountry
           },
           {
-            path: '/stat/statArticlesByFirstDuty',
+            path: '/stat/statArticlesByFirstDuty/:dsid',
             name: '一作发文量',
             component: statArticlesByFirstDuty
           },
           {
-            path: '/stat/statArticlesByFund',
+            path: '/stat/statArticlesByFund/:dsid',
             name: '基金支持发文量',
             component: statArticlesByFund
           },
           {
-            path: '/stat/statArticlesByJournal',
+            path: '/stat/statArticlesByJournal/:dsid',
             name: '期刊来源统计',
             component: statArticlesByJournal
           },
           {
-            path: '/stat/statArticlesByOrg',
+            path: '/stat/statArticlesByOrg/:dsid',
             name: '机构发文量',
             component: statArticlesByOrg
           },
           {
-            path: '/stat/statArticlesByProvince',
+            path: '/stat/statArticlesByProvince/:dsid',
             name: '地区发文量',
             component: statArticlesByProvince
           },
           {
-            path: '/stat/statArticlesBySubject',
+            path: '/stat/statArticlesBySubject/:dsid',
             name: '学科分布统计',
             component: statArticlesBySubject
           },
           {
-            path: '/stat/statArticlesByYear',
+            path: '/stat/statArticlesByYear/:dsid',
             name: '历年发文量',
             component: statArticlesByYear
           },
           {
-            path: '/stat/statKwsByCount',
+            path: '/stat/statKwsByCount/:dsid',
             name: '关键词词频',
             component: statKwsByCount
           },
           {
-            path: '/stat/statPersonsByCoAuthor',
+            path: '/stat/statPersonsByCoAuthor/:dsid',
             name: '合著人数统计',
             component: statPersonsByCoAuthor
           },
           {
-            path: '/stat/statStyleByFund',
+            path: '/stat/statStyleByFund/:dsid',
             name: '基金类型统计',
             component: statStyleByFund
           },
           {
-            path: '/stat/statTwsByCount',
-            name: '主题词词频',
-            component: statTwsByCount
-          },
-          {
-            path: '/wordclound/keyword',
+            path: '/wordclound/keyword/:dsid',
             name: '关键词词频',
             component: wordCloundForKeyWord
-          },
-          {
-            path: '/wordclound/topicword',
-            name: '主题词词频',
-            component: wordCloundForTopicWord
           }
         ]
       },

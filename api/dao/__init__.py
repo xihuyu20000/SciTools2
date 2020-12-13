@@ -2,28 +2,28 @@
 api/db 所有的数据库操作，不区分数据库
 '''
 from api import config
-from api.dao.db.clickhouse_db import dim_dict, dim_file, dim_user, ods_bib
+from api.dao.db.clickhouse_db import dim_config, dim_dataset, dim_user, ods_bib
 
 ##################################################################################
 
-create_dim_dict = dim_dict.create_dim_dict if config.db_is_clickhouse else None
-drop_dim_dict = dim_dict.drop_dim_dict if config.db_is_clickhouse else None
-truncate_dim_dict = dim_dict.truncate_dim_dict if config.db_is_clickhouse else None
-insert_dim_dict = dim_dict.insert_dim_dict if config.db_is_clickhouse else None
-delete_dim_dict = dim_dict.delete_dim_dict if config.db_is_clickhouse else None
+create_dim_config = dim_config.create_dim_config if config.db_is_clickhouse else None
+drop_dim_config = dim_config.drop_dim_config if config.db_is_clickhouse else None
+truncate_dim_config = dim_config.truncate_dim_config if config.db_is_clickhouse else None
+insert_dim_config = dim_config.insert_dim_config if config.db_is_clickhouse else None
+delete_dim_config = dim_config.delete_dim_config if config.db_is_clickhouse else None
 ##################################################################################
 
-create_dim_file = dim_file.create_dim_file if config.db_is_clickhouse else None
-drop_dim_file = dim_file.drop_dim_file if config.db_is_clickhouse else None
-truncate_dim_file = dim_file.truncate_dim_file if config.db_is_clickhouse else None
-insert_dim_file = dim_file.insert_dim_file if config.db_is_clickhouse else None
-find_all_names = dim_file.find_all_names if config.db_is_clickhouse else None
+create_dim_dataset = dim_dataset.create_dim_dataset if config.db_is_clickhouse else None
+drop_dim_dataset = dim_dataset.drop_dim_dataset if config.db_is_clickhouse else None
+truncate_dim_dataset = dim_dataset.truncate_dim_dataset if config.db_is_clickhouse else None
+insert_dim_dataset = dim_dataset.insert_dim_dataset if config.db_is_clickhouse else None
+find_all_names = dim_dataset.find_all_names if config.db_is_clickhouse else None
 ##################################################################################
 
 create_dim_user = dim_user.create_dim_user if config.db_is_clickhouse else None
 drop_dim_user = dim_user.drop_dim_user if config.db_is_clickhouse else None
 truncate_dim_user = dim_user.truncate_dim_user if config.db_is_clickhouse else None
-insert_dim_dict = dim_user.insert_dim_user if config.db_is_clickhouse else None
+insert_dim_user = dim_user.insert_dim_user if config.db_is_clickhouse else None
 get_user = dim_user.get_user if config.db_is_clickhouse else None
 
 ##################################################################################

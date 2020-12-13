@@ -2,8 +2,13 @@
   <el-container>
     <el-aside width="300px">
       <div>
-        <el-tag type="info" size="medium">数据集：</el-tag><el-cascader :options="datasets" :show-all-levels="false"></el-cascader>
-        <el-menu :router="true" default-active="2" class="el-menu-vertical-demo">
+        <el-menu default-active="2" class="el-menu-vertical-demo" @select="selectMenu">
+          <div style="display:flex;justify-content:flex-end;">
+            <span>数据集：</span>
+            <el-select v-model="target_dataset" placeholder="请选择">
+              <el-option v-for="item in datasets" :key="item.dsid" :label="item.dsname" :value="item.dsid"> </el-option>
+            </el-select>
+          </div>
           <el-submenu :index="index + ''" v-for="(item, index) in menu" :key="index">
             <template slot="title">
               <i class="el-icon-location"></i>
@@ -22,18 +27,8 @@
 export default {
   data: function() {
     return {
-      datasets: [
-        {
-          value: 'zhinan',
-          label: '数字人文',
-          children: [
-            {
-              value: 'shejiyuanze',
-              label: '1900-2020年'
-            }
-          ]
-        }
-      ],
+      target_dataset: '',
+      datasets: [],
       menu: [
         {
           title: '基础指标',
@@ -49,29 +44,38 @@ export default {
             { title: '基金类型统计', path: '/stat/statStyleByFund' },
             { title: '学科分布', path: '/stat/statArticlesBySubject' },
             { title: '合著人数统计', path: '/stat/statPersonsByCoAuthor' },
-            { title: '关键词词频', path: '/stat/statKwsByCount' },
-            { title: '主题词词频', path: '/stat/statTwsByCount' }
+            { title: '关键词词频', path: '/stat/statKwsByCount' }
           ]
         },
         {
           title: '绘制词云',
-          children: [
-            { title: '关键词', path: '/wordclound/keyword' },
-            { title: '主题词', path: '/wordclound/topicword' }
-          ]
+          children: [{ title: '关键词', path: '/wordclound/keyword' }]
         },
         {
           title: '共现指标',
           children: [
-            { title: '关键词共现矩阵', path: '' },
-            { title: '主题词共现矩阵', path: '' },
+            { title: '关键词共现矩阵', path: '/coocMatrix/keyword' },
+            { title: '主题词共现矩阵', path: '/coocMatrix/topicword' },
             { title: '作者共现矩阵', path: '' },
             { title: '基金共现矩阵', path: '' },
             { title: '机构共现矩阵', path: '' },
             { title: '国家共现矩阵', path: '' }
           ]
         },
-        { title: '网络聚类', children: [{ title: '', path: '' }] },
+        {
+          title: '散点图',
+          children: [
+            { title: '共现关键词散点图', path: '/scatter/coockeyword' },
+            { title: '共现主题词散点图', path: '/scatter/cooctopicword' }
+          ]
+        },
+        {
+          title: '网络聚类',
+          children: [
+            { title: '关键词聚类', path: '/cluster/keyword' },
+            { title: '关键词聚类趋势', path: '/clustertrend/keyword' }
+          ]
+        },
         {
           title: '知识图谱',
           children: [
@@ -85,6 +89,29 @@ export default {
         { title: '国家评价', children: [{ title: '', path: '' }] },
         { title: '期刊评价', children: [{ title: '', path: '' }] }
       ]
+    }
+  },
+  created() {
+    this.fetch()
+  },
+  methods: {
+    async fetch() {
+      let _url = this.$api.dataset_list_names
+      const { data: resp } = await this.$http.get(_url)
+      if (resp.status == 400) return this.$message.error(resp.msg)
+      this.datasets = resp.data
+    },
+    selectMenu(index) {
+      if (this.target_dataset == '')
+        return this.$notify({
+          title: '警告',
+          message: '请选择数据集',
+          type: 'warning'
+        })
+      this.$router.push({
+        path: index + `/${this.target_dataset}`
+      })
+      console.log('菜单', index)
     }
   },
   components: {}

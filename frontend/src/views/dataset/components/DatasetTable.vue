@@ -2,34 +2,24 @@
   <div>
     <vxe-toolbar ref="xToolbar" :refresh="{ query: fetch }" export print custom>
       <template v-slot:buttons>
-        <vxe-button status="danger" :round="true" @click="showFilter">数据过滤</vxe-button>
-        <vxe-button :round="true" @click="saveDataset">另存为</vxe-button>
+        <vxe-button icon="fa fa-trash-o" status="perfect" @click="removeEvent">删除选中</vxe-button>
+        <vxe-button icon="fa fa-save" status="perfect" @click="saveEvent">保存改动</vxe-button>
+        <vxe-button icon="fa fa-mail-reply" status="perfect" @click="revertEvent">还原改动</vxe-button>
+        <!--
+        <vxe-button status="danger" :round="true" @click="showFilter" style="margin-left:50px;">数据过滤<i class="el-icon-caret-bottom" v-show="!isShowFilterBuilder"></i><i class="el-icon-caret-top" v-show="isShowFilterBuilder"></i></vxe-button>
+        <vxe-button status="warning" :round="true" @click="saveDataset">另存为新数据集</vxe-button>
+        -->
       </template>
     </vxe-toolbar>
-    <el-card class="box-card">
-      <el-row>
-        <el-col :span="4">
-          <el-select clearable placeholder="请选择字段">
-            <el-option v-for="item in 10" :key="item" :label="item" :value="item"> </el-option>
-          </el-select>
-          <el-select clearable placeholder="请选择函数">
-            <el-option v-for="item in 10" :key="item" :label="item" :value="item"> </el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="18"><el-input type="textarea" :rows="4" placeholder="请输入内容"> </el-input></el-col>
-        <el-col :span="2">
-          <el-link type="success">语法检查</el-link>
-          <el-button>执行过滤</el-button>
-        </el-col>
-      </el-row>
-    </el-card>
+    <div v-show="isShowFilterBuilder"><dataset-filter-builder></dataset-filter-builder></div>
     <vxe-table
       ref="xGrid"
       border
       resizable
+      keep-source
       show-overflow
-      highlight-current-row
       show-header-overflow
+      highlight-current-row
       highlight-hover-row
       type="seq"
       max-height="500px"
@@ -44,40 +34,57 @@
         { field: 'id', visible: false }
       ]"
       @cell-dblclick="dbclickCell"
+      @edit-actived="editActivedEvent"
     >
-      <vxe-table-column type="seq" width="60"></vxe-table-column>
-      <vxe-table-column type="checkbox" width="60"></vxe-table-column>
-      <vxe-table-column field="fileid"></vxe-table-column>
-      <vxe-table-column field="id"></vxe-table-column>
-      <vxe-table-column field="style" title="类型" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="country" title="国别" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="lang" title="语种" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="title" title="标题" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
-      <vxe-table-column field="firstduty" title="第一责任人" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
-      <vxe-table-column field="pubyear" title="出版年" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
-      <vxe-table-column field="summary" title="摘要" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column type="seq" width="60" fixed="left"></vxe-table-column>
+      <vxe-table-column type="checkbox" width="60" fixed="left"></vxe-table-column>
+      <vxe-table-column field="fileid" fixed="left"></vxe-table-column>
+      <vxe-table-column field="id" fixed="left"></vxe-table-column>
+      <vxe-table-column field="title" title="标题" min-width="350" fixed="left" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
+      <vxe-table-column field="firstduty" title="一作" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
+      <vxe-table-column field="pubyear" title="出版年" min-width="150" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
+      <vxe-table-column field="publication" title="出版物" min-width="250" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
+      <vxe-table-column field="authors" title="作者" min-width="250" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
+      <vxe-table-column field="orgs" title="机构" min-width="250" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
+      <vxe-table-column field="funds" title="基金" min-width="250" :edit-render="{ name: 'input', attrs: { type: 'text' } }" sortable></vxe-table-column>
+      <vxe-table-column field="style" title="类型" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"> </vxe-table-column>
+      <vxe-table-column field="country" title="国别" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="lang" title="语种" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="summary" title="摘要" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="line" title="原始数据" min-width="400" :edit-render="{ name: 'input', attrs: { disabled: editDisabled } }"></vxe-table-column>
     </vxe-table>
-    共有条{{ tableData.length }}数据
+    共有{{ tableData.length }}条数据
   </div></template
 >
 
 <script>
+import DatasetFilterBuilder from './DatasetFilterBuilder.vue'
 export default {
+  components: { DatasetFilterBuilder },
   data() {
     return {
+      dsid: '',
       loading: false,
+      isShowFilterBuilder: false,
+      editDisabled: true,
       tableData: []
     }
   },
   mounted() {
-    this.fetch()
+    this.$bus.$on(this.$api.dataset_list, dsid => {
+      console.log('接收事件', dsid)
+      this.dsid = dsid
+      this.fetch()
+    })
   },
   methods: {
     fetch() {
       this.loading = true
       return new Promise(resolve => {
         setTimeout(async () => {
-          const { data: resp } = await this.$http.get(this.$api.dataset_list + '/a1738a9d2b1511eb9066e8b1fca4ff37')
+          let _url = this.$api.dataset_list + '/' + this.dsid
+          const { data: resp } = await this.$http.get(_url)
+          //console.log('加载数据集', resp)
           if (resp.status == 400) return this.$message.error(resp.msg)
           this.tableData = resp.data
           this.loading = false
@@ -88,7 +95,47 @@ export default {
     dbclickCell({ row, column }) {
       console.log('单元格', row, column)
     },
-    showFilter() {},
+    editActivedEvent({ rowIndex, row }) {
+      console.log('单元格编辑激活', rowIndex, row.title)
+    },
+    showFilter() {
+      this.isShowFilterBuilder = !this.isShowFilterBuilder
+    },
+    removeEvent() {
+      const selectRecords = this.$refs.xGrid.getCheckboxRecords()
+      if (selectRecords.length) {
+        this.$XModal.confirm('您确定要删除选中的数据吗?').then(async type => {
+          if (type === 'confirm') {
+            let dsidArr = selectRecords.map(row => {
+              return row.id
+            })
+            let { data: resp } = await this.$http.post(this.$api.datasete_odsbib_delete, { ids: dsidArr })
+            if (resp.status == 400) return this.$message.error(resp.msg)
+            let newTableData = this.tableData.filter(v => {
+              return !dsidArr.includes(v.id)
+            })
+            this.tableData = newTableData
+            this.$refs.xGrid.removeCheckboxRow()
+          }
+        })
+      } else {
+        this.$XModal.message({ message: '请至少选择一条数据', status: 'error' })
+      }
+    },
+    revertEvent() {
+      this.$XModal.confirm('您确定要还原数据吗?').then(type => {
+        if (type === 'confirm') {
+          this.$refs.xGrid.revertData()
+        }
+      })
+    },
+    async saveEvent() {
+      const { insertRecords, removeRecords, updateRecords } = this.$refs.xGrid.getRecordset()
+      console.log(`insertRecords=${insertRecords.length} removeRecords=${removeRecords.length} updateRecords=${updateRecords.length}`)
+      let { data: resp } = await this.$http.post(this.$api.datasete_odsbib_update, { datas: updateRecords })
+      if (resp.status == 400) return this.$message.error(resp.msg)
+      this.fetch()
+    },
     saveDataset() {
       setTimeout(() => {
         const { fullData, visibleData, tableData, footerData } = this.$refs.xGrid.getTableData()

@@ -139,8 +139,8 @@ class StatManager:
 
 
     # 按照年份统计论文数量
-    def statArticlesByYear(self, fileId):
-        sql = "SELECT pubyear, COUNT(1) AS count FROM {} WHERE fileid ='{}' GROUP BY pubyear ORDER BY pubyear".format(config.tbl_ods_bib,fileId)
+    def statArticlesByYear(self, dsid):
+        sql = "SELECT pubyear, COUNT(1) AS count FROM {} WHERE dsid ='{}' AND pubyear!='' GROUP BY pubyear ORDER BY pubyear".format(config.tbl_ods_bib,dsid)
         self.log.info(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -162,9 +162,9 @@ class StatManager:
         return xList2, yList2
 
     # 按照国家统计论文数量
-    def statArticlesByCountry(self, fileId):
-        sql = "SELECT country, COUNT(1) AS count FROM {} WHERE fileid ='{}' GROUP BY country  ORDER BY count  ".format(
-            config.tbl_ods_bib, fileId)
+    def statArticlesByCountry(self, dsid):
+        sql = "SELECT country, COUNT(1) AS count FROM {} WHERE dsid ='{}' GROUP BY country  ORDER BY count  ".format(
+            config.tbl_ods_bib, dsid)
         self.log.info(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -176,8 +176,8 @@ class StatManager:
         return xList, yList
 
     # 按照年份统计作者人数
-    def statAuthorsByYear(self, fileId):
-        sql = 'SELECT  year, COUNT(distinct firstduty) AS count FROM sci_cnki WHERE year>0 AND fileid={} GROUP BY YEAR ORDER BY year'.format(fileId)
+    def statAuthorsByYear(self, dsid):
+        sql = 'SELECT  year, COUNT(distinct firstduty) AS count FROM sci_cnki WHERE year>0 AND dsid={} GROUP BY YEAR ORDER BY year'.format(dsid)
         print(sql)
         all = self.db.fetch_all(sql)
         xList = []
@@ -188,8 +188,8 @@ class StatManager:
         return xList, yList
 
     # 按照一作统计论文数量
-    def statArticlesByFirstDuty(self, fileId):
-        sql = "SELECT firstduty, COUNT(*) AS count FROM {} WHERE fileid ='{}'  GROUP BY firstduty ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+    def statArticlesByFirstDuty(self, dsid):
+        sql = "SELECT firstduty, COUNT(*) AS count FROM {} WHERE dsid ='{}'  GROUP BY firstduty ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -200,8 +200,8 @@ class StatManager:
         return xList, yList
 
     # 按照作者统计论文数量
-    def statArticlesByAuthor(self, fileId):
-        sql = "SELECT author, COUNT(1) AS count FROM (SELECT title, arrayJoin(authors) AS author FROM {} WHERE fileid ='{}') GROUP BY author ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+    def statArticlesByAuthor(self, dsid):
+        sql = "SELECT author, COUNT(1) AS count FROM (SELECT title, arrayJoin(authors) AS author FROM {} WHERE dsid ='{}') GROUP BY author ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -212,8 +212,8 @@ class StatManager:
         return xList, yList
 
     # 按照出版物统计论文数量
-    def statArticlesByJournal(self, fileId):
-        sql = "SELECT publication , COUNT(1) AS count FROM {} WHERE fileid ='{}' GROUP BY publication ORDER BY count DESC ".format(config.tbl_ods_bib, fileId)
+    def statArticlesByJournal(self, dsid):
+        sql = "SELECT publication , COUNT(1) AS count FROM {} WHERE dsid ='{}' GROUP BY publication ORDER BY count DESC ".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -225,8 +225,8 @@ class StatManager:
 
 
     # 基金支持论文历年统计
-    def statArticlesByFund(self, fileId):
-        sql = "SELECT pubyear , COUNT(1) AS count FROM  {} WHERE LENGTH(funds)>0 AND fileid ='{}' GROUP BY pubyear ORDER BY pubyear ".format(config.tbl_ods_bib, fileId)
+    def statArticlesByFund(self, dsid):
+        sql = "SELECT pubyear , COUNT(1) AS count FROM  {} WHERE LENGTH(funds)>0 AND dsid ='{}' GROUP BY pubyear ORDER BY pubyear ".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -237,8 +237,8 @@ class StatManager:
         return xList, yList
 
     # 基金类型统计
-    def statStyleByFund(self, fileId):
-        sql = "SELECT fund, COUNT(1) AS count FROM (SELECT arrayJoin(funds) AS fund FROM {} WHERE fileid ='{}' ) GROUP BY fund ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+    def statStyleByFund(self, dsid):
+        sql = "SELECT fund, COUNT(1) AS count FROM (SELECT arrayJoin(funds) AS fund FROM {} WHERE dsid ='{}' ) GROUP BY fund ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -249,7 +249,7 @@ class StatManager:
         return xList, yList
 
     # 学科分布统计
-    def statArticlesBySubject(self, fileId):
+    def statArticlesBySubject(self, dsid):
         xList = []
         yList = []
         for row in []:
@@ -258,8 +258,8 @@ class StatManager:
         return xList, yList
 
     # 合著人数统计
-    def statPersonsByCoAuthor(self, fileId):
-        sql = "SELECT LENGTH (authors) as persons, COUNT(1) AS count FROM   {} WHERE fileid ='{}' AND LENGTH(authors)>0 GROUP BY persons ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+    def statPersonsByCoAuthor(self, dsid):
+        sql = "SELECT LENGTH (authors) as persons, COUNT(1) AS count FROM   {} WHERE dsid ='{}' AND LENGTH(authors)>0 GROUP BY persons ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -270,8 +270,8 @@ class StatManager:
         return xList, yList
 
     # 关键词词频统计
-    def statKwsByCount(self, fileId):
-        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE fileid ='{}') GROUP BY kw ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+    def statKwsByCount(self, dsid):
+        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE dsid ='{}') GROUP BY kw ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -282,8 +282,8 @@ class StatManager:
         return xList, yList
 
     # 主题词词频统计
-    def statTwsByCount(self, fileId):
-        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE fileid ='{}') GROUP BY kw ORDER BY count DESC".format(config.tbl_ods_bib, fileId)
+    def statTwsByCount(self, dsid):
+        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE dsid ='{}') GROUP BY kw ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
         print(sql)
         all = self.dao.find_ods_bib(sql)
         xList = []
@@ -293,9 +293,9 @@ class StatManager:
             yList.append(row['count'])
         return xList, yList
 
-    def kg(self, userId, fileId, count):
-        sql = "SELECT title,author,organ,source,keyword,summary,firstduty,fund,year FROM sci_cnki  WHERE usercode='{}' AND fileid={}  limit {}".format(
-            userId, fileId, count)
+    def kg(self, userId, dsid, count):
+        sql = "SELECT title,author,organ,source,keyword,summary,firstduty,fund,year FROM sci_cnki  WHERE usercode='{}' AND dsid={}  limit {}".format(
+            userId, dsid, count)
         print(sql)
         all = self.db.fetch_all(sql)
         id_gen = 0

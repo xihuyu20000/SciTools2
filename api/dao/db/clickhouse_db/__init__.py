@@ -13,25 +13,18 @@ def __get_client():
            database=config.clickhouse_db)
 
 def __execute(sql, params: dict = None, msg: str = None):
-    try:
-        return __get_client().execute(sql, params=params)
-    except Exception as e:
-        print(e)
-        raise Exception(msg)
+    return __get_client().execute(sql, params=params)
 
 
 def __query(sql, params: dict = None, msg: str = None, result_style: str = 'dict'):
-    try:
-        result, columns = __get_client().execute(sql, params=params, with_column_types=True, settings={'max_block_size': 100000})
-        labels = [x[0] for x in columns]
-        if result_style == 'dict':
-            return [dict(zip(labels, x)) for x in result]
-        if result_style == 'list':
-            return [labels] + result
-        return result
-    except Exception as e:
-        print(e)
-        raise Exception(msg)
+    result, columns = __get_client().execute(sql, params=params, with_column_types=True, settings={'max_block_size': 100000})
+    labels = [x[0] for x in columns]
+    if result_style == 'dict':
+        return [dict(zip(labels, x)) for x in result]
+    if result_style == 'list':
+        return [labels] + result
+    return result
+
 
 
 def __create(sql, tbl_name):

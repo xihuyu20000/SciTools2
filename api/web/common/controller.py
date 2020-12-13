@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
 router = APIRouter()
-from api.util.base import ok, fail
+from api import ok, fail
 from .manager import commonManager, LoginForm, Token
 
 # to get a string like this run:

@@ -1,4 +1,1 @@
-Fri, 04 Dec 2020 07:00:32-api.web.dataset.manager-manager.py-[line:15]-INFO-[日志信息]:  SELECT * FROM default.dim_file 
-Fri, 04 Dec 2020 07:00:32-api.web.dataset.manager-manager.py-[line:21]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE fileid ='a1738a9d2b1511eb9066e8b1fca4ff37'
-Fri, 04 Dec 2020 07:12:03-api.web.dataset.manager-manager.py-[line:15]-INFO-[日志信息]:  SELECT * FROM default.dim_file 
-Fri, 04 Dec 2020 07:12:03-api.web.dataset.manager-manager.py-[line:21]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE fileid ='a1738a9d2b1511eb9066e8b1fca4ff37'
+Sun, 13 Dec 2020 23:24:06-api.web.graph.stat.manager-manager.py-[line:144]-INFO-[日志信息]: SELECT pubyear, COUNT(1) AS count FROM default.ods_bib WHERE dsid ='c7659463a00844bbaa8925b00dc3bd15' AND pubyear!='' GROUP BY pubyear ORDER BY pubyear

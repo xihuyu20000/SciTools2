@@ -1,25 +1,63 @@
 import sys
 from collections import defaultdict
+
+from pydantic.main import BaseModel
+
 from api.util.utils import Logger
 from api import dao, config
+from api.dao.db.clickhouse_db import __execute as execute
 
+class OdsbibDeleteForm(BaseModel):
+    ids:list= []
 
-class StatManager:
+class OdsbibUpdateForm(BaseModel):
+    datas:list = []
+
+class DatasetManager:
     def __init__(self):
         self.log = Logger(__name__).get_log
         self.dao = dao
 
     # 查询所有数据集的名称
     def list_names(self):
-        sql = """ SELECT * FROM {} """.format(config.tbl_dim_file)
+        sql = """ SELECT * FROM {} """.format(config.tbl_dim_dataset)
         self.log.info(sql)
         return self.dao.find_all_names(sql)
 
     # 根据特定数据集
-    def list_dataset(self, fileId):
-        sql = "SELECT * FROM {} WHERE fileid ='{}'".format(config.tbl_ods_bib, fileId)
+    def list_dataset(self, dsid):
+        sql = "SELECT * FROM {} WHERE dsid ='{}'".format(config.tbl_ods_bib, dsid)
         self.log.info(sql)
         return self.dao.find_ods_bib(sql)
 
+    # 根据dsid删除数据集
+    def delete(self, dsid):
+        sql = "ALTER TABLE  {} DELETE WHERE dsid = '{}'".format(config.tbl_dim_dataset, dsid)
+        self.log.info(sql)
+        execute(sql)
+        sql = "ALTER TABLE  {} DELETE WHERE dsid='{}'".format(config.tbl_ods_bib, dsid)
+        self.log.info(sql)
+        execute(sql)
 
-statManager = StatManager()
+    # 修改数据集名称
+    def rename(self, dsid, newName):
+        sql = "ALTER TABLE {} UPDATE dsname='{}' WHERE dsid = '{}'".format(config.tbl_dim_dataset, newName, dsid)
+        self.log.info(sql)
+        execute(sql)
+
+    # 删除ods_bib表中的数据
+    def deleteOdsbibById(self, ids):
+        for id in ids:
+            sql = "ALTER TABLE  {} DELETE WHERE id = '{}'".format(config.tbl_ods_bib, id)
+            self.log.info(sql)
+            execute(sql)
+
+    # 更新ods_bib表中的数据
+    def updateOdsbib(self, datas):
+        for data in datas:
+            sql = "ALTER TABLE {} UPDATE title='{}' WHERE id='{}'".format(config.tbl_ods_bib, data['title'], data['id'])
+            self.log.info(sql)
+            execute(sql)
+
+
+datasetManager = DatasetManager()

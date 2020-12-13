@@ -3,12 +3,14 @@ import shutil
 import uuid
 import zipfile
 from pathlib import Path
-from api.util.constant import get_upload_home
+from api.config import get_upload_home
 from threading import Thread
 from api.util.utils import remove_dir
 from typing import List
 
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Form
+
+from ... import fail, ok
 
 router = APIRouter()
 
@@ -16,8 +18,7 @@ from .manager import fileManager
 
 # 上传文件，只接收一个压缩文件
 @router.post('/upload')
-async def upload(files: List[UploadFile] = File(...)):
-    print(files[0].filename )
+async def upload( style:str =Form(...), files: List[UploadFile] = File(...)):
     # 文件真实名称
     file_name = files[0].filename
     # 随机名称
@@ -29,11 +30,10 @@ async def upload(files: List[UploadFile] = File(...)):
     # 文件大小
     file_size = Path(save_path).stat().st_size
 
+    save_path_dir = save_path+"_dir"
     with zipfile.ZipFile(save_path, "r") as zFile:
         # ZipFile.namelist(): 获取ZIP文档内所有文件的名称列表
         for fileM in zFile.namelist():
-            zFile.extract(fileM, save_path+"_dir")
-    print('文件路径', save_path)
-    # fileManager.saveUpload(source, file_name, file_size, raw_name, save_path)
-
-    return {"status": 200}
+            zFile.extract(fileM, save_path_dir)
+    fileManager.saveUpload(file_name[:-4], style, save_path_dir)
+    return ok()

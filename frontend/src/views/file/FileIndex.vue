@@ -3,14 +3,20 @@
     <el-row :gutter="20">
       <el-col :span="12" :offset="6">
         <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="right">
-          <el-form-item prop="files">
+          <el-form-item label="内容类型" prop="style">
+            <el-select v-model="form.style" placeholder="请选择类型">
+              <el-option label="题录—GBT 7714-2015" value="题录—GBT 7714-2015"></el-option>
+              <el-option label="题录—知网—es5" value="题录—知网—es5"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="上传文件" prop="files">
             <el-upload multiple :limit="1" action="string" list-type="text" :file-list="fileList" :auto-upload="false" :on-change="OnChange" :on-remove="OnRemove" :on-preview="handlePictureCardPreview" :before-remove="beforeRemove" accept=".zip">
               <el-button size="small" type="primary">选择数据文件</el-button>
               <div slot="tip" class="el-upload__tip" style="color:green">只能上传zip格式，如果是多个文件，请压缩到一起再上传</div></el-upload
             >
           </el-form-item>
           <el-form-item>
-            <el-button type="" @click="onSubmit">开始上传</el-button>
+            <el-button type="success" @click="onSubmit">开始上传</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -32,12 +38,13 @@ export default {
     }
     return {
       param: new FormData(),
-      form: {},
+      form: { style: '' },
       count: 0,
       fileList: [],
       fileDialogVisible: false,
       dialogImageUrl: '',
       rules: {
+        style: [{ required: true, trigger: 'blur', message: '请选择文件类型' }],
         files: [{ validator: validateFiles, trigger: 'blur' }]
       }
     }
