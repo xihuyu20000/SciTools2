@@ -76,8 +76,11 @@ export default {
       if (resp.status != 200) return this.$message.error('上传失败')
       this.$refs['form'].resetFields()
       this.fileList = []
-      this.$message.success('上传成功')
-      this.$router.push('/to/showing/index')
+      return this.$notify({
+        title: '成功',
+        message: '导入成功',
+        type: 'success'
+      })
     },
     onSubmit() {
       let _this = this

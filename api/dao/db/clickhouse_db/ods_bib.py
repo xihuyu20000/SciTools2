@@ -33,14 +33,12 @@ def create_ods_bib():
         pubyear String(8),
         pubtime String(16),
         clcs Array(String),
-        clc1 String(128),
-        clc2 String(128),
-        format String(16),
         publication String(100),
         country String(100),
+        province String(100),
         lang String(16),
         line String
-        )ENGINE=MergeTree() ORDER BY (pubyear) PARTITION BY (dsid);
+        )ENGINE=MergeTree() ORDER BY (dsid) PARTITION BY (dsid);
     """.format(TBL_NAME)
     return __create(sql, TBL_NAME)
 
@@ -65,7 +63,7 @@ def insert_ods_bib(params: Optional[List[dict]]):
     :return 返回两个值：dsid、插入条数
     """
     sql = """
-        INSERT INTO {} (dsid, id, style, title, title_words, firstduty, authors, orgs, kws, summary, summary_words, funds, pubyear, pubtime, clcs, clc1, clc2, format, publication, country, lang, line) VALUES
+        INSERT INTO {} (dsid, id, style, title, title_words, firstduty, authors, orgs, kws, summary, summary_words, funds, pubyear, pubtime, clcs, publication, country, province, lang, line) VALUES
     """.format(TBL_NAME)
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
 

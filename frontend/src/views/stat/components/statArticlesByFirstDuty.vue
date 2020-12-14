@@ -1,7 +1,7 @@
 <template><echarts-line :cfg="cfg"></echarts-line> </template>
 
 <script>
-import EchartsLine from '@/components/graph/EchartsLine'
+import EchartsLine from '../graph/EchartsLine'
 export default {
   data: function() {
     return {

@@ -106,12 +106,12 @@ export default {
         return this.$notify({
           title: '警告',
           message: '请选择数据集',
-          type: 'warning'
+          type: 'warning',
+          position: 'top-left'
         })
       this.$router.push({
         path: index + `/${this.target_dataset}`
       })
-      console.log('菜单', index)
     }
   },
   components: {}

@@ -1,47 +1,11 @@
-Mon, 14 Dec 2020 06:32:49-api.web.dataset.manager-manager.py-[line:36]-INFO-[日志信息]: ALTER TABLE  default.dim_dataset DELETE WHERE dsid = '7179ca8bd6b8408398f1a85621a8338b'
-Mon, 14 Dec 2020 06:32:49-api.web.dataset.manager-manager.py-[line:39]-INFO-[日志信息]: ALTER TABLE  default.ods_bib DELETE WHERE dsid='7179ca8bd6b8408398f1a85621a8338b'
-Mon, 14 Dec 2020 06:32:53-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:33:08-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:33:11-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:33:11-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:37:07-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:37:10-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:37:39-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:37:47-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:37:54-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:43:28-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:43:32-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:44:44-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:45:09-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:45:10-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:46:05-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:46:07-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:51:22-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:51:26-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 06:51:38-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:52:05-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:52:06-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:53:10-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:53:12-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:54:09-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:54:11-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:55:35-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:55:37-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:56:12-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:56:14-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:57:02-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:57:04-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:58:26-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:58:28-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 06:59:39-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 06:59:41-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 07:00:20-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 07:00:22-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 07:00:59-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 07:01:01-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 07:01:04-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='2c022b584fd646bd92c266fd71626f55'
-Mon, 14 Dec 2020 07:02:24-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 07:02:26-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 07:03:12-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
-Mon, 14 Dec 2020 07:03:20-api.web.dataset.manager-manager.py-[line:24]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Mon, 14 Dec 2020 07:03:22-api.web.dataset.manager-manager.py-[line:30]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='29af985b0c6b4a5da0b285b8155757b0'
+Mon, 14 Dec 2020 21:15:12-api.web.dataset.manager-manager.py-[line:38]-INFO-[日志信息]: ALTER TABLE  default.dim_dataset DELETE WHERE dsid = 'cdbe82abced543a18bbdb2477b2c4494'
+Mon, 14 Dec 2020 21:15:13-api.web.dataset.manager-manager.py-[line:41]-INFO-[日志信息]: ALTER TABLE  default.ods_bib DELETE WHERE dsid='cdbe82abced543a18bbdb2477b2c4494'
+Mon, 14 Dec 2020 21:15:26-api.web.dataset.manager-manager.py-[line:26]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
+Mon, 14 Dec 2020 21:15:28-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'
+Mon, 14 Dec 2020 21:15:28-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'
+Mon, 14 Dec 2020 21:15:29-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'
+Mon, 14 Dec 2020 21:15:29-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'
+Mon, 14 Dec 2020 21:15:29-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'
+Mon, 14 Dec 2020 21:15:29-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'
+Mon, 14 Dec 2020 21:15:29-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'
+Mon, 14 Dec 2020 21:15:29-api.web.dataset.manager-manager.py-[line:32]-INFO-[日志信息]: SELECT * FROM default.ods_bib WHERE dsid ='3039b8cebd09424a971c49d1fd1776ea'

@@ -1,7 +1,7 @@
 <template><word-clound :cfg="cfg"></word-clound> </template>
 
 <script>
-import WordClound from '@/components/graph/WordClound'
+import WordClound from '../graph/WordClound'
 export default {
   data: function() {
     return {

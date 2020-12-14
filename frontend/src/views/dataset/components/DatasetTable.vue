@@ -3,10 +3,7 @@
     <vxe-toolbar ref="xToolbar" :refresh="{ query: fetch }" print custom>
       <template v-slot:buttons>
         <vxe-button icon="fa fa-trash-o" status="perfect" @click="removeEvent">删除选中</vxe-button>
-        <vxe-button icon="fa fa-save" status="perfect" @click="saveEvent">保存改动</vxe-button>
-        <vxe-button icon="fa fa-mail-reply" status="perfect" @click="revertEvent">还原改动</vxe-button>
         <!--
-        <vxe-button status="danger" :round="true" @click="showFilter" style="margin-left:50px;">数据过滤<i class="el-icon-caret-bottom" v-show="!isShowFilterBuilder"></i><i class="el-icon-caret-top" v-show="isShowFilterBuilder"></i></vxe-button>
         <vxe-button status="warning" :round="true" @click="saveDataset">另存为新数据集</vxe-button>
         -->
       </template>
@@ -36,6 +33,7 @@
         { field: 'id', visible: false }
       ]"
       @cell-dblclick="dbclickCell"
+      @edit-closed="editClosedEvent"
       @edit-actived="editActivedEvent"
     >
       <vxe-table-column type="seq" width="60" fixed="left"></vxe-table-column>
@@ -49,19 +47,23 @@
       <vxe-table-column field="authors" title="作者" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="orgs" title="机构" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="funds" title="基金" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="kws" title="关键词" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="summary" title="摘要" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="style" title="类型" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"> </vxe-table-column>
       <vxe-table-column field="country" title="国别" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="province" title="地区" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="title_words" title="标题分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="summary_words" title="标题分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="lang" title="语种" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="clcs" title="分类号" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="line" title="原始数据" min-width="400" :edit-render="{ name: 'input', attrs: { disabled: editDisabled } }"></vxe-table-column>
     </vxe-table>
   </div>
 </template>
 
 <script>
-import DatasetFilterBuilder from './DatasetFilterBuilder.vue'
 export default {
-  components: { DatasetFilterBuilder },
+  components: {},
   data() {
     return {
       dsid: '',
@@ -123,25 +125,32 @@ export default {
         this.$XModal.message({ message: '请至少选择一条数据', status: 'error' })
       }
     },
-    revertEvent() {
-      this.$XModal.confirm('您确定要还原数据吗?').then(type => {
-        if (type === 'confirm') {
-          this.$refs.xGrid.revertData()
-        }
-      })
-    },
-    async saveEvent() {
-      const { insertRecords, removeRecords, updateRecords } = this.$refs.xGrid.getRecordset()
-      console.log(`insertRecords=${insertRecords.length} removeRecords=${removeRecords.length} updateRecords=${updateRecords.length}`)
-      let { data: resp } = await this.$http.post(this.$api.datasete_odsbib_update, { datas: updateRecords })
-      if (resp.status == 400) return this.$message.error(resp.msg)
-      this.fetch()
-    },
+
     saveDataset() {
       setTimeout(() => {
         const { fullData, visibleData, tableData, footerData } = this.$refs.xGrid.getTableData()
         console.log(fullData, visibleData, tableData, footerData)
       }, 100)
+    },
+    editClosedEvent({ row, column }) {
+      let xTable = this.$refs.xGrid
+      let field = column.property
+      let cellValue = row[field]
+      let id = row['id']
+      // 判断单元格值是否被修改
+      if (xTable.isUpdateByRow(row, field)) {
+        console.log('实时保存', field, cellValue, id)
+        setTimeout(async () => {
+          let { data: resp } = await this.$http.post(this.$api.datasete_odsbib_update, { id: id, k: field, v: cellValue })
+          if (resp.status == 400) return this.$message.error(resp.msg)
+          this.$XModal.message({
+            message: `保存成功！`,
+            status: 'success'
+          })
+          // 局部更新单元格为已保存状态
+          this.$refs.xGrid.reloadRow(row, null, field)
+        }, 300)
+      }
     },
     FilterPubyear({ value, row }) {
       console.log('过滤条件', value, row)

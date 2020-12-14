@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="1"
-        ><option-title :optionData="optionData"></option-title>
-        <option-grid :optionData="optionData"></option-grid>
+      <el-col :span="1">
+        <option-title :optionData="optionData"></option-title>
         <option-legend :optionData="optionData"></option-legend>
+        <option-grid :optionData="optionData"></option-grid>
         <option-xaxis :optionData="optionData"></option-xaxis>
         <option-yaxis :optionData="optionData"></option-yaxis>
       </el-col>

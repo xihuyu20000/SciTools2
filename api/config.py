@@ -40,6 +40,7 @@ clickhouse_db = 'default'
 # 数据库表名称
 tbl_dim_threshold = 'default.dim_threshold'
 tbl_dim_config = 'default.dim_config'
+tbl_dim_org = 'default.dim_org'
 tbl_dim_user = 'default.dim_user'
 tbl_dim_dataset = 'default.dim_dataset'
 tbl_ods_bib = 'default.ods_bib'

@@ -381,12 +381,19 @@ class File_cnki_self_Parser:
                 firstduty = str(line[len('FirstDuty-第一责任人:'):]).strip()
                 firstduty = firstduty.split(';')[0]
                 model.firstduty = firstduty
+            elif line.startswith('Fund-基金:'):
+                funds = line[len('Fund-基金:'):].strip()
+                funds = funds.split(';')
+                funds = [x.strip() for x in funds if x.strip()]
+                model.funds = funds
             elif line.startswith('Year-年:'):
                 pubyear = str(line[len('Year-年:'):]).strip()
                 model.pubyear = pubyear
             elif line.startswith('CLC-中图分类号:'):
                 clc = str(line[len('CLC-中图分类号:'):]).strip()
-                model.clc1 = clc
+                clc = clc.split(';')
+                clc = [x.strip() for x in clc if x.strip()]
+                model.clcs = clc
 
         return model
 def stopwords(splitwords_userdict_path: str = None):

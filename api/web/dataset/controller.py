@@ -39,5 +39,5 @@ def odsbibdelete(form : OdsbibDeleteForm):
 
 @router.post('/odsbib/update')
 def odsbibupdate(form : OdsbibUpdateForm):
-    datasetManager.updateOdsbib(form.datas)
+    datasetManager.updateOdsbib(form)
     return ok()

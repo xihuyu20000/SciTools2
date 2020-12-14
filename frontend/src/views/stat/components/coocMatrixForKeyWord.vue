@@ -1,7 +1,7 @@
 <template><cooc-matrix :cfg="cfg"></cooc-matrix> </template>
 
 <script>
-import CoocMatrix from '@/components/graph/CoocMatrix'
+import CoocMatrix from '../graph/CoocMatrix'
 export default {
   data: function() {
     return {

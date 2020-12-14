@@ -11,7 +11,9 @@ class OdsbibDeleteForm(BaseModel):
     ids:list= []
 
 class OdsbibUpdateForm(BaseModel):
-    datas:list = []
+    id:str = None
+    k:str = None
+    v:str = None
 
 class DatasetManager:
     def __init__(self):
@@ -53,11 +55,11 @@ class DatasetManager:
             execute(sql)
 
     # 更新ods_bib表中的数据
-    def updateOdsbib(self, datas):
-        for data in datas:
-            sql = "ALTER TABLE {} UPDATE title='{}' WHERE id='{}'".format(config.tbl_ods_bib, data['title'], data['id'])
-            self.log.info(sql)
-            execute(sql)
+    def updateOdsbib(self, form):
+        sql = "ALTER TABLE {} UPDATE {}='{}' WHERE id='{}'".format(config.tbl_ods_bib,form.k, form.v, form.id)
+        self.log.info(sql)
+        execute(sql)
+
 
 
 datasetManager = DatasetManager()

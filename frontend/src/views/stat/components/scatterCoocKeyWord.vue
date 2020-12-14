@@ -1,7 +1,7 @@
 <template><scatter :cfg="cfg"></scatter> </template>
 
 <script>
-import Scatter from '@/components/graph/Scatter'
+import Scatter from '../graph/Scatter'
 export default {
   data: function() {
     return {

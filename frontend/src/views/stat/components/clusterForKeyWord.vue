@@ -1,7 +1,7 @@
 <template><cluster-graph :cfg="cfg"></cluster-graph> </template>
 
 <script>
-import ClusterGraph from '@/components/graph/ClusterGraph'
+import ClusterGraph from '../graph/ClusterGraph'
 export default {
   data: function() {
     return {

@@ -1,7 +1,7 @@
 <template><cluster-trend-graph :cfg="cfg"></cluster-trend-graph> </template>
 
 <script>
-import ClusterTrendGraph from '@/components/graph/ClusterTrendGraph'
+import ClusterTrendGraph from '../graph/ClusterTrendGraph'
 export default {
   data: function() {
     return {

@@ -1,7 +1,7 @@
 <template><echarts-bar :cfg="cfg"></echarts-bar> </template>
 
 <script>
-import EchartsBar from '@/components/graph/EchartsBar'
+import EchartsBar from '../graph/EchartsBar'
 export default {
   data: function() {
     return {
