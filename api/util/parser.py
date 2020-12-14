@@ -28,6 +28,8 @@ def parsefiles(format, files: List[str]) -> List[OdsCnkiBib]:
             result = File_noteExpress_Parser(file).parse()
         elif format == config.ds_cnki_self:
             result = File_cnki_self_Parser(file).parse()
+        elif format == config.ds_cssci_format:
+            result = File_cssci_Parser(file).parse()
         return result
 
     datas = []
@@ -339,7 +341,7 @@ class File_cnki_self_Parser:
             if line.startswith('SrcDatabase-来源库'):
                 if temp_art:
                     arts.append(copy.deepcopy(temp_art))
-                temp_art = [line]
+                temp_art = []
             temp_art.append(line)
         return arts
 
@@ -396,6 +398,174 @@ class File_cnki_self_Parser:
                 model.clcs = clc
 
         return model
+
+class File_cssci_Parser:
+    def __init__(self, filepath):
+        """
+        解析cssci格式
+        :param filepath: 文件路径
+        :return: 解析后的数据列表
+        """
+        self.lines = []
+        if os.path.exists(filepath):
+            lines = utils.read_lines(filepath)
+            self.lines = lines[3:]
+        self.model_list = []
+
+    def parse(self):
+        art_lines = self.__build_raw_articles()
+        [self.__parse_raw_article(art) for art in art_lines]
+        return self.model_list
+
+    def __build_raw_articles(self):
+        arts = []
+        temp_art = []
+        for line in self.lines:
+            if line.startswith('【来源篇名】'):
+                if temp_art:
+                    arts.append(copy.deepcopy(temp_art))
+                temp_art = []
+            temp_art.append(line)
+        return arts
+
+    def __include(self, model):
+        ret = [m for m in self.model_list if m.title==model.title and m.firstduty==model.firstduty]
+        if ret:
+            return ret[0]
+        else:
+            self.model_list.append(model)
+            return model
+
+    def __parse_raw_article(self, lines):
+        model = OdsCnkiBib()
+        model.id = utils.gen_uuid4()
+        model.line = '\t'.join(lines)
+
+        for line in lines:
+            if line.startswith('【来源篇名】'):
+                title = line[len('【来源篇名】'):].strip()
+                model.title = title
+            elif line.startswith('【来源作者】'):
+                authors = line[len('【来源作者】'):].strip()
+                model.authors = authors.split('/')
+            elif line.startswith('【基    金】'):
+                funds = line[len('【基    金】'):].strip()
+                model.funds = funds.split('/')
+            elif line.startswith('【期    刊】'):
+                publication = line[len('【期    刊】'):].strip()
+                model.publication = publication
+            elif line.startswith('【机构名称】'):
+                orgs = line[len('【机构名称】'):].strip()
+                orgs = orgs.split('/')
+                orgs = [x.split('.')[0] for x in orgs]  # 去掉院系
+                orgs = [x[x.find(']')+1:] for x in orgs]    # 去掉姓名
+                model.orgs = orgs
+            elif line.startswith('【第一作者】'):
+                firstduty = line[len('【第一作者】'):].strip()
+                model.firstduty = firstduty
+            elif line.startswith('【中图类号】'):
+                clcs = line[len('【中图类号】'):].strip()
+                clcs = clcs if clcs.find('***')==-1 else ''  # 三个***表示没有中图类号
+                model.clcs = clcs.split('/')
+            elif line.startswith('【年代卷期】'):
+                pubyear = line[len('【年代卷期】'):].strip()
+                model.pubyear = pubyear.split(',')[0]
+            elif line.startswith('【关 键 词】'):
+                kws = line[len('【关 键 词】'):].strip()
+                model.kws = kws.split('/')
+        self.model_list.append(model)
+
+        # 下面分析参考文献
+        refs = lines[lines.index('【参考文献】')+1:-1]
+        if refs:
+            ref_ids = []
+            model.refs = ref_ids
+            refs = [ref[ref.find('.')+1:] for ref in refs]
+            for ref in refs:
+                model_ref = OdsCnkiBib()
+                model_ref.id = utils.gen_uuid4()
+                model_ref.pid = model.id
+                model_ref.ref_style = 'cited'
+                model_ref.line = ref
+
+                model_ref.lang = '外文' if utils.strings_is_eng(ref) else '中文'
+
+                ref_sp = ref.split('.')
+                if len(ref_sp)==1:  # 只有一个，设置为title
+                    title = ref_sp[0]
+                    model_ref.title = title
+
+                    model_ref = self.__include(model_ref)
+                    ref_ids.append(model_ref.id)
+                elif len(ref_sp)==2:    # 第0个是作者，第1个是标题
+                    authors = ref_sp[0].split(',')
+                    firstduty = authors[0] if len(authors) else ''
+                    title = ref_sp[1].split(':')[0]
+
+                    model_ref.authors = authors
+                    model_ref.firstduty = firstduty
+                    model_ref.title = title
+                    model_ref = self.__include(model_ref)
+                    ref_ids.append(model_ref.id)
+                elif len(ref_sp)==3:    # 第0个是作者，第1个是标题，第2个是来源
+                    firstduty = ref_sp[0]
+                    authors = ref_sp[0].split(',')
+                    title = ref_sp[1]
+                    s2 =ref_sp[2].split(',')
+                    publication = s2[0]
+                    pubyear = s2[1] if len(s2)>1 else ''
+                    pubyear = pubyear[:4] if len(pubyear.strip())>=4 else ''
+
+                    model_ref.authors = authors
+                    model_ref.firstduty = firstduty
+                    model_ref.title = title
+                    model_ref.publication = publication
+                    model_ref.pubyear = pubyear
+                    model_ref = self.__include(model_ref)
+                    ref_ids.append(model_ref.id)
+                elif len(ref_sp)==4:    #第0个是作者，第1个无意义，第2个是标题，第3个是来源
+                    firstduty = ref_sp[0]
+                    authors = ref_sp[0].split(',')
+                    title = ref_sp[2]
+                    publication = ref_sp[3]
+
+
+                    model_ref.authors = authors
+                    model_ref.firstduty = firstduty
+                    model_ref.title = title
+                    model_ref.publication = publication
+                    model_ref = self.__include(model_ref)
+                    ref_ids.append(model_ref.id)
+                elif len(ref_sp) == 5:  #第0个是作者，第1个是标题，第2个是来源，第3个是出版年
+                    firstduty = ref_sp[0]
+                    authors = ref_sp[0].split(',')
+                    title = ref_sp[1]
+                    publication = ref_sp[2]
+                    pubyear = ref_sp[2]
+
+
+                    model_ref.authors = authors
+                    model_ref.firstduty = firstduty
+                    model_ref.title = title
+                    model_ref.publication = publication
+                    model_ref.pubyear = pubyear
+                    model_ref = self.__include(model_ref)
+                    ref_ids.append(model_ref.id)
+                elif len(ref_sp) == 6:  #基本是外语引文，
+                    firstduty = ref_sp[0]
+                    authors = [ref_sp[0]]
+                    title = ref_sp[2]
+                    publication = ref_sp[3]
+                    pubyear = ref_sp[4]
+
+                    model_ref.authors = authors
+                    model_ref.firstduty = firstduty
+                    model_ref.title = title
+                    model_ref.publication = publication
+                    model_ref.pubyear = pubyear
+                    model_ref = self.__include(model_ref)
+                    ref_ids.append(model_ref.id)
+
 def stopwords(splitwords_userdict_path: str = None):
     if not os.path.exists(splitwords_userdict_path):
         return set()
@@ -443,5 +613,6 @@ class CutWords:
         return words
 
 
-# parser = File_cnki_self_Parser('./examples/CNKI-637277584491521250_自定义_1.txt')
-# print(parser.parse())
+# parser = File_cssci_Parser('./examples/cssciLY_20200609082408.txt')
+# parser = File_cssci_Parser('./examples/cssci法学.txt')
+# parser.parse()

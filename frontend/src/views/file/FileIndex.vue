@@ -8,6 +8,7 @@
               <el-option label="题录—GBT 7714-2015" value="题录—GBT 7714-2015"></el-option>
               <el-option label="题录—知网—es5" value="题录—知网—es5"></el-option>
               <el-option label="题录—知网—自定义格式" value="题录—知网—自定义格式"></el-option>
+              <el-option label="引文—cssci" value="引文—cssci"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="上传文件" prop="files">
@@ -67,6 +68,8 @@ export default {
       this.fileList = fileList
     },
     async submit() {
+      let loader = this.$loading.show({ container: null, canCancel: false })
+
       let _form = this.form
       for (let x in _form) {
         this.param.append(x, _form[x])
@@ -76,6 +79,7 @@ export default {
       if (resp.status != 200) return this.$message.error('上传失败')
       this.$refs['form'].resetFields()
       this.fileList = []
+      loader.hide()
       return this.$notify({
         title: '成功',
         message: '导入成功',

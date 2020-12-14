@@ -50,12 +50,13 @@
       <vxe-table-column field="kws" title="关键词" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="summary" title="摘要" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="style" title="类型" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"> </vxe-table-column>
-      <vxe-table-column field="country" title="国别" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="country" title="国家" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="province" title="地区" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="title_words" title="标题分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="summary_words" title="标题分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="lang" title="语种" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="clcs" title="分类号" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="ref_style" title="引用" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="line" title="原始数据" min-width="400" :edit-render="{ name: 'input', attrs: { disabled: editDisabled } }"></vxe-table-column>
     </vxe-table>
   </div>
@@ -75,7 +76,7 @@ export default {
   },
   mounted() {
     this.$bus.$on(this.$api.dataset_list, dsid => {
-      console.log('接收事件', dsid)
+      // console.log('接收事件', dsid)
       this.dsid = dsid
       this.fetch()
     })

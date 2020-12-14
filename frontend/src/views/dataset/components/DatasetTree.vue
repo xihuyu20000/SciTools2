@@ -60,6 +60,7 @@ export default {
         const { data: resp } = await this.$http.get(_url)
         if (resp.status == 400) return this.$message.error(resp.msg)
         node.remove()
+        this.$bus.$emit(this.$api.dataset_list, '1')
       })
     },
 

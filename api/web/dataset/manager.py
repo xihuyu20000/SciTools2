@@ -56,9 +56,14 @@ class DatasetManager:
 
     # 更新ods_bib表中的数据
     def updateOdsbib(self, form):
-        sql = "ALTER TABLE {} UPDATE {}='{}' WHERE id='{}'".format(config.tbl_ods_bib,form.k, form.v, form.id)
+        print(form)
+        if form.k in ['authors','orgs','funds','clcs']:   # 如果类型是数组，使用这个语句
+            sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(config.tbl_ods_bib,form.k, form.v.split(','), form.id)
+        else:
+            sql = "ALTER TABLE {} UPDATE {}='{}' WHERE id='{}'".format(config.tbl_ods_bib, form.k, form.v, form.id)
         self.log.info(sql)
         execute(sql)
+
 
 
 
