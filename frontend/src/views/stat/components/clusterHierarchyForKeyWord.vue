@@ -1,7 +1,7 @@
-<template><cluster-graph :cfg="cfg"></cluster-graph> </template>
+<template><cluster-hierarchy-graph :cfg="cfg"></cluster-hierarchy-graph> </template>
 
 <script>
-import ClusterGraph from '../graph/ClusterGraph'
+import ClusterHierarchyGraph from '../graph/ClusterHierarchyGraph'
 export default {
   data: function() {
     return {
@@ -10,7 +10,7 @@ export default {
       }
     }
   },
-  components: { ClusterGraph }
+  components: { ClusterHierarchyGraph }
 }
 </script>
 

@@ -10,6 +10,7 @@ import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 
+import clusterBurstingForKeyWord from '@/views/stat/components/clusterBurstingForKeyWord.vue'
 import clusterHierarchyForKeyWord from '@/views/stat/components/clusterHierarchyForKeyWord.vue'
 import clusterSpectralForKeyWord from '@/views/stat/components/clusterSpectralForKeyWord.vue'
 import clusterTrendForKeyWord from '@/views/stat/components/clusterTrendForKeyWord.vue'
@@ -70,6 +71,11 @@ const routes = [
         name: '知识图谱',
         component: StatIndex,
         children: [
+          {
+            path: '/cluster/bursting/keyword/:dsid',
+            name: '关键词突现图谱',
+            component: clusterBurstingForKeyWord
+          },
           {
             path: '/cluster/hierarchy/keyword/:dsid',
             name: '关键词层级聚类',

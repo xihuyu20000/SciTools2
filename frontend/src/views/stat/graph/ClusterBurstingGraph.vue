@@ -13,7 +13,6 @@ export default {
   props: ['cfg'],
   data: function() {
     return {
-      forceData: { nodes: [], edges: [] },
       optionData: {},
       option: {
         title: {
@@ -47,72 +46,87 @@ export default {
           }
         },
         tooltip: {
-          // 弹窗组件
-          show: true,
-          trigger: 'item',
-          formatter: '{b}: {c}'
+          trigger: 'axis',
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter: function(params) {
+            var tar
+            if (params[1].value !== '-') {
+              tar = params[1]
+            } else {
+              tar = params[0]
+            }
+            return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value
+          }
         },
         legend: {
-          show: true
+          data: ['上升', '下降']
         },
-        series: []
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        yAxis: {
+          type: 'category',
+          splitLine: { show: false },
+          data: (function() {
+            var list = ['大数据', '数字人文', '数字图书馆', '智慧图书馆', '可视化', '知识图谱', '科学计量', '阅读推广', '公共图书馆', '十四五规划', '用户服务']
+            return list
+          })()
+        },
+        xAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '辅助',
+            type: 'bar',
+            stack: '总量',
+            itemStyle: {
+              barBorderColor: 'rgba(0,0,0,0)',
+              color: 'rgba(0,0,0,0)'
+            },
+            emphasis: {
+              itemStyle: {
+                barBorderColor: 'rgba(0,0,0,0)',
+                color: 'rgba(0,0,0,0)'
+              }
+            },
+            data: [0, 900, 1245, 1530, 1376, 1376, 1511, 1689, 1856, 1495, 1292]
+          },
+          {
+            name: '上升',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: true,
+              position: 'top'
+            },
+            data: [900, 345, 393, '-', '-', 135, 178, 286, '-', '-', '-']
+          },
+          {
+            name: '下降',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: true,
+              position: 'bottom'
+            },
+            data: ['-', '-', '-', 108, 154, '-', '-', '-', 119, 361, 203]
+          }
+        ]
       }
     }
   },
   watch: {},
   methods: {
     async fetch() {
-      const { data: res } = await this.$http.get(this.cfg.url)
-      this.forceData = res.data.value
-
-      this.option.series = [
-        {
-          type: 'graph',
-          layout: 'force',
-          draggable: true, // 节点可拖拽
-          focusNodeAdjacency: true, // 鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点
-          hoverAnimation: true, // 鼠标 hover 节点的提示动画效果
-          label: { show: false },
-          lineStyle: {
-            width: 0.5,
-            curveness: 0.3,
-            opacity: 0.7
-          },
-          roam: 'move', //开启鼠标缩放和平移漫游
-          force: {
-            layoutAnimation: true, // 是否显示布局动画
-            edgeLength: 5, // 节点之间的距离
-            repulsion: 50, // 节点之间的斥力因子
-            gravity: 0.5 // 向心节点的引力因子
-          },
-          emphasis: {
-            label: {
-              position: 'right',
-              show: true
-            }
-          },
-          // progressiveThreshold: 700,
-          data: this.forceData.nodes.map(function(node) {
-            return {
-              id: node.id,
-              name: node.label,
-              symbol: 'circle', // 节点类型： 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
-              symbolSize: node.size, // 节点标记的大小
-              itemStyle: {
-                color: node.color, // 颜色可以线性渐变和径向渐变，需要看api
-                shadowColor: 'rgba(0, 0, 0, 0.5)', // 阴影颜色
-                shadowBlur: 20 // 图形阴影的模糊大小
-              }
-            }
-          }),
-          edges: this.forceData.edges.map(function(edge) {
-            return {
-              source: edge.sourceID,
-              target: edge.targetID
-            }
-          })
-        }
-      ]
+      // const { data: res } = await this.$http.get(this.cfg.url)
+      // this.forceData = res.data.value
 
       // 更新数据
       this.optionData = { option: this.option }

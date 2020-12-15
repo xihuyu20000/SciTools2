@@ -13,7 +13,7 @@ export default {
   props: ['cfg'],
   data: function() {
     return {
-      forceData: { nodes: [], edges: [] },
+      treeData: {},
       optionData: {},
       option: {
         title: {
@@ -63,13 +63,13 @@ export default {
   methods: {
     async fetch() {
       const { data: res } = await this.$http.get(this.cfg.url)
-      this.forceData = res.data.value
+      this.treeData = res.data.value
 
       this.option.series = [
         {
           type: 'tree',
           layout: 'orthogonal',
-          data: [data],
+          data: [this.treeData],
 
           top: '1%',
           left: '7%',

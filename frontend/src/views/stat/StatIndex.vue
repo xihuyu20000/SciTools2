@@ -2,7 +2,7 @@
   <el-container>
     <el-aside width="300px">
       <div>
-        <el-menu default-active="2" class="el-menu-vertical-demo" @select="selectMenu">
+        <el-menu :default-active="target_menu" class="el-menu-vertical-demo" @select="selectMenu">
           <div style="display:flex;justify-content:flex-end;">
             <span>数据集：</span>
             <el-select v-model="target_dataset" placeholder="请选择" @change="chooseDataset">
@@ -14,7 +14,7 @@
               <i class="el-icon-location"></i>
               <span>{{ item.title }}（{{ item.children.length }}）</span>
             </template>
-            <el-menu-item :index="sub.path" v-for="(sub, index) in item.children" :key="index">【{{ index + 1 }}】{{ sub.title }}</el-menu-item>
+            <el-menu-item :index="sub.path" v-for="(sub, index) in item.children" :key="sub.path">【{{ index + 1 }}】{{ sub.title }}</el-menu-item>
           </el-submenu>
         </el-menu>
       </div>
@@ -28,6 +28,7 @@ export default {
   data: function() {
     return {
       target_dataset: '',
+      target_menu: '',
       datasets: [],
       menu: [
         {
@@ -74,7 +75,8 @@ export default {
           children: [
             { title: '关键词谱聚类', path: '/cluster/spectral/keyword' },
             { title: '关键词层次聚类', path: '/cluster/hierarchy/keyword' },
-            { title: '关键词聚类趋势', path: '/cluster/trend/keyword' }
+            { title: '关键词聚类趋势', path: '/cluster/trend/keyword' },
+            { title: '关键词突现图谱', path: '/cluster/bursting/keyword' }
           ]
         },
         {
@@ -95,6 +97,10 @@ export default {
   created() {
     this.fetch()
     this.target_dataset = sessionStorage.getItem('target_dataset')
+    this.target_menu = sessionStorage.getItem('target_menu')
+    this.$router.push({
+      path: this.target_menu + `/${this.target_dataset}`
+    })
   },
   methods: {
     async fetch() {
@@ -117,6 +123,7 @@ export default {
       this.$router.push({
         path: index + `/${this.target_dataset}`
       })
+      sessionStorage.setItem('target_menu', index)
     }
   },
   components: {}

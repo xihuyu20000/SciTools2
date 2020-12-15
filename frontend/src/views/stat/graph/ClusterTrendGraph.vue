@@ -11,11 +11,11 @@
 <script>
 var axisData = ['2001', '2002', '2003', '2004', '2005']
 var data = [
-  { value: '0', name: '昆山XX设计有限公司0' },
-  { value: '1', name: '上海XX设计有限公司1' },
-  { value: '2', name: '赵某某2' },
-  { value: '3', name: '主要人员3' },
-  { value: '4', name: '苏州XX实业有限公司4' }
+  { value: '0', name: '数字图书馆学' },
+  { value: '5', name: '数字人文' },
+  { value: '12', name: '知识图谱' },
+  { value: '30', name: '科学计量' },
+  { value: '40', name: '智慧图书馆' }
 ]
 console.log('数据', data)
 var links = data.map(function(item, i) {
@@ -50,7 +50,7 @@ export default {
     })
     this.option = {
       title: {
-        text: '笛卡尔坐标系上的 Graph'
+        text: '关键词聚类趋势图'
       },
       tooltip: {},
       xAxis: {
