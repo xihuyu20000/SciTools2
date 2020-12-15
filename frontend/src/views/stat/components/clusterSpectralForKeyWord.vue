@@ -1,7 +1,7 @@
-<template><cluster-graph :cfg="cfg"></cluster-graph> </template>
+<template><cluster-spectral-graph :cfg="cfg"></cluster-spectral-graph> </template>
 
 <script>
-import ClusterGraph from '../graph/ClusterGraph'
+import ClusterSpectralGraph from '../graph/ClusterSpectralGraph'
 export default {
   data: function() {
     return {
@@ -10,7 +10,7 @@ export default {
       }
     }
   },
-  components: { ClusterGraph }
+  components: { ClusterSpectralGraph }
 }
 </script>
 

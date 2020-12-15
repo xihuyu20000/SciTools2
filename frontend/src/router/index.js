@@ -10,8 +10,9 @@ import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 
-import clusterForKeyWord from '@/views/stat/components/clusterForKeyWord.vue'
-import clustertrendForKeyWord from '@/views/stat/components/clustertrendForKeyWord.vue'
+import clusterHierarchyForKeyWord from '@/views/stat/components/clusterHierarchyForKeyWord.vue'
+import clusterSpectralForKeyWord from '@/views/stat/components/clusterSpectralForKeyWord.vue'
+import clusterTrendForKeyWord from '@/views/stat/components/clusterTrendForKeyWord.vue'
 
 import coocMatrixForKeyWord from '@/views/stat/components/coocMatrixForKeyWord.vue'
 import coocMatrixForTopicWord from '@/views/stat/components/coocMatrixForTopicWord.vue'
@@ -70,14 +71,19 @@ const routes = [
         component: StatIndex,
         children: [
           {
-            path: '/cluster/keyword/:dsid',
-            name: '关键词聚类',
-            component: clusterForKeyWord
+            path: '/cluster/hierarchy/keyword/:dsid',
+            name: '关键词层级聚类',
+            component: clusterHierarchyForKeyWord
           },
           {
-            path: '/clustertrend/keyword/:dsid',
+            path: '/cluster/spectral/keyword/:dsid',
+            name: '关键词谱聚类',
+            component: clusterSpectralForKeyWord
+          },
+          {
+            path: '/cluster/trend/keyword/:dsid',
             name: '关键词聚类趋势',
-            component: clustertrendForKeyWord
+            component: clusterTrendForKeyWord
           },
           {
             path: '/coocMatrix/keyword/:dsid',

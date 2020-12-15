@@ -12,10 +12,11 @@ base_file_dir = '.'
 # 数据源类型
 ds_cnki_es5 = '题录—知网—es5'
 ds_cnki_self = '题录—知网—自定义格式'
-ds_gbt_7714_2015 = '题录—GBT 7714-2015'
+ds_gbt_7714_2015 = '题录—国标—GBT 7714-2015'
 ds_note_express = '题录—知网—NoteExpress'
 ds_cnki_html = 'cnki_html'
 ds_cssci_format = '引文—cssci'
+ds_wos_tab_format = '题录—WOS—制表符分割'
 
 # 数据字典
 dict_stop = 'dict_stop'  # 停用词词典

@@ -6,7 +6,7 @@ export default {
   data: function() {
     return {
       cfg: {
-        url: '/api/stat/clustertrend/keyword/' + this.$route.params.dsid
+        url: '/api/stat/cluster/trend/keyword/' + this.$route.params.dsid
       }
     }
   },

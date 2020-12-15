@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="300px">
-      <dataset-tree></dataset-tree>
+      <dataset-tree style="margin-top:20px"></dataset-tree>
     </el-aside>
     <el-main> <dataset-table></dataset-table></el-main>
   </el-container>

@@ -12349,9 +12349,26 @@ def scatter_coockeyword(fileId):
             'data': {'xData': xData, 'yData': yData, 'value': points}}
 
 
-# 关键词聚类
-@router.get("/cluster/keyword/{fileId}")
-def cluster_keyword(fileId):
+# 关键词层级聚类
+@router.get("/cluster/hierarchy/keyword/{fileId}")
+def cluster_hierarchy_keyword(fileId):
+    xData = cooc_matrix_data[0][1:]
+    yData = [x[0] for x in cooc_matrix_data[1:]]
+
+    value = cooc_matrix_data[1:]
+    value = [x[1:] for x in value]
+    points = []
+    for row in range(len(value)):
+        for col in range(len(value[0])):
+            points.append([int(row), int(col), int(value[row][col]) if int(value[row][col]) else '-'])
+
+    return {'config': {'titleText': '', 'xAxisName': '', 'yAxisName': ''},
+            'data': {'xData': xData, 'yData': yData, 'value': forcetrend_data}}
+
+
+# 关键词谱聚类
+@router.get("/cluster/spectral/keyword/{fileId}")
+def cluster_spectral_keyword(fileId):
     xData = cooc_matrix_data[0][1:]
     yData = [x[0] for x in cooc_matrix_data[1:]]
 
@@ -12366,8 +12383,8 @@ def cluster_keyword(fileId):
             'data': {'xData': xData, 'yData': yData, 'value': force_data}}
 
 # 关键词趋势聚类
-@router.get("/clustertrend/keyword/{fileId}")
-def clustertrend_keyword(fileId):
+@router.get("/cluster/trend/keyword/{fileId}")
+def cluster_trend_keyword(fileId):
     xData = cooc_matrix_data[0][1:]
     yData = [x[0] for x in cooc_matrix_data[1:]]
 

@@ -20,7 +20,7 @@ def create_dim_config():
             style String(16) NOT NULL,
             values Array(String),
             alias String(512)
-            )ENGINE=MergeTree() ORDER BY (style) PARTITION BY (userid);
+            )ENGINE=MergeTree() ORDER BY (style);
         """.format(TBL_NAME)
     return __create(sql, TBL_NAME)
 

@@ -5,7 +5,7 @@
         <el-menu default-active="2" class="el-menu-vertical-demo" @select="selectMenu">
           <div style="display:flex;justify-content:flex-end;">
             <span>数据集：</span>
-            <el-select v-model="target_dataset" placeholder="请选择">
+            <el-select v-model="target_dataset" placeholder="请选择" @change="chooseDataset">
               <el-option v-for="item in datasets" :key="item.dsid" :label="item.dsname" :value="item.dsid"> </el-option>
             </el-select>
           </div>
@@ -72,8 +72,9 @@ export default {
         {
           title: '网络聚类',
           children: [
-            { title: '关键词聚类', path: '/cluster/keyword' },
-            { title: '关键词聚类趋势', path: '/clustertrend/keyword' }
+            { title: '关键词谱聚类', path: '/cluster/spectral/keyword' },
+            { title: '关键词层次聚类', path: '/cluster/hierarchy/keyword' },
+            { title: '关键词聚类趋势', path: '/cluster/trend/keyword' }
           ]
         },
         {
@@ -93,6 +94,7 @@ export default {
   },
   created() {
     this.fetch()
+    this.target_dataset = sessionStorage.getItem('target_dataset')
   },
   methods: {
     async fetch() {
@@ -100,6 +102,9 @@ export default {
       const { data: resp } = await this.$http.get(_url)
       if (resp.status == 400) return this.$message.error(resp.msg)
       this.datasets = resp.data
+    },
+    chooseDataset(item) {
+      sessionStorage.setItem('target_dataset', item)
     },
     selectMenu(index) {
       if (this.target_dataset == '')

@@ -16,10 +16,9 @@ def create_dim_org():
     """
     sql = """
             CREATE TABLE  {}(
-            orgid String(64) NOT NULL,
             orgname String(512) NOT NULL,
             province String(100)
-            )ENGINE=MergeTree() ORDER BY (orgid) PARTITION BY (orgid);
+            )ENGINE=MergeTree() ORDER BY (orgname);
         """.format(TBL_NAME)
     return __create(sql, TBL_NAME)
 
@@ -39,5 +38,5 @@ def truncate_dim_org():
 
 
 def insert_dim_org(params: Optional[List[dict]]):
-    sql = """ INSERT INTO {} (orgid, orgname, province) VALUES """.format(TBL_NAME)
+    sql = """ INSERT INTO {} (orgname, province) VALUES """.format(TBL_NAME)
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))

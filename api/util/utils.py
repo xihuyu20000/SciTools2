@@ -223,7 +223,7 @@ class Logger:
 
         # 创建一个handler，用于写入日志文件
         log_path = os.path.dirname(os.path.abspath(__file__))
-        logname = log_path + '/' + 'out.log'  # 指定输出的日志文件名
+        logname = log_path + '/' + 'out.txt'  # 指定输出的日志文件名
         # fh = logging.handlers.TimedRotatingFileHandler(logname, when='M', interval=1, backupCount=5,encoding='utf-8')  # 指定utf-8格式编码，避免输出的日志文本乱码
         fh = logging.FileHandler(logname, mode='w', encoding='utf-8')  # 不拆分日志文件，a指追加模式,w为覆盖模式
         fh.setLevel(logging.DEBUG)

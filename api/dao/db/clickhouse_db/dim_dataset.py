@@ -21,7 +21,7 @@ def create_dim_dataset():
             dsid String(64) NOT NULL,
             pid String(64) ,
             dsname String(128) NOT NULL
-            )ENGINE=MergeTree() ORDER BY (dsid) PARTITION BY (dsid);
+            )ENGINE=MergeTree() ORDER BY (dsid);
         """.format(TBL_NAME)
     return __create(sql, TBL_NAME)
 

@@ -18,6 +18,7 @@ def parsefiles(format, files: List[str]) -> List[OdsCnkiBib]:
     """
     根据文件类型，解析文件
     """
+
     def __parse_onefile(file):
         result = []
         if format == config.ds_gbt_7714_2015:
@@ -30,12 +31,16 @@ def parsefiles(format, files: List[str]) -> List[OdsCnkiBib]:
             result = File_cnki_self_Parser(file).parse()
         elif format == config.ds_cssci_format:
             result = File_cssci_Parser(file).parse()
+        elif format == config.ds_wos_tab_format:
+            result = File_wos_tab_Parser(file).parse()
+
         return result
 
     datas = []
     for file in files:
         datas.extend(__parse_onefile(file))
     return datas
+
 
 class File_cnki_es5_Parser:
     def __init__(self, filepath):
@@ -118,6 +123,7 @@ class File_cnki_es5_Parser:
         else:
             return '不确定值' + v
 
+
 class File_gbt_7714_2015_Parser:
     def __init__(self, filepath):
         # GBT 7714-2015格式，参考http://manu49.magtech.com.cn/journalx_gdgyzrb/UserFiles/File/GBT7714-2015.pdf
@@ -188,7 +194,6 @@ class File_gbt_7714_2015_Parser:
 
         return entity
 
-
     def __parse_cn_firstduty_authors(self, s: str):
         ss = s.split(',')
         return ss[0], ss
@@ -199,10 +204,11 @@ class File_gbt_7714_2015_Parser:
 
     def __parse_cn_publication_pubyear(self, s):
         s22 = s.split(',')
-        if len(s22) ==1:
+        if len(s22) == 1:
             return s22[0], ''
         else:
             return s22[0], s22[1].split(':')[0].strip()
+
 
 class File_noteExpress_Parser:
     def __init__(self, filepath):
@@ -263,6 +269,7 @@ class File_noteExpress_Parser:
 
         return result
 
+
 class File_cnki_html_Parser:
     def __init__(self, filepath):
         """
@@ -319,6 +326,7 @@ class File_cnki_html_Parser:
             url = ref.xpath('a/@href').extract_first()
             print('参考文献', name, url)
 
+
 class File_cnki_self_Parser:
     def __init__(self, filepath):
         """
@@ -328,7 +336,6 @@ class File_cnki_self_Parser:
         """
         if os.path.exists(filepath):
             self.lines = utils.read_lines(filepath)
-
 
     def parse(self):
         art_lines = self.__build_raw_articles()
@@ -344,7 +351,6 @@ class File_cnki_self_Parser:
                 temp_art = []
             temp_art.append(line)
         return arts
-
 
     def __parse_raw_article(self, lines):
         model = OdsCnkiBib()
@@ -399,6 +405,7 @@ class File_cnki_self_Parser:
 
         return model
 
+
 class File_cssci_Parser:
     def __init__(self, filepath):
         """
@@ -429,7 +436,7 @@ class File_cssci_Parser:
         return arts
 
     def __include(self, model):
-        ret = [m for m in self.model_list if m.title==model.title and m.firstduty==model.firstduty]
+        ret = [m for m in self.model_list if m.title == model.title and m.firstduty == model.firstduty]
         if ret:
             return ret[0]
         else:
@@ -458,14 +465,14 @@ class File_cssci_Parser:
                 orgs = line[len('【机构名称】'):].strip()
                 orgs = orgs.split('/')
                 orgs = [x.split('.')[0] for x in orgs]  # 去掉院系
-                orgs = [x[x.find(']')+1:] for x in orgs]    # 去掉姓名
+                orgs = [x[x.find(']') + 1:] for x in orgs]  # 去掉姓名
                 model.orgs = orgs
             elif line.startswith('【第一作者】'):
                 firstduty = line[len('【第一作者】'):].strip()
                 model.firstduty = firstduty
             elif line.startswith('【中图类号】'):
                 clcs = line[len('【中图类号】'):].strip()
-                clcs = clcs if clcs.find('***')==-1 else ''  # 三个***表示没有中图类号
+                clcs = clcs if clcs.find('***') == -1 else ''  # 三个***表示没有中图类号
                 model.clcs = clcs.split('/')
             elif line.startswith('【年代卷期】'):
                 pubyear = line[len('【年代卷期】'):].strip()
@@ -476,11 +483,11 @@ class File_cssci_Parser:
         self.model_list.append(model)
 
         # 下面分析参考文献
-        refs = lines[lines.index('【参考文献】')+1:-1]
+        refs = lines[lines.index('【参考文献】') + 1:-1]
         if refs:
             ref_ids = []
             model.refs = ref_ids
-            refs = [ref[ref.find('.')+1:] for ref in refs]
+            refs = [ref[ref.find('.') + 1:] for ref in refs]
             for ref in refs:
                 model_ref = OdsCnkiBib()
                 model_ref.id = utils.gen_uuid4()
@@ -491,13 +498,13 @@ class File_cssci_Parser:
                 model_ref.lang = '外文' if utils.strings_is_eng(ref) else '中文'
 
                 ref_sp = ref.split('.')
-                if len(ref_sp)==1:  # 只有一个，设置为title
+                if len(ref_sp) == 1:  # 只有一个，设置为title
                     title = ref_sp[0]
                     model_ref.title = title
 
                     model_ref = self.__include(model_ref)
                     ref_ids.append(model_ref.id)
-                elif len(ref_sp)==2:    # 第0个是作者，第1个是标题
+                elif len(ref_sp) == 2:  # 第0个是作者，第1个是标题
                     authors = ref_sp[0].split(',')
                     firstduty = authors[0] if len(authors) else ''
                     title = ref_sp[1].split(':')[0]
@@ -507,14 +514,14 @@ class File_cssci_Parser:
                     model_ref.title = title
                     model_ref = self.__include(model_ref)
                     ref_ids.append(model_ref.id)
-                elif len(ref_sp)==3:    # 第0个是作者，第1个是标题，第2个是来源
+                elif len(ref_sp) == 3:  # 第0个是作者，第1个是标题，第2个是来源
                     firstduty = ref_sp[0]
                     authors = ref_sp[0].split(',')
                     title = ref_sp[1]
-                    s2 =ref_sp[2].split(',')
+                    s2 = ref_sp[2].split(',')
                     publication = s2[0]
-                    pubyear = s2[1] if len(s2)>1 else ''
-                    pubyear = pubyear[:4] if len(pubyear.strip())>=4 else ''
+                    pubyear = s2[1] if len(s2) > 1 else ''
+                    pubyear = pubyear[:4] if len(pubyear.strip()) >= 4 else ''
 
                     model_ref.authors = authors
                     model_ref.firstduty = firstduty
@@ -523,12 +530,11 @@ class File_cssci_Parser:
                     model_ref.pubyear = pubyear
                     model_ref = self.__include(model_ref)
                     ref_ids.append(model_ref.id)
-                elif len(ref_sp)==4:    #第0个是作者，第1个无意义，第2个是标题，第3个是来源
+                elif len(ref_sp) == 4:  # 第0个是作者，第1个无意义，第2个是标题，第3个是来源
                     firstduty = ref_sp[0]
                     authors = ref_sp[0].split(',')
                     title = ref_sp[2]
                     publication = ref_sp[3]
-
 
                     model_ref.authors = authors
                     model_ref.firstduty = firstduty
@@ -536,14 +542,13 @@ class File_cssci_Parser:
                     model_ref.publication = publication
                     model_ref = self.__include(model_ref)
                     ref_ids.append(model_ref.id)
-                elif len(ref_sp) == 5:  #第0个是作者，第1个是标题，第2个是来源，第3个是出版年
+                elif len(ref_sp) == 5:  # 第0个是作者，第1个是标题，第2个是来源，第3个是出版年
                     firstduty = ref_sp[0]
                     authors = ref_sp[0].split(',')
                     title = ref_sp[1]
                     publication = ref_sp[2]
                     pubyear = ref_sp[2]
 
-
                     model_ref.authors = authors
                     model_ref.firstduty = firstduty
                     model_ref.title = title
@@ -551,7 +556,7 @@ class File_cssci_Parser:
                     model_ref.pubyear = pubyear
                     model_ref = self.__include(model_ref)
                     ref_ids.append(model_ref.id)
-                elif len(ref_sp) == 6:  #基本是外语引文，
+                elif len(ref_sp) == 6:  # 基本是外语引文，
                     firstduty = ref_sp[0]
                     authors = [ref_sp[0]]
                     title = ref_sp[2]
@@ -566,6 +571,71 @@ class File_cssci_Parser:
                     model_ref = self.__include(model_ref)
                     ref_ids.append(model_ref.id)
 
+
+import pandas as pd
+
+
+class File_wos_tab_Parser:
+    def __init__(self, filepath):
+        """
+        解析wos使用tab分割的文本
+        :param filepath: 文件路径
+        :return: 解析后的数据列表
+        """
+        self.filepath = ''
+        if os.path.exists(filepath):
+            self.filepath = filepath
+
+    def __parse(self, row):
+        model = OdsCnkiBib()
+        model.id = utils.gen_uuid4()
+        model.line = str(row)
+
+        model.title = self.__isnan(row['TI'])
+        model.style = self.__style(row['PT'])
+        s_au = self.__isnan(row['AU']).split(';')
+        model.firstduty = s_au[0]
+        model.authors = s_au
+
+        orgs = self.__isnan(row['SP'])
+        orgs = orgs.split(';')
+        orgs = [org.strip() for org in orgs]
+        model.orgs = orgs
+
+        ##### 关键词，没找到
+
+        summary = self.__isnan(row['AB'])
+        model.summary = summary
+
+        ##### 基金，没找到
+        model.pubyear = str(self.__isnan(row['PY']))
+        model.publication = self.__isnan(row['SO'])
+
+        ##### 国家没找到
+        model.country = '国外'
+        model.lang = '外文'
+
+        return model
+
+    def parse(self):
+        df = pd.read_csv(self.filepath, sep='\t', dtype=str)
+        return [self.__parse(row) for index, row in df.iterrows()]
+
+    def __isnan(self, s):
+        return '' if s != s else s  # 如果是nan表示空
+
+    def __style(self, s):
+        if s == 'J':
+            return '期刊'
+        elif s == 'B':
+            return '书籍'
+        elif s == 'S':
+            return '丛书'
+        elif s == 'P':
+            return '专利'
+        return ''
+
+
 def stopwords(splitwords_userdict_path: str = None):
     if not os.path.exists(splitwords_userdict_path):
         return set()
@@ -578,6 +648,7 @@ def stopwords(splitwords_userdict_path: str = None):
     # nltk_stop_words = set(nltk.corpus.stopwords.words('english'))
     # return set(lines) | nltk_stop_words
     return set(lines)
+
 
 class CutWords:
     def __init__(self, splitwords_userdict_path: str = ''):
@@ -613,6 +684,5 @@ class CutWords:
         return words
 
 
-# parser = File_cssci_Parser('./examples/cssciLY_20200609082408.txt')
-# parser = File_cssci_Parser('./examples/cssci法学.txt')
-# parser.parse()
+# from api.dao.db.clickhouse_db import ods_bib
+# parser = File_wos_tab_Parser('./examples/wos_tab_utf8数字人文.txt')

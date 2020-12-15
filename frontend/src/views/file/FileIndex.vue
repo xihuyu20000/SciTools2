@@ -5,9 +5,10 @@
         <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="right">
           <el-form-item label="内容类型" prop="style">
             <el-select v-model="form.style" placeholder="请选择类型">
-              <el-option label="题录—GBT 7714-2015" value="题录—GBT 7714-2015"></el-option>
+              <el-option label="题录—国标—GBT 7714-2015" value="题录—国标—GBT 7714-2015"></el-option>
               <el-option label="题录—知网—es5" value="题录—知网—es5"></el-option>
               <el-option label="题录—知网—自定义格式" value="题录—知网—自定义格式"></el-option>
+              <el-option label="题录—WOS—制表符分割" value="题录—WOS—制表符分割"></el-option>
               <el-option label="引文—cssci" value="引文—cssci"></el-option>
             </el-select>
           </el-form-item>

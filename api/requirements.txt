@@ -16,3 +16,4 @@ jieba
 nltk
 lxml
 scrapy
+scikit-learn
