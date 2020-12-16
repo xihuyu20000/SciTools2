@@ -28,7 +28,6 @@ export default {
   data: function() {
     return {
       target_dataset: '',
-      target_menu: '',
       datasets: [],
       menu: [
         {
@@ -87,20 +86,18 @@ export default {
             { title: '知识关联', path: '/kg/connect' }
           ]
         },
-        { title: '作者评价', children: [{ title: '', path: '' }] },
-        { title: '机构评价', children: [{ title: '', path: '' }] },
-        { title: '国家评价', children: [{ title: '', path: '' }] },
-        { title: '期刊评价', children: [{ title: '', path: '' }] }
+        { title: '作者评价', children: [{ title: 'aa', path: '' }] },
+        { title: '机构评价', children: [{ title: 'aa', path: '' }] },
+        { title: '国家评价', children: [{ title: 'aa', path: '' }] },
+        { title: '期刊评价', children: [{ title: 'aa', path: '' }] }
       ]
     }
   },
   created() {
     this.fetch()
+
     this.target_dataset = sessionStorage.getItem('target_dataset')
-    this.target_menu = sessionStorage.getItem('target_menu')
-    this.$router.push({
-      path: this.target_menu + `/${this.target_dataset}`
-    })
+    if (this.target_dataset == null) return // 初次加载是空，返回
   },
   methods: {
     async fetch() {
@@ -123,7 +120,6 @@ export default {
       this.$router.push({
         path: index + `/${this.target_dataset}`
       })
-      sessionStorage.setItem('target_menu', index)
     }
   },
   components: {}

@@ -1,7 +1,7 @@
 from typing import Optional, List
 
 from api import config
-from api.dao.db.clickhouse_db import __create, __drop, __truncate, __execute, __query
+from api.dao.db import __create, __drop, __truncate, __execute, __query
 
 TBL_NAME = config.tbl_ods_bib
 
@@ -9,6 +9,43 @@ TBL_NAME = config.tbl_ods_bib
 题录数据，
 指的是知网、维普等的题录信息。包括分词后的数据也作为字段保存。
 '''
+class OdsCnkiBib:
+    def __init__(self):
+        self.dsid = ''
+        self.id = ''
+        self.pid = ''           # 参考文献指向施引文献
+        self.style = ''       # 如期刊、回忆录、图书
+        self.title = ''          # 标题
+        self.title_words = []    # 标题分词
+        self.firstduty = ''      # 一作
+        self.authors = []        # 作者
+        self.orgs = []           # 机构
+        self.kws = []            # 关键词
+        self.summary = ''        # 摘要
+        self.summary_words = []  # 摘要分词
+        self.funds = []          # 基金
+        self.funds_style = []    # 基金类型
+        self.subject1 = ''       # 一级学科分类
+        self.subject2 = ''       # 二级学科分类
+        self.pubyear = ''        # 出版年
+        self.clcs = []           # 主题分类
+        self.publication = ''    # 出版物
+        self.country = '中国'     # 国家
+        self.province = ''       # 地区
+        self.lang = '中文'        # 语种：中文/外文
+        self.ref_style = 'citing'     # 引用类型，citing/cited
+        self.refs = []          # 参考文献集合
+        self.line = ''           # 原始记录
+
+    def to_dict(self):
+        return self.__dict__
+
+    def __repr__(self):
+        return str(self.to_dict())
+
+    def keys(self):
+        return ','.join([k for k,v in vars(self).items()])
+
 
 def create_ods_bib():
     """
@@ -29,10 +66,10 @@ def create_ods_bib():
         summary String(2048),
         summary_words Array(String),
         funds Array(String),
+        funds_style Array(String),
         subject1 Array(String),
         subject2 Array(String),
         pubyear String(8),
-        pubtime String(16),
         clcs Array(String),
         publication String(100),
         country String(100),
@@ -66,8 +103,8 @@ def insert_ods_bib(params: Optional[List[dict]]):
     :return 返回两个值：dsid、插入条数
     """
     sql = """
-        INSERT INTO {} (dsid, id, pid, style, title, title_words, firstduty, authors, orgs, kws, summary, summary_words, funds, pubyear, pubtime, clcs, publication, country, province, lang, ref_style, refs, line) VALUES
-    """.format(TBL_NAME)
+        INSERT INTO {} ({}) VALUES
+    """.format(TBL_NAME, OdsCnkiBib().keys())
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
 
 

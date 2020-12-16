@@ -2,7 +2,7 @@
 api/db 所有的数据库操作，不区分数据库
 '''
 from api import config
-from api.dao.db.clickhouse_db import dim_config, dim_dataset, dim_user, ods_bib
+from api.dao.db import dim_dataset, dim_user, ods_bib, dim_config
 
 ##################################################################################
 
@@ -17,7 +17,7 @@ create_dim_dataset = dim_dataset.create_dim_dataset if config.db_is_clickhouse e
 drop_dim_dataset = dim_dataset.drop_dim_dataset if config.db_is_clickhouse else None
 truncate_dim_dataset = dim_dataset.truncate_dim_dataset if config.db_is_clickhouse else None
 insert_dim_dataset = dim_dataset.insert_dim_dataset if config.db_is_clickhouse else None
-find_all_names = dim_dataset.find_all_names if config.db_is_clickhouse else None
+find_dim_dataset = dim_dataset.find_dim_dataset if config.db_is_clickhouse else None
 ##################################################################################
 
 create_dim_user = dim_user.create_dim_user if config.db_is_clickhouse else None

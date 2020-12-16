@@ -1,7 +1,7 @@
 import unittest
-from api import config, util
-from api.dao.db.clickhouse_db import ods_bib
-from api.model import __init__
+from api import config
+from api.dao.db import ods_bib
+from api.dao.db.ods_bib import OdsCnkiBib
 from api.util import utils
 
 
@@ -20,10 +20,10 @@ class TestUtil(unittest.TestCase):
             sql = 'select * from {}'.format(config.tbl_ods_bib)
             result1 = ods_bib.find_ods_bib(sql)
 
-            entity1 = __init__.OdsCnkiBib()
+            entity1 = OdsCnkiBib()
             entity1.fileid = utils.gen_uuid1()
 
-            entity2 = __init__.OdsCnkiBib()
+            entity2 = OdsCnkiBib()
             entity2.fileid = utils.gen_uuid1()
 
             ods_bib.insert_ods_bib([entity1.to_dict(), entity2.to_dict()])

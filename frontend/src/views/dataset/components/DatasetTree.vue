@@ -38,6 +38,7 @@ export default {
           return {
             name: v.dsname,
             id: v.dsid,
+            data: v, // 自定义属性，保存数据
             dragDisabled: true,
             addTreeNodeDisabled: true,
             addLeafNodeDisabled: true,
@@ -71,7 +72,7 @@ export default {
     },
 
     onClick(params) {
-      this.$bus.$emit(this.$api.dataset_list, params.id)
+      this.$bus.$emit(this.$api.dataset_list, params.data)
     }
   }
 }

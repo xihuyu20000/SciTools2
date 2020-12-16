@@ -19,7 +19,7 @@ class FileManager:
             entity.dsid = dsid
         datas = [data.to_dict() for data in datas]
         dao.insert_ods_bib(datas)
-        dao.insert_dim_dataset([{'dsid':dsid, 'dsname':file_name}])
+        dao.insert_dim_dataset([{'dsid':dsid, 'dsname':file_name, 'status':'未解析'}])
 
 
 fileManager = FileManager()

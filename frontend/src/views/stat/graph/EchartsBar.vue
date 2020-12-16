@@ -105,7 +105,20 @@ export default {
             data: [],
             type: 'bar',
             showBackground: true,
-            backgroundStyle: { color: 'rgba(220, 220, 220, 0.8)' }
+            backgroundStyle: { color: 'rgba(220, 220, 220, 0.8)' },
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true, //开启显示
+                  position: 'top', //在上方显示
+                  textStyle: {
+                    //数值样式
+                    color: 'black',
+                    fontSize: 16
+                  }
+                }
+              }
+            }
           }
         ]
       }

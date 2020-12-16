@@ -1,7 +1,7 @@
 from typing import Optional, List
 
 from api import config
-from api.dao.db.clickhouse_db import __create, __drop, __truncate, __execute
+from api.dao.db import __create, __drop, __truncate, __execute
 
 TBL_NAME = config.tbl_dim_config
 
@@ -9,6 +9,9 @@ TBL_NAME = config.tbl_dim_config
 配置信息表
 包括系统自定义的配置信息，也包括用户上传的自定义信息，还包括配置信息的使用策略（系统默认、自定义、合并后的配置）
 '''
+class DimConfig:
+    def __init__(self):
+        pass
 
 def create_dim_config():
     """

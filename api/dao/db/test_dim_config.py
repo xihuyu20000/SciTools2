@@ -1,7 +1,7 @@
 import unittest
 from api import config
-from api.dao.db.clickhouse_db import dim_config
-from api.model.dim import DimDict
+from api.dao.db import dim_config
+from api.model import DimConfig
 
 
 class TestUtil(unittest.TestCase):
@@ -16,23 +16,11 @@ class TestUtil(unittest.TestCase):
             dim_config.create_dim_config()
             dim_config.truncate_dim_config()
             # 年份
-            year = DimDict()
+            year = DimConfig()
             year.userid = 'default'
             year.style = 'year'
             year.values = [str(i) for i in range(1900, 2051)]
             dim_config.insert_dim_config([year.to_dict()])
-            # 停用词类型
-            stopwords_style = DimDict()
-            stopwords_style.userid = 'default'
-            stopwords_style.style = 'stopwords_style'
-            stopwords_style.values = '0'
-            dim_config.insert_dim_config([stopwords_style.to_dict()])
-            # 停用词内容
-            stopwords_text = DimDict()
-            stopwords_text.userid = 'default'
-            stopwords_text.style = 'stopwords_text'
-            stopwords_text.values = self.read_files('stopwords.txt')
-            dim_config.insert_dim_config([stopwords_text.to_dict()])
 
 
         except Exception as e:

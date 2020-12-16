@@ -1,6 +1,6 @@
 import unittest
 from api import config, util
-from api.dao.db.clickhouse_db import dim_user
+from api.dao.db import dim_user
 
 
 class TestUtil(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestUtil(unittest.TestCase):
             dim_user.drop_dim_user()
             dim_user.create_dim_user()
             dim_user.truncate_dim_user()
-            dim_user.insert_dim_user([{'id':util.gen_uuid1(),'username':'root', 'password':'admin'}])
+            dim_user.insert_dim_user([{'id':util.gen_uuid1(), 'username': 'root', 'password': 'admin'}])
             user = dim_user.get_user('root', 'admin')
             self.assertIsNotNone(user, '应该存在一个用户')
         except Exception as e:

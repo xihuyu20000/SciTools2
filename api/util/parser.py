@@ -9,8 +9,8 @@ import nltk
 from lxml import etree
 from scrapy import Selector
 
-from api import config, model, util
-from api.model.__init__ import OdsCnkiBib
+from api import config, util
+from api.dao.db.ods_bib import OdsCnkiBib
 from api.util import utils
 
 

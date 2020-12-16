@@ -1,7 +1,7 @@
 from typing import Optional, List
 
 from api import config
-from api.dao.db.clickhouse_db import __create, __drop, __truncate, __execute
+from api.dao.db import __create, __drop, __truncate, __execute
 
 TBL_NAME = config.tbl_dim_org
 

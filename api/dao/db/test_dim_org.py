@@ -1,8 +1,7 @@
 import unittest
 from api import config
-from api.dao.db.clickhouse_db import  dim_org
-from api.dao.db.clickhouse_db.dim_org import insert_dim_org
-from api.util import utils
+from api.dao.db import dim_org
+from api.dao.db.dim_org import insert_dim_org
 
 ss = [['北京大学', '北京市'],
       ['中国人民大学', '北京市'],

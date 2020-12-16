@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from threading import Thread
+from urllib import parse
 
 from api import ok
 
@@ -17,12 +19,30 @@ def list(dsid):
     datas = datasetManager.list_dataset(dsid)
     return ok(data=datas)
 
+@router.get('/clean/{dsid}')
+def clean(dsid):
+    CleanDatasetThread(dsid).start()
+    return ok()
+
+class CleanDatasetThread(Thread):
+    def __init__(self, dsid = ''):
+        super().__init__()
+        self.dsid = dsid
+
+    def run(self) -> None:
+        if self.dsid:
+            datasetManager.clean(self.dsid)
+
+@router.get('/show/process/{dsid}')
+def show_process(dsid):
+    dim_ds = datasetManager.showProcess(dsid)
+    return ok(data=dim_ds)
+
 @router.get('/delete/{dsid}')
 def delete(dsid):
     datasetManager.delete(dsid)
     return ok()
 
-from urllib import parse
 
 @router.get('/rename/{dsid}/{newName}')
 def rename(dsid, newName):
