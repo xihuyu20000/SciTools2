@@ -128,12 +128,13 @@ export default {
     },
     async cleanDataset() {
       // 清洗数据集
+      if (this.dim_ds == '') return this.$message.error('请选择数据集')
       let _url = this.$api.dataset_clean + '/' + this.dim_ds.dsid
       await this.$http.get(_url)
     },
     async showCleanProcess() {
       // 查看清洗数据集的进度
-      if (this.dim_ds == '') return
+      if (this.dim_ds == '') return this.$message.error('请选择数据集')
       let { data: resp } = await this.$http.get(this.$api.dataset_show_process + '/' + this.dim_ds.dsid)
       if (resp.status == 400) return this.$message.error(resp.msg)
       // console.log('查看清洗进度', resp.data[0])

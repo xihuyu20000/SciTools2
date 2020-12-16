@@ -1,0 +1,2 @@
+Thu, 17 Dec 2020 06:21:51-api.web.stat.manager-manager.py-[line:151]-INFO-[日志信息]: SELECT country, COUNT(1) AS count FROM default.ods_bib WHERE dsid ='ded3c219da884f9b80e7f1f59bed20b0' GROUP BY country  ORDER BY count  
+Thu, 17 Dec 2020 06:21:56-api.web.stat.manager-manager.py-[line:143]-INFO-[日志信息]: SELECT pubyear, COUNT(1) AS count FROM default.ods_bib WHERE dsid ='ded3c219da884f9b80e7f1f59bed20b0' AND pubyear!='' GROUP BY pubyear ORDER BY pubyear

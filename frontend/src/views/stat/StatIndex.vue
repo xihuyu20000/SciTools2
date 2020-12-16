@@ -95,28 +95,23 @@ export default {
   },
   created() {
     this.fetch()
-
-    this.target_dataset = sessionStorage.getItem('target_dataset')
-    if (this.target_dataset == null) return // 初次加载是空，返回
+    // 加载会话中的数据
+    let _target_dataset = sessionStorage.getItem('target_dataset')
+    if (_target_dataset != null) this.target_dataset = _target_dataset
   },
   methods: {
     async fetch() {
-      let _url = this.$api.dataset_list_names
-      const { data: resp } = await this.$http.get(_url)
+      const { data: resp } = await this.$http.get(this.$api.dataset_list_names)
       if (resp.status == 400) return this.$message.error(resp.msg)
       this.datasets = resp.data
     },
     chooseDataset(item) {
+      // 选择数据集
       sessionStorage.setItem('target_dataset', item)
     },
     selectMenu(index) {
-      if (this.target_dataset == '')
-        return this.$notify({
-          title: '警告',
-          message: '请选择数据集',
-          type: 'warning',
-          position: 'top-left'
-        })
+      // 点击菜单
+      if (this.target_dataset == '') return this.$message.error('请选择数据集')
       this.$router.push({
         path: index + `/${this.target_dataset}`
       })

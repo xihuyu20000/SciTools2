@@ -113,13 +113,34 @@ forcetrend_data = {
     ]
   }
 
+def __line_graph_option(titleText = '', xAxisName = '', yAxisName = '', source=[], series = []):
+    return {'option':
+                {'title':{'show':True, 'text':titleText, 'textStyle': {'color': 'black', 'fontSize': 20}},
+                'legend':{'show':True},
+                'grid':{'show':True, 'top':60, 'bottom':60, 'right':80, 'left':80, 'height':'auto', 'width':'auto'},
+                'xAxis':{'show':True, 'position':'bottom', 'type':'category', 'name':xAxisName, 'nameLocation':'end', 'nameGap':15, 'nameRotate':0, 'inverse':False,
+                         'nameTextStyle':{'fontSize':12},
+                         'axisLabel': { 'rotate': 0, 'fontSize': 18, 'fontFamily': 'sans-serif', 'marginTop': '35px', 'show': True, 'interval': 0}
+                         },
+                'yAxis':{'show':True, 'position':'left', 'type':'value', 'name':yAxisName, 'nameLocation':'end',
+                         'nameTextStyle':{'fontStyle':'normal'}
+                         },
+                'toolbox':{'show':True, 'orient':'horizontal', 'showTitle':True,
+                           'feature':{
+                               'dataView':{'show':True}, 'restore':{'show':True}, 'dataZoom':{'show':True}, 'saveAsImage':{'show':True}
+                           }
+                        },
+                'tooltip': {'show': False, 'trigger': 'item', 'formatter': '{a} {b} {c}'},
+                'dataset':{'source':source},
+                'series':series
+            }}
 
 # 论文历年发文量
 @router.get("/statArticlesByYear/{fileId}")
 def statArticlesByYear(fileId):
-    xList, yList = statManager.statArticlesByYear(fileId)
-    return {'config': {'titleText': '论文历年发文量', 'xAxisName': '年', 'yAxisName': '发文量(篇)'},
-            'data': {'xData': xList, 'series': [{'type': 'line', 'data': yList}]}}
+    source = statManager.statArticlesByYear(fileId)
+    series = [{'type':'line', 'itemStyle':{ 'normal': { 'label': { 'show': True, 'fontSize': 18, 'color': '#333' } }}}]
+    return __line_graph_option(titleText='论文历年发文量', xAxisName= '年', yAxisName='发文量(篇)', source=source, series=series)
 
 
 # 论文国别发文量

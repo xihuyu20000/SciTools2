@@ -2,11 +2,11 @@
   <div>
     <el-row>
       <el-col :span="1">
-        <!-- <option-title :optionData="option"></option-title>
-        <option-legend :optionData="option"></option-legend>
-        <option-grid :optionData="option"></option-grid>
-        <option-xaxis :optionData="option"></option-xaxis>
-        <option-yaxis :optionData="option"></option-yaxis> -->
+        <option-title :optionData="optionData"></option-title>
+        <option-legend :optionData="optionData"></option-legend>
+        <option-grid :optionData="optionData"></option-grid>
+        <option-xaxis :optionData="optionData"></option-xaxis>
+        <option-yaxis :optionData="optionData"></option-yaxis>
       </el-col>
       <el-col :span="22"><div id="chart" class="chart"></div></el-col>
       <el-col :span="1"></el-col>
@@ -19,7 +19,7 @@ export default {
   props: ['cfg'],
   data: function() {
     return {
-      myChart: '',
+      optionData: {},
       option: {
         grid: {
           show: true,
@@ -101,37 +101,53 @@ export default {
             show: true
           }
         },
-        dataset: { source: [] },
-        series: [{ type: 'line' }]
-        // series: [
-        //   {
-        //     name: '',
-        //     data: [],
-        //     type: 'line',
-        //     itemStyle: { normal: { label: { show: true, fontSize: 20, color: '#333' } } }
-        //   }
-        // ]
+        series: [
+          {
+            name: '',
+            data: [],
+            type: 'line',
+            itemStyle: { normal: { label: { show: true, fontSize: 20, color: '#333' } } }
+          }
+        ]
       }
     }
   },
   watch: {},
   methods: {
     async fetch() {
-      const { data: data } = await this.$http.get(this.cfg.url)
-      this.option = data.option
+      const { data: res } = await this.$http.get(this.cfg.url)
+      console.log('折线图', res)
+      // 标题名称
+      this.option.title.text = res.config.titleText
+      // 横轴名称
+      this.option.xAxis.name = res.config.xAxisName
+      // 纵轴名称
+      this.option.yAxis.name = res.config.yAxisName
+      // 横轴数据
+      this.option.xAxis.data = res.data.xData
+      // 纵轴数据
+      this.option.series = res.data.series
+      // 更新数据
+      this.optionData = { option: this.option }
+      // 更新图像
       this.$bus.$emit('refresh', this.option)
     }
   },
   mounted() {
-    self.myChart = this.$echarts.init(document.getElementById('chart'), null, { renderer: 'svg' })
-    this.$bus.$on('refresh', option => {
-      self.myChart.setOption(option)
-    })
-    this.fetch()
+    // 基于准备好的dom，初始化echarts实例
+    let myChart = this.$echarts.init(document.getElementById('chart'), null, { renderer: 'svg' })
+    myChart.showLoading({ text: '正在加载数据' })
+    // 绘制图表
+    myChart.setOption(this.option)
 
     window.addEventListener('resize', () => {
-      self.myChart.resize()
+      myChart.resize()
     })
+    this.$bus.$on('refresh', option => {
+      myChart.setOption(option)
+    })
+    this.fetch()
+    myChart.hideLoading()
   }
 }
 </script>

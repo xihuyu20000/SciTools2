@@ -142,23 +142,7 @@ class StatManager:
         sql = "SELECT pubyear, COUNT(1) AS count FROM {} WHERE dsid ='{}' AND pubyear!='' GROUP BY pubyear ORDER BY pubyear".format(config.tbl_ods_bib,dsid)
         self.log.info(sql)
         all = self.dao.find_ods_bib(sql)
-        xList = []
-        yList = []
-        for row in all:
-            xList.append(int(row['pubyear']))
-            yList.append(int(row['count']))
-
-        minYear, maxYear = min(xList), max(xList)
-        xList2, yList2 = [], []
-
-        for year in range(minYear, maxYear + 1):  # 所有年份
-            xList2.append(year)
-            if year in xList:
-                yList2.append(yList[xList.index(year)])
-            else:
-                yList2.append(0)  # 没有记录的年份，补0
-
-        return xList2, yList2
+        return all
 
     # 按照国家统计论文数量
     def statArticlesByCountry(self, dsid):
