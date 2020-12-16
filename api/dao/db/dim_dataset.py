@@ -20,7 +20,8 @@ def create_dim_dataset():
             CREATE TABLE  {}(
             dsid String(64) NOT NULL,
             pid String(64) ,
-            dsname String(128) NOT NULL
+            dsname String(128) NOT NULL,
+            status String(64) 
             )ENGINE=MergeTree() ORDER BY (dsid);
         """.format(TBL_NAME)
     return __create(sql, TBL_NAME)
@@ -44,8 +45,8 @@ def insert_dim_dataset(params: Optional[List[dict]]):
     """
     插入文件表
     """
-    sql = """ INSERT INTO {} (dsid, dsname) VALUES """.format(TBL_NAME)
+    sql = """ INSERT INTO {} (dsid, dsname, status) VALUES """.format(TBL_NAME)
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
 
-def find_all_names(sql):
+def find_dim_dataset(sql):
     return __query(sql, params=None, msg='查询{}失败'.format(TBL_NAME))

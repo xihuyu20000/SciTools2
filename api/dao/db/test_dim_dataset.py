@@ -19,7 +19,7 @@ class TestUtil(unittest.TestCase):
             dim_dataset.drop_dim_dataset()
             dim_dataset.create_dim_dataset()
             dim_dataset.truncate_dim_dataset()
-            dim_dataset.insert_dim_dataset([{'dsid':utils.gen_uuid1(), 'dsname': '数据集'}])
+            dim_dataset.insert_dim_dataset([{'dsid':utils.gen_uuid1(), 'dsname': '数据集', 'status':'未解析'}])
             sql = 'select * from {}'.format(config.tbl_dim_dataset)
             file = dim_dataset.find_all_names(sql)
             self.assertIsNotNone(file, '应该存在一个文件')
