@@ -10,7 +10,7 @@ import queue
 # Spiral_cluster=3.txt
 # Pathbased_cluster=3.txt
 
-data_path = "flame.txt"
+data_path = "data/flame.txt"
 NOISE = 0
 UNASSIGNED = -1
 

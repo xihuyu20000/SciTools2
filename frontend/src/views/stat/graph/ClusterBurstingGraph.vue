@@ -7,7 +7,7 @@
     </el-row>
   </div>
 </template>
-
+// echarts中，阶梯瀑布图
 <script>
 export default {
   props: ['cfg'],

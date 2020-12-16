@@ -75,7 +75,7 @@ export default {
           children: [
             { title: '关键词谱聚类', path: '/cluster/spectral/keyword' },
             { title: '关键词层次聚类', path: '/cluster/hierarchy/keyword' },
-            { title: '关键词聚类趋势', path: '/cluster/trend/keyword' },
+            { title: '关键词演化趋势', path: '/cluster/trend/keyword' },
             { title: '关键词突现图谱', path: '/cluster/bursting/keyword' }
           ]
         },
