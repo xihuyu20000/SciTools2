@@ -116,6 +116,7 @@ export default {
   methods: {
     async fetch() {
       const { data: res } = await this.$http.get(this.cfg.url)
+      console.log('折线图', res)
       // 标题名称
       this.option.title.text = res.config.titleText
       // 横轴名称

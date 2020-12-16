@@ -2,7 +2,7 @@
   <el-container>
     <el-aside width="300px">
       <div>
-        <el-menu :default-active="target_menu" class="el-menu-vertical-demo" @select="selectMenu">
+        <el-menu class="el-menu-vertical-demo" @select="selectMenu">
           <div style="display:flex;justify-content:flex-end;">
             <span>数据集：</span>
             <el-select v-model="target_dataset" placeholder="请选择" @change="chooseDataset">
@@ -14,7 +14,7 @@
               <i class="el-icon-location"></i>
               <span>{{ item.title }}（{{ item.children.length }}）</span>
             </template>
-            <el-menu-item :index="sub.path" v-for="(sub, index) in item.children" :key="sub.path">【{{ index + 1 }}】{{ sub.title }}</el-menu-item>
+            <el-menu-item :index="sub.path" v-for="(sub, index) in item.children" :key="index">【{{ index + 1 }}】{{ sub.title }}</el-menu-item>
           </el-submenu>
         </el-menu>
       </div>
