@@ -85,7 +85,7 @@ class File_cnki_es5_Parser:
                 cnkiEs5.publication = content
             if tag == 'PubTime'.lower():
                 if content:
-                    cnkiEs5.pubtime = content[:10]
+                    # cnkiEs5.pubtime = content[:10]
                     cnkiEs5.pubyear = int(content[:4])
             if tag == 'Keyword'.lower():
                 kws = content.split(';')
@@ -356,6 +356,7 @@ class File_cnki_self_Parser:
         model = OdsCnkiBib()
         model.id = utils.gen_uuid4()
         model.line = '\t'.join(lines)
+        model.style = '期刊'
 
         for line in lines:
             if line.startswith('Title-题名'):
@@ -381,10 +382,10 @@ class File_cnki_self_Parser:
             elif line.startswith('Summary-摘要:'):
                 summary = line[len('Summary-摘要:'):].strip()
                 model.summary = summary
-            elif line.startswith('PubTime-发表时间:'):
-                pubtime = line[len('PubTime-发表时间:'):].strip()
-                pubtime = line[:10]
-                model.pubtime = pubtime
+            # elif line.startswith('PubTime-发表时间:'):
+            #     pubtime = line[len('PubTime-发表时间:'):].strip()
+            #     pubtime = line[:10]
+            #     model.pubtime = pubtime
             elif line.startswith('FirstDuty-第一责任人:'):
                 firstduty = str(line[len('FirstDuty-第一责任人:'):]).strip()
                 firstduty = firstduty.split(';')[0]

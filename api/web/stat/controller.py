@@ -113,6 +113,7 @@ forcetrend_data = {
     ]
   }
 
+# echarts折线图的配置
 def __line_graph_option(titleText = '', xAxisName = '', yAxisName = '', source=[], series = []):
     return {'option':
                 {'title':{'show':True, 'text':titleText, 'textStyle': {'color': 'black', 'fontSize': 20}},
@@ -146,45 +147,48 @@ def statArticlesByYear(fileId):
 # 论文国别发文量
 @router.get("/statArticlesByCountry/{fileId}")
 def statArticlesByCountry(fileId):
-    xList, yList = statManager.statArticlesByCountry(fileId)
-    return {'config': {'titleText': '不同国家论文发文量', 'xAxisName': '国家', 'yAxisName': '发文量(篇)'},
-            'data': {'xData': xList, 'series': [{'type': 'bar', 'data': yList}]}}
+    source = statManager.statArticlesByCountry(fileId)
+    series = [{'type':'line', 'itemStyle':{ 'normal': { 'label': { 'show': True, 'fontSize': 18, 'color': '#333' } }}}]
+    return __line_graph_option(titleText='论文国家发文量', xAxisName= '国家', yAxisName='发文量(篇)', source=source, series=series)
 
 
 # 论文地区发文量
 @router.get("/statArticlesByProvince/{fileId}")
 def statArticlesByProvince(fileId):
-    return {}
-
+    source = statManager.statArticlesByProvince(fileId)
+    series = [{'type':'bar', 'itemStyle':{ 'normal': { 'label': { 'show': True, 'fontSize': 18, 'color': '#333' } }}}]
+    return __line_graph_option(titleText='论文地区发文量', xAxisName= '省', yAxisName='发文量(篇)', source=source, series=series)
 
 # 论文机构发文量
 @router.get("/statArticlesByOrg/{fileId}")
 def statArticlesByOrg(fileId):
-    return {}
+    source = statManager.statArticlesByOrg2(fileId)
+    series = [{'type':'bar', 'itemStyle':{ 'normal': { 'label': { 'show': True, 'fontSize': 18, 'color': '#333' } }}}]
+    return __line_graph_option(titleText='机构发文量', xAxisName= '机构', yAxisName='发文量(篇)', source=source, series=series)
+
+
+# 期刊发文量
+@router.get("/statArticlesByJournal/{fileId}")
+def statArticlesByJournal(fileId):
+    source = statManager.statArticlesByJournal(fileId)
+    series = [{'type':'bar', 'itemStyle':{ 'normal': { 'label': { 'show': True, 'fontSize': 18, 'color': '#333' } }}}]
+    return __line_graph_option(titleText='期刊发文量', xAxisName= '期刊', yAxisName='发文量(篇)', source=source, series=series)
 
 
 # 一作累计发文量
 @router.get("/statArticlesByFirstDuty/{fileId}")
 def statArticlesByFirstDuty(fileId):
-    xList, yList = statManager.statArticlesByFirstDuty(fileId)
-    return {'config': {'titleText': '一作累计发文量', 'xAxisName': '作者', 'yAxisName': '发文量(篇)'},
-            'data': {'xData': xList, 'yData': yList}}
+    source = statManager.statArticlesByFirstDuty(fileId)
+    series = [{'type': 'bar', 'itemStyle': {'normal': {'label': {'show': True, 'fontSize': 18, 'color': '#333'}}}}]
+    return __line_graph_option(titleText='一作发文量', xAxisName='作者', yAxisName='发文量(篇)', source=source, series=series)
 
 
 # 作者累计发文量
 @router.get("/statArticlesByAuthor/{fileId}")
 def statArticlesByAuthor(fileId):
-    xList, yList = statManager.statArticlesByAuthor(fileId)
-    return {'config': {'titleText': '作者累计发文量', 'xAxisName': '作者', 'yAxisName': '发文量(篇)'},
-            'data': {'xData': xList, 'yData': yList}}
-
-
-# 期刊来源发文量
-@router.get("/statArticlesByJournal/{fileId}")
-def statArticlesByJournal(fileId):
-    xList, yList = statManager.statArticlesByJournal(fileId)
-    return {'config': {'titleText': '期刊来源发文量', 'xAxisName': '出版物', 'yAxisName': '发文量(篇)'},
-            'data': {'xData': xList, 'yData': yList}}
+    source = statManager.statArticlesByAuthor(fileId)
+    series = [{'type': 'bar', 'itemStyle': {'normal': {'label': {'show': True, 'fontSize': 18, 'color': '#333'}}}}]
+    return __line_graph_option(titleText='一作发文量', xAxisName='作者', yAxisName='发文量(篇)', source=source, series=series)
 
 
 # 基金支持历年统计
@@ -221,9 +225,9 @@ def statPersonsByCoAuthor(fileId):
 # 关键词词频统计
 @router.get('/statKwsByCount/{fileId}')
 def statKwsByCount(fileId):
-    xList, yList = statManager.statKwsByCount(fileId)
-    return {'config': {'titleText': '关键词词频统计', 'xAxisName': '关键词', 'yAxisName': '数量'},
-            'data': {'xData': xList, 'yData': yList}}
+    source = statManager.statKwsByCount(fileId)
+    series = [{'type': 'bar', 'itemStyle': {'normal': {'label': {'show': True, 'fontSize': 18, 'color': '#333'}}}}]
+    return __line_graph_option(titleText='关键词词频统计', xAxisName='关键词', yAxisName='数量', source=source, series=series)
 
 
 # 关键词词云

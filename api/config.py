@@ -9,6 +9,8 @@ from pathlib import Path
 
 base_file_dir = '.'
 
+# 系统内置的默认用户名
+default_user = 'default'
 # 数据源类型
 ds_cnki_es5 = '题录—知网—es5'
 ds_cnki_self = '题录—知网—自定义格式'
@@ -31,7 +33,6 @@ clean_split_words = 'clean_split_words'  # 智能分词
 
 # 当前正在使用的数据库类型
 db_is_clickhouse = True
-db_is_pg = False
 
 # 数据库clickhouse配置
 clickhouse_ip = '192.168.61.100'

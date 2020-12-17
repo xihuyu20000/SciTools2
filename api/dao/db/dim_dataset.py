@@ -50,3 +50,7 @@ def insert_dim_dataset(params: Optional[List[dict]]):
 
 def find_dim_dataset(sql):
     return __query(sql, params=None, msg='查询{}失败'.format(TBL_NAME))
+
+
+def update_dim_dataset(sql):
+    return __execute(sql, params=None, msg='更新{}失败'.format(TBL_NAME))

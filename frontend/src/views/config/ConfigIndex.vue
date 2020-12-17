@@ -6,91 +6,71 @@
           <el-collapse accordion>
             <el-collapse-item name="1">
               <template slot="title">
-                <span class="title"><i class="header-icon el-icon-info"></i> 停用词词典</span>
-                <el-radio-group v-model="configForm.stopwords_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <span class="title">停用词词典</span>
+                <el-radio-group v-model="configForm.stopwords_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.stopwords_text" :rows="4" placeholder="书写时，每行一个"> </el-input>
             </el-collapse-item>
             <el-collapse-item name="2">
               <template slot="title">
                 <span class="title">分词词典</span>
-                <el-radio-group v-model="configForm.splitwords_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.splitwords_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.splitwords_text" :rows="4" placeholder="书写时，每行一个"> </el-input>
             </el-collapse-item>
             <el-collapse-item name="3">
               <template slot="title"
                 ><span class="title">同义词词典</span>
-                <el-radio-group v-model="configForm.synonymwords_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.synonymwords_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.synonymwords_text" :rows="4" placeholder="书写时，同义词1;同义词2=同义词3"> </el-input>
             </el-collapse-item>
             <el-collapse-item name="4">
               <template slot="title"
+                ><span class="title">机构名规范词典</span>
+                <el-radio-group v-model="configForm.orgnorm_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
+              </template>
+              <el-input type="textarea" v-model="configForm.orgnorm_text" :rows="4" placeholder="书写时，机构名;所在省"> </el-input>
+            </el-collapse-item>
+            <el-collapse-item name="5">
+              <template slot="title"
                 ><span class="title">著者合并词典</span>
-                <el-radio-group v-model="configForm.combineauthor_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.combineauthor_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.combineauthor_text" :rows="4" placeholder="书写时，著者1,单位1;著者2,单位2=著者3,单位3"> </el-input>
             </el-collapse-item>
-            <el-collapse-item name="5">
+            <el-collapse-item name="6">
               <template slot="title">
                 <span class="title">机构合并词典</span>
-                <el-radio-group v-model="configForm.combineorg_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.combineorg_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.combineorg_text" :rows="4" placeholder="书写时，单位1;单位2=单位3"> </el-input>
             </el-collapse-item>
-            <el-collapse-item name="6">
+            <el-collapse-item name="7">
               <template slot="title">
                 <span class="title">地区合并词典</span>
-                <el-radio-group v-model="configForm.combineprovince_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.combineprovince_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.combineprovince_text" :rows="4" placeholder="书写时，地区1;地区2=地区3"> </el-input>
             </el-collapse-item>
-            <el-collapse-item name="7">
+            <el-collapse-item name="8">
               <template slot="title">
                 <span class="title">国家合并词典</span>
-                <el-radio-group v-model="configForm.combinecountry_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.combinecountry_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.combinecountry_text" :rows="4" placeholder="书写时，国家1;国家2=国家3"> </el-input>
             </el-collapse-item>
-            <el-collapse-item name="8">
+            <el-collapse-item name="9">
               <template slot="title">
                 <span class="title">基金合并词典</span>
-                <el-radio-group v-model="configForm.combinefund_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.combinefund_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.combinefund_text" :rows="4" placeholder="书写时，基金1;基金2=基金3"> </el-input>
             </el-collapse-item>
-            <el-collapse-item name="9">
+            <el-collapse-item name="10">
               <template slot="title">
                 <span class="title">学科分类词典</span>
-                <el-radio-group v-model="configForm.combinebranch_style" class="title-radio-group">
-                  <el-radio :label="0">系统默认</el-radio>
-                  <el-radio :label="1">使用自定义</el-radio><el-radio :label="2">系统默认合并自定义</el-radio>
-                </el-radio-group>
+                <el-radio-group v-model="configForm.combinebranch_style" class="title-radio-group"> <el-radio label="1">系统默认</el-radio><el-radio label="2">使用自定义</el-radio><el-radio label="3">系统默认合并自定义</el-radio> </el-radio-group>
               </template>
               <el-input type="textarea" v-model="configForm.combinebranch_text" :rows="4" placeholder="书写时，每行一个"> </el-input>
             </el-collapse-item>
@@ -120,31 +100,31 @@ export default {
   data() {
     return {
       configForm: {
-        stopwords_style: 0,
+        stopwords_style: 1,
         stopwords_text: '',
 
-        splitwords_style: 0,
+        splitwords_style: 1,
         splitwords_text: '',
-        
-        synonymwords_style: 0,
+
+        synonymwords_style: 1,
         synonymwords_text: '',
-        
-        combineauthor_style: 0,
+
+        combineauthor_style: 1,
         combineauthor_text: '',
-        
-        combineorg_style: 0,
+
+        combineorg_style: 1,
         combineorg_text: '',
 
-        combineprovince_style: 0,
+        combineprovince_style: 1,
         combineprovince_text: '',
 
-        combinecountry_style: 0,
+        combinecountry_style: 1,
         combinecountry_text: '',
 
-        combinefund_style: 0,
+        combinefund_style: 1,
         combinefund_text: '',
 
-        combinebranch_style: 0,
+        combinebranch_style: 1,
         combinebranch_text: '',
 
         kw_freq_style: '',
@@ -164,6 +144,7 @@ export default {
   },
   methods: {
     async submitForm() {
+      // console.log('提交配置信息', this.configForm)
       const { data: resp } = await this.$http.post(this.$api.config_save, this.configForm)
       if (resp.status == 400) return this.$message.error(resp.msg)
 
@@ -177,6 +158,7 @@ export default {
     async fetch() {
       const { data: resp } = await this.$http.get(this.$api.config)
       if (resp.status == 400) return this.$message.error(resp.msg)
+      console.log('加载配置参数', resp.data)
       this.configForm = resp.data
     },
     reload() {

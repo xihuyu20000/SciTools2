@@ -18,3 +18,4 @@ lxml
 scrapy
 scikit-learn
 matplotlib
+threadpool

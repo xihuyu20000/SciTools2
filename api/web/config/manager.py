@@ -3,32 +3,34 @@ from pydantic.main import BaseModel
 
 
 class ConfigForm(BaseModel):
-    stopwords_dict: str = ''
-    stopwords_style: int
+    stopwords_style: str= '1'
     stopwords_text: str = ''
 
-    splitwords_style: int
+    splitwords_style: str= '1'
     splitwords_text: str = ''
 
-    synonymwords_style: int
+    synonymwords_style: str= '1'
     synonymwords_text: str = ''
 
-    combineauthor_style: int
+    orgnorm_style:str= '1'
+    orgnorm_text:str = ''
+
+    combineauthor_style: str= '1'
     combineauthor_text: str = ''
 
-    combineorg_style: int
+    combineorg_style: str= '1'
     combineorg_text: str = ''
 
-    combineprovince_style: int
+    combineprovince_style: str= '1'
     combineprovince_text: str = ''
 
-    combinecountry_style: int
+    combinecountry_style: str= '1'
     combinecountry_text: str = ''
 
-    combinefund_style: int
+    combinefund_style: str= '1'
     combinefund_text: str = ''
 
-    combinebranch_style: int
+    combinebranch_style: str= '1'
     combinebranch_text: str = ''
 
     kw_freq_style: str = ''
@@ -43,10 +45,13 @@ class ConfigManager:
         pass
 
     def save(self, form : ConfigForm):
-        # 插入的value是个数组
-        dd = [{'userid':'test', 'style':k, 'values':str(v).split('\n'), 'alias':''} for k,v in form.dict().items()]
+        userid = 'test'
+        # 先删除再插入
+        dao.delete_dim_config(userid)
+        dd = [{'userid':'test', 'style':k, 'values':str(v)} for k,v in form.dict().items()]
         dao.insert_dim_config(dd)
 
-
+    def find(self, sql):
+        return dao.find_dim_config(sql)
 
 configManager = ConfigManager()

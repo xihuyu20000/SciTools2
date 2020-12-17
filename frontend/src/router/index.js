@@ -159,6 +159,11 @@ const routes = [
             component: statArticlesByProvince
           },
           {
+            path: '/stat/statArticlesByJournal/:dsid',
+            name: '期刊发文量',
+            component: statArticlesByJournal
+          },
+          {
             path: '/stat/statArticlesBySubject/:dsid',
             name: '学科分布统计',
             component: statArticlesBySubject

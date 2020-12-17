@@ -21,17 +21,19 @@ def list(dsid):
 
 @router.get('/clean/{dsid}')
 def clean(dsid):
-    CleanDatasetThread(dsid).start()
+    userid = 'test'
+    CleanDatasetThread(dsid, userid).start()
     return ok()
 
 class CleanDatasetThread(Thread):
-    def __init__(self, dsid = ''):
+    def __init__(self, dsid = '', userid = ''):
         super().__init__()
         self.dsid = dsid
+        self.userid = userid
 
     def run(self) -> None:
         if self.dsid:
-            datasetManager.clean(self.dsid)
+            datasetManager.clean(self.dsid, self.userid)
 
 @router.get('/show/process/{dsid}')
 def show_process(dsid):

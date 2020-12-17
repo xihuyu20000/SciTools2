@@ -1,7 +1,7 @@
 from typing import Optional, List
 
 from api import config
-from api.dao.db import __create, __drop, __truncate, __execute
+from api.dao.db import __create, __drop, __truncate, __execute, __query
 
 TBL_NAME = config.tbl_dim_org
 
@@ -40,3 +40,9 @@ def truncate_dim_org():
 def insert_dim_org(params: Optional[List[dict]]):
     sql = """ INSERT INTO {} (orgname, province) VALUES """.format(TBL_NAME)
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
+
+def find_dim_org(sql):
+    """
+    查询
+    """
+    return __query(sql)

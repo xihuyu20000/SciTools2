@@ -1,7 +1,7 @@
-<template><echarts-bar :cfg="cfg"></echarts-bar> </template>
+<template><echarts-line :cfg="cfg"></echarts-line> </template>
 
 <script>
-import EchartsBar from '../graph/EchartsBar'
+import EchartsLine from '../graph/EchartsLine'
 export default {
   data: function() {
     return {
@@ -10,7 +10,7 @@ export default {
       }
     }
   },
-  components: { EchartsBar }
+  components: { EchartsLine }
 }
 </script>
 

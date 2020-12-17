@@ -8,6 +8,8 @@ TBL_NAME = config.tbl_ods_bib
 '''
 题录数据，
 指的是知网、维普等的题录信息。包括分词后的数据也作为字段保存。
+
+[k for k,v in OdsCnkiBib().__dict__.items() if type(v) == list]
 '''
 class OdsCnkiBib:
     def __init__(self):
@@ -20,10 +22,12 @@ class OdsCnkiBib:
         self.firstduty = ''      # 一作
         self.authors = []        # 作者
         self.orgs = []           # 机构
+        self.orgs2 = []          # 机构名称规范化
         self.kws = []            # 关键词
         self.summary = ''        # 摘要
         self.summary_words = []  # 摘要分词
         self.funds = []          # 基金
+        self.funds2 = []         # 基金名称规范化
         self.funds_style = []    # 基金类型
         self.subject1 = ''       # 一级学科分类
         self.subject2 = ''       # 二级学科分类
@@ -31,14 +35,11 @@ class OdsCnkiBib:
         self.clcs = []           # 主题分类
         self.publication = ''    # 出版物
         self.country = '中国'     # 国家
-        self.province = ''       # 地区
+        self.province = ''       # 地区，只取第一个机构所在的地区
         self.lang = '中文'        # 语种：中文/外文
         self.ref_style = 'citing'     # 引用类型，citing/cited
         self.refs = []          # 参考文献集合
         self.line = ''           # 原始记录
-
-    def to_dict(self):
-        return self.__dict__
 
     def __repr__(self):
         return str(self.to_dict())
@@ -62,10 +63,12 @@ def create_ods_bib():
         firstduty String(100),
         authors Array(String),
         orgs Array(String),
+        orgs2 Array(String),
         kws Array(String),
         summary String(2048),
         summary_words Array(String),
         funds Array(String),
+        funds2 Array(String),
         funds_style Array(String),
         subject1 Array(String),
         subject2 Array(String),
@@ -108,26 +111,15 @@ def insert_ods_bib(params: Optional[List[dict]]):
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
 
 
-def update_ods_bib(id, params):
-    sql = """
-        ALTER TABLE {} UPDATE  
-    """.format(TBL_NAME)
-
-    for key, value in params.items():
-        sql += ' {}={} ,'.format(key, value)
-    sql = sql[:-1]
-
-    sql += " WHERE id='{}'".format(id)
-
-    return __execute(sql, msg='插入{}失败'.format(TBL_NAME))
+def update_ods_bib(sql):
+    return __execute(sql, msg='更新{}失败'.format(TBL_NAME))
 
 
-def delete_ods_bib(file_id):
-    sql = """
-        DELETE FROM {} WHERE dsid={}
-    """.format(TBL_NAME, file_id)
-    return __execute(sql, msg='根据{}删除{}失败'.format(file_id, TBL_NAME))
+def delete_ods_bib(sql):
+    return __execute(sql, msg='删除{}失败'.format(TBL_NAME))
 
 
 def find_ods_bib(sql):
     return __query(sql, params=None, msg='查询{}失败'.format(TBL_NAME))
+
+

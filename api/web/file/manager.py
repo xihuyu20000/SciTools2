@@ -17,7 +17,7 @@ class FileManager:
         dsid = utils.gen_uuid4()
         for entity in datas:
             entity.dsid = dsid
-        datas = [data.to_dict() for data in datas]
+        datas = [data.__dict__ for data in datas]
         dao.insert_ods_bib(datas)
         dao.insert_dim_dataset([{'dsid':dsid, 'dsname':file_name, 'status':'未解析'}])
 

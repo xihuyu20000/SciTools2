@@ -44,18 +44,20 @@
       <vxe-table-column field="fileid" fixed="left"></vxe-table-column>
       <vxe-table-column field="id" fixed="left"></vxe-table-column>
       <vxe-table-column field="title" title="标题" min-width="300" fixed="left" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
+      <vxe-table-column field="title_words" title="标题分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="firstduty" title="一作" min-width="150" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="pubyear" title="出版年" min-width="150" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="publication" title="出版物" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="authors" title="作者" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }" :filters="[{ label: '空值', value: '' }]"></vxe-table-column>
       <vxe-table-column field="orgs" title="机构" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="funds" title="基金" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="kws" title="关键词" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="summary" title="摘要" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="style" title="类型" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"> </vxe-table-column>
+      <vxe-table-column field="orgs2" title="机构2" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="province" title="地区" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="title_words" title="标题分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
-      <vxe-table-column field="summary_words" title="标题分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="funds" title="基金" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="funds2" title="基金2" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="kws" title="关键词" min-width="200" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="summary" title="摘要" min-width="100" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="summary_words" title="摘要分词" min-width="250" sortable :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
+      <vxe-table-column field="style" title="类型" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"> </vxe-table-column>
       <vxe-table-column field="lang" title="语种" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="country" title="国家" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>
       <vxe-table-column field="clcs" title="分类号" min-width="80" :edit-render="{ name: 'input', attrs: { type: 'text' } }"></vxe-table-column>

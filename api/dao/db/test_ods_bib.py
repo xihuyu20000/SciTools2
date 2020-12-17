@@ -12,11 +12,8 @@ class TestUtil(unittest.TestCase):
             ods_bib.drop_ods_bib()
             ods_bib.create_ods_bib()
             ods_bib.truncate_ods_bib()
-        except Exception as e:
-            self.fail('删除然后创建表{}失败'.format(config.tbl_ods_bib))
 
-    def test_insert(self):
-        try:
+
             sql = 'select * from {}'.format(config.tbl_ods_bib)
             result1 = ods_bib.find_ods_bib(sql)
 
@@ -26,7 +23,7 @@ class TestUtil(unittest.TestCase):
             entity2 = OdsCnkiBib()
             entity2.fileid = utils.gen_uuid1()
 
-            ods_bib.insert_ods_bib([entity1.to_dict(), entity2.to_dict()])
+            ods_bib.insert_ods_bib([entity1.__dict__, entity2.__dict__])
 
             result2 = ods_bib.find_ods_bib(sql)
             self.assertEqual(len(result2) - len(result1), 2, '插入应该是2条记录')
