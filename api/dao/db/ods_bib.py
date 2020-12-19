@@ -35,7 +35,7 @@ class OdsCnkiBib:
         self.clcs = []           # 主题分类
         self.publication = ''    # 出版物
         self.country = ['中国']   # 国家
-        self.province = ''       # 地区，只取第一个机构所在的地区
+        self.province = []       # 地区
         self.lang = '中文'        # 语种：中文/外文
         self.ref_style = 'citing'     # 引用类型，citing/cited
         self.refs = []          # 参考文献集合
@@ -76,7 +76,7 @@ def create_ods_bib():
         clcs Array(String),
         publication String(100),
         country Array(String),
-        province String(100),
+        province Array(String),
         lang String(16),
         ref_style String(16),
         refs Array(String),

@@ -7,6 +7,8 @@ import V404 from '@/views/common/404.vue'
 
 import FileIndex from '@/views/file/FileIndex.vue'
 import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
+import AdvancedIndex from '@/views/advanced/AdvancedIndex.vue'
+import AdvancedDatasource from '@/views/advanced/AdvancedDatasource.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 import ReportIndex from '@/views/report/ReportIndex.vue'
@@ -41,7 +43,6 @@ import statArticlesBySubject from '@/views/stat/components/statArticlesBySubject
 import statArticlesByYear from '@/views/stat/components/statArticlesByYear.vue'
 import statKwsByCount from '@/views/stat/components/statKwsByCount.vue'
 import statPersonsByCoAuthor from '@/views/stat/components/statPersonsByCoAuthor.vue'
-import statStyleByFund from '@/views/stat/components/statStyleByFund.vue'
 
 import wordCloundForKeyWord from '@/views/stat/components/wordCloundForKeyWord.vue'
 
@@ -69,7 +70,8 @@ const routes = [
         name: '数据显示',
         component: DatasetIndex
       },
-      { path: '/to/showing/index', redirect: '/dataset/index' },
+      { path: '/advanced/index', name: '高级图表', component: AdvancedIndex },
+      { path: '/advanced/datasource', name: '数据源列表', component: AdvancedDatasource },
       {
         path: '/stat/index',
         name: '知识图谱',
@@ -204,11 +206,6 @@ const routes = [
             path: '/stat/statPersonsByCoAuthor/:dsid',
             name: '合著人数统计',
             component: statPersonsByCoAuthor
-          },
-          {
-            path: '/stat/statStyleByFund/:dsid',
-            name: '基金类型统计',
-            component: statStyleByFund
           },
           {
             path: '/wordclound/keyword/:dsid',

@@ -241,3 +241,7 @@ d3 词云  https://www.jasondavies.com/wordcloud/
 ## 
 
 ## 
+
+# 3 高级图表
+
+高级图表，是完全自定义的功能

@@ -146,14 +146,14 @@ class StatManager:
 
     # 按照国家统计论文数量
     def statArticlesByCountry(self, dsid):
-        sql = "SELECT country, COUNT(1) AS count FROM {} WHERE dsid ='{}' AND country!='' GROUP BY country ORDER BY COUNT(1)".format(config.tbl_ods_bib,dsid)
+        sql = "SELECT country, COUNT(1) AS count FROM (SELECT arrayJoin(country) AS country FROM {} WHERE dsid ='{}' AND  LENGTH(country)>0) GROUP BY country ORDER BY COUNT(1)".format(config.tbl_ods_bib,dsid)
         all = self.dao.find_ods_bib(sql)
         return all
 
 
     # 按照地区统计论文数量
     def statArticlesByProvince(self, dsid):
-        sql = "SELECT province, COUNT(1) AS count FROM {} WHERE dsid ='{}' AND province!='' GROUP BY province ORDER BY COUNT(1) DESC".format(config.tbl_ods_bib,dsid)
+        sql = "SELECT province, COUNT(1) AS count FROM (SELECT arrayJoin(province) AS province FROM {} WHERE dsid ='{}'  AND LENGTH(province)>0) GROUP BY province ORDER BY COUNT(1) DESC".format(config.tbl_ods_bib,dsid)
         all = self.dao.find_ods_bib(sql)
         return all
 
@@ -185,25 +185,9 @@ class StatManager:
 
     # 基金支持论文历年统计
     def statArticlesByFund(self, dsid):
-        sql = "SELECT pubyear , COUNT(1) AS count FROM  {} WHERE LENGTH(funds)>0 AND dsid ='{}' GROUP BY pubyear HAVING COUNT(*)>2 ORDER BY pubyear ".format(config.tbl_ods_bib, dsid)
+        sql = "SELECT fund, COUNT(1) AS count FROM  (SELECT arrayJoin(funds2) AS fund FROM {} WHERE dsid ='{}') GROUP BY fund ORDER BY COUNT(1) DESC".format(config.tbl_ods_bib,dsid)
         all = self.dao.find_ods_bib(sql)
-        xList = []
-        yList = []
-        for row in all:
-            xList.append(row['pubyear'])
-            yList.append(row['count'])
-        return xList, yList
-
-    # 基金类型统计
-    def statStyleByFund(self, dsid):
-        sql = "SELECT fund, COUNT(1) AS count FROM (SELECT arrayJoin(funds) AS fund FROM {} WHERE dsid ='{}' ) GROUP BY fund HAVING COUNT(*)>2 ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
-        all = self.dao.find_ods_bib(sql)
-        xList = []
-        yList = []
-        for row in all:
-            xList.append(row['fund'])
-            yList.append(row['count'])
-        return xList, yList
+        return all
 
     # 学科分布统计
     def statArticlesBySubject(self, dsid):
@@ -242,14 +226,26 @@ class StatManager:
         return legend, yAxis, series
 
     # 关键词词频统计
-    def statKwsByCount(self, dsid):
-        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE dsid ='{}') GROUP BY kw HAVING COUNT(1)>4 ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
+    def statKwsByCount(self, dsid, sub_min):
+        sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE dsid ='{}') GROUP BY kw HAVING COUNT(1)>{} ORDER BY count DESC".format(config.tbl_ods_bib, dsid, sub_min)
         all = self.dao.find_ods_bib(sql) # 返回结构[ {'count': 1, 'pubyear': '2009', 'persons': 1} .....]
         return all
 
     # 作者共现矩阵
     def coocmatrix_author(self, dsid):
         sql = "SELECT authors FROM {} WHERE dsid ='{}' AND LENGTH(authors)>0".format(config.tbl_ods_bib, dsid)
+        all = self.dao.find_ods_bib(sql)
+        return all
+
+    # 基金共现矩阵
+    def coocmatrix_fund(self, dsid):
+        sql = "SELECT funds2 FROM {} WHERE dsid ='{}' AND LENGTH(funds2)>0".format(config.tbl_ods_bib, dsid)
+        all = self.dao.find_ods_bib(sql)
+        return all
+
+    # 国家共现矩阵
+    def coocmatrix_country(self, dsid):
+        sql = "SELECT country FROM {} WHERE dsid ='{}' AND LENGTH(country)>0".format(config.tbl_ods_bib, dsid)
         all = self.dao.find_ods_bib(sql)
         return all
 

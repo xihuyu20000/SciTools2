@@ -40,9 +40,8 @@ export default {
             { title: '期刊发文量', path: '/stat/statArticlesByJournal' },
             { title: '一作发文量', path: '/stat/statArticlesByFirstDuty' },
             { title: '作者发文量', path: '/stat/statArticlesByAuthor' },
-            { title: '基金支持统计', path: '/stat/statArticlesByFund' },
-            { title: '基金类型统计', path: '/stat/statStyleByFund' },
-            { title: '学科分布', path: '/stat/statArticlesBySubject' },
+            { title: '基金类型统计', path: '/stat/statArticlesByFund' },
+            // { title: '学科分布', path: '/stat/statArticlesBySubject' },
             { title: '合作人数统计', path: '/stat/statPersonsByCoAuthor' },
             { title: '关键词词频', path: '/stat/statKwsByCount' }
           ]
@@ -63,15 +62,14 @@ export default {
             { title: '国家共现矩阵', path: '/coocMatrix/country' }
           ]
         },
-
-        {
-          title: '引证关系',
-          children: [{ title: '也就是引用和被引用', path: '' }]
-        },
-        {
-          title: '关联关系',
-          children: [{ title: '也就是引用和被引用', path: '' }]
-        },
+        // {
+        //   title: '引证关系',
+        //   children: [{ title: '也就是引用和被引用', path: '' }]
+        // },
+        // {
+        //   title: '关联关系',
+        //   children: [{ title: '也就是引用和被引用', path: '' }]
+        // },
         {
           title: '网络聚类',
           children: [

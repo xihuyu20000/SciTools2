@@ -95,9 +95,9 @@ class DatasetManager:
         self.__update_clean_status(dsid, '地区名称规范')
         cleaner.fill_province()
 
-        # todo 基金类型，填充funds_style
+        # 基金类型，填充funds2
         self.__update_clean_status(dsid, '基金名称规范')
-        cleaner.fill_funds_style()
+        cleaner.fill_funds2()
 
         # todo 学科分类，填充subject1、subject2
         self.__update_clean_status(dsid, '学科名称规范')
@@ -217,6 +217,7 @@ class DatasetCleaner:
         sqls = []
         for row in self.dataset:
             orgs2 = [[x for x in jieba.cut(org)][0] for org in row['orgs']]
+            row['org2'] = orgs2 # 填充数据，在后面清洗时立刻使用
             sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(config.tbl_ods_bib, 'orgs2', orgs2, row['id'])
             sqls.append(sql)
         requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
@@ -228,21 +229,49 @@ class DatasetCleaner:
         org_dict = dict([(org['orgname'],org['province']) for org in self.dim_orgs])
         org_dict_user = dict([(org.split(';')[0].strip(), org.split(';')[1].strip()) for org in self.orgnorm])    # 这是用户自己输入的
         org_dict = {**org_dict, **org_dict_user}    # 把2个字典合并成一个
+
+        def __get_province(org_name):
+            return org_dict[org_name] if org_name in org_dict.keys() else ''
+
         sqls = []
         for row in self.dataset:
             if row['orgs2']:    # 可能没有值
-                org_name = row['orgs2'][0]  # 取第1个机构名
-                province = org_dict[org_name] if org_name in org_dict.keys() else ''
-                if province:    # 没有对应值，就不要更新了
-                    sql = "ALTER TABLE {} UPDATE {}='{}' WHERE id='{}'".format(config.tbl_ods_bib, 'province', province, row['id'])
-                    sqls.append(sql)
+                province = [__get_province(org_name) for org_name in row['orgs2']]
+                province = [p for p in province if p]   # 去除空白
+                sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(config.tbl_ods_bib, 'province', province, row['id'])
+                sqls.append(sql)
         requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
         [pool.putRequest(req) for req in requests]
         pool.wait()
 
-    def fill_funds_style(self):
-        # todo 基金类型，填充funds_style
-        pass
+    def fill_funds2(self):
+        # 基金类型，填充funds2
+        def __get_fund_style(s):
+            s = str(s)
+            if s.startswith('国家'):
+                return '国家'
+            elif s.find('省')>0 or s.find('市')>0:
+                return '省市'
+            elif s.find('高校')>-1 or s.find('大学')>-1:
+                return '高校'
+            elif s.find('部')>-1:
+                return '部委'
+            elif s.find('公司')>-1 or s.find('企业')>-1:
+                return '企业'
+            return '其他'
+
+        sqls = []
+        for row in self.dataset:
+            if row['funds']:
+               funds2 = [__get_fund_style(fund) for fund in row['funds']]
+               sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(config.tbl_ods_bib, 'funds2', funds2, row['id'])
+               sqls.append(sql)
+
+
+        requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
+        [pool.putRequest(req) for req in requests]
+        pool.wait()
+
 
     def fill_subject(self):
         # todo 学科分类，填充subject1、subject2

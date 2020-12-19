@@ -261,20 +261,12 @@ def statArticlesByAuthor(dsid):
     return __line_graph_option(titleText='一作发文量', xAxisName='作者', yAxisName='发文量(篇)', source=source, series=series)
 
 
-# 基金支持历年统计
+# 基金类型统计
 @router.get('/statArticlesByFund/{dsid}')
 def statArticlesByFund(dsid):
-    xList, yList = statManager.statArticlesByFund(dsid)
-    return {'config': {'titleText': '基金支持发文量', 'xAxisName': '年份', 'yAxisName': '发文量(篇)'},
-            'data': {'xData': xList, 'yData': yList}}
-
-
-# 基金类型统计
-@router.get('/statStyleByFund/{dsid}')
-def statStyleByFund(dsid):
-    xList, yList = statManager.statStyleByFund(dsid)
-    return {'config': {'titleText': '基金类型', 'xAxisName': '基金', 'yAxisName': '数量'},
-            'data': {'xData': xList, 'yData': yList}}
+    source = statManager.statArticlesByFund(dsid)
+    series = [{'type': 'bar', 'itemStyle': {'normal': {'label': {'show': True, 'fontSize': 18, 'color': '#333'}}}}]
+    return __line_graph_option(titleText='基金类型', xAxisName='基金', yAxisName='发文量(篇)', source=source, series=series)
 
 
 # 学科分布统计
@@ -316,7 +308,8 @@ def statPersonsByCoAuthor(dsid):
 # 关键词词频统计
 @router.get('/statKwsByCount/{dsid}')
 def statKwsByCount(dsid):
-    source = statManager.statKwsByCount(dsid)
+    sub_min = 20
+    source = statManager.statKwsByCount(dsid, sub_min)
     series = [{'type': 'bar', 'itemStyle': {'normal': {'label': {'show': True, 'fontSize': 18, 'color': '#333'}}}}]
     return __line_graph_option(titleText='关键词词频统计', xAxisName='关键词',axisLabelRotate=-50,  yAxisName='数量', source=source, series=series)
 
@@ -325,6 +318,15 @@ def statKwsByCount(dsid):
 @router.get("/wordcloud/keyword/{dsid}")
 def wordcloud_keyword(dsid):
     return {}
+
+# 关键词共现矩阵
+@router.get("/coocMatrix/keyword/{dsid}")
+def coocmatrix_keyword(dsid):
+    source = statManager.coocmatrix_keyword(dsid)
+    source = [row['kws'] for row in source] # 从dict中取kws数组
+    xData, yData, points = __build_comatrix(source, cut_method = 1, cut_value=10, norm_method = 1)
+    return {'config': {'titleText': '', 'xAxisName': '', 'yAxisName': ''},
+            'data': {'xData': xData, 'yData': yData, 'value': points}}
 
 # 作者共现矩阵
 @router.get("/coocMatrix/author/{dsid}")
@@ -336,17 +338,15 @@ def coocmatrix_author(dsid):
     return {'config': {'titleText': '', 'xAxisName': '', 'yAxisName': ''},
             'data': {'xData': xData, 'yData': yData, 'value': points}}
 
-
-# 国家共现矩阵
-@router.get("/coocMatrix/country/{dsid}")
-def coocmatrix_country(dsid):
-    return {}
-
-
 # 基金共现矩阵
 @router.get("/coocMatrix/fund/{dsid}")
 def coocmatrix_fund(dsid):
-    return {}
+    source = statManager.coocmatrix_fund(dsid)
+    source = [row['funds2'] for row in source] # 从dict中取kws数组
+    xData, yData, points = __build_comatrix(source, cut_method = 1, cut_value=10, norm_method = 1)
+    print(points)
+    return {'config': {'titleText': '', 'xAxisName': '', 'yAxisName': ''},
+            'data': {'xData': xData, 'yData': yData, 'value': points}}
 
 
 # 机构共现矩阵
@@ -360,14 +360,17 @@ def coocmatrix_org(dsid):
             'data': {'xData': xData, 'yData': yData, 'value': points}}
 
 
-# 关键词共现矩阵
-@router.get("/coocMatrix/keyword/{dsid}")
-def coocmatrix_keyword(dsid):
-    source = statManager.coocmatrix_keyword(dsid)
-    source = [row['kws'] for row in source] # 从dict中取kws数组
+
+# 国家共现矩阵
+@router.get("/coocMatrix/country/{dsid}")
+def coocmatrix_country(dsid):
+    source = statManager.coocmatrix_country(dsid)
+    source = [row['country'] for row in source] # 从dict中取kws数组
     xData, yData, points = __build_comatrix(source, cut_method = 1, cut_value=10, norm_method = 1)
     return {'config': {'titleText': '', 'xAxisName': '', 'yAxisName': ''},
             'data': {'xData': xData, 'yData': yData, 'value': points}}
+
+
 
 def __build_comatrix(source, cut_method, cut_value, norm_method):
     matrix = CoocMatrix(source, cut_method = cut_method, cut_value=cut_value, norm_method = norm_method)
