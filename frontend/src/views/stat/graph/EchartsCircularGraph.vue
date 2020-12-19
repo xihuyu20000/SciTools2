@@ -20,6 +20,7 @@ export default {
   data: function() {
     return {
       myChart: '',
+
       option: {
         title: {
           text: 'Les Miserables',
@@ -30,9 +31,7 @@ export default {
         tooltip: {},
         legend: [
           {
-            data: categories.map(function(a) {
-              return a.name
-            })
+            data: []
           }
         ],
         animationDurationUpdate: 1500,

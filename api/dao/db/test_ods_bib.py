@@ -6,8 +6,12 @@ from api.util import utils
 
 
 class TestUtil(unittest.TestCase):
-
     def test_ods_bib(self):
+        ods_bib.drop_ods_bib()
+        ods_bib.create_ods_bib()
+        ods_bib.truncate_ods_bib()
+
+    def test_ods_bib2(self):
         try:
             ods_bib.drop_ods_bib()
             ods_bib.create_ods_bib()

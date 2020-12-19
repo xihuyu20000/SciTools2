@@ -130,7 +130,7 @@ def statArticlesByYear(dsid):
     source = statManager.coocmatrix_keyword(dsid)
     source = [row['kws'] for row in source]  # 从dict中取kws数组
     option = __build_circular_graph(source)
-    return option
+    return {'option':option}
 
 def __build_circular_graph(source, titleText = ''):
     '''
@@ -169,8 +169,6 @@ categories数组中元素的结构如下
     links = []
     categories = []
     legend = [] # 名称列表
-
-
 
     option = {
         'title': {

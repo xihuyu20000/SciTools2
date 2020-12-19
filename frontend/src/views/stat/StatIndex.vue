@@ -47,10 +47,10 @@ export default {
             { title: '关键词词频', path: '/stat/statKwsByCount' }
           ]
         },
-        {
-          title: '绘制词云',
-          children: [{ title: '关键词', path: '/wordclound/keyword' }]
-        },
+        // {
+        //   title: '绘制词云',
+        //   children: [{ title: '关键词', path: '/wordclound/keyword' }]
+        // },
         {
           title: '共现关系',
           children: [
@@ -62,6 +62,15 @@ export default {
             { title: '机构共现矩阵', path: '/coocMatrix/org' },
             { title: '国家共现矩阵', path: '/coocMatrix/country' }
           ]
+        },
+
+        {
+          title: '引证关系',
+          children: [{ title: '也就是引用和被引用', path: '' }]
+        },
+        {
+          title: '关联关系',
+          children: [{ title: '也就是引用和被引用', path: '' }]
         },
         {
           title: '网络聚类',
@@ -79,11 +88,11 @@ export default {
             { title: '知识搜索', path: '/kg/search' },
             { title: '知识关联', path: '/kg/connect' }
           ]
-        },
-        { title: '作者评价', children: [{ title: 'aa', path: '' }] },
-        { title: '机构评价', children: [{ title: 'aa', path: '' }] },
-        { title: '国家评价', children: [{ title: 'aa', path: '' }] },
-        { title: '期刊评价', children: [{ title: 'aa', path: '' }] }
+        }
+        // { title: '作者评价', children: [{ title: 'aa', path: '' }] },
+        // { title: '机构评价', children: [{ title: 'aa', path: '' }] },
+        // { title: '国家评价', children: [{ title: 'aa', path: '' }] },
+        // { title: '期刊评价', children: [{ title: 'aa', path: '' }] }
       ]
     }
   },
