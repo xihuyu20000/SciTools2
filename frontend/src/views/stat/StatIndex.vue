@@ -43,7 +43,7 @@ export default {
             { title: '基金支持统计', path: '/stat/statArticlesByFund' },
             { title: '基金类型统计', path: '/stat/statStyleByFund' },
             { title: '学科分布', path: '/stat/statArticlesBySubject' },
-            { title: '合著人数统计', path: '/stat/statPersonsByCoAuthor' },
+            { title: '合作人数统计', path: '/stat/statPersonsByCoAuthor' },
             { title: '关键词词频', path: '/stat/statKwsByCount' }
           ]
         },
@@ -52,21 +52,15 @@ export default {
           children: [{ title: '关键词', path: '/wordclound/keyword' }]
         },
         {
-          title: '共现指标',
+          title: '共现关系',
           children: [
             { title: '关键词共现矩阵', path: '/coocMatrix/keyword' },
-            { title: '主题词共现矩阵', path: '/coocMatrix/topicword' },
-            { title: '作者共现矩阵', path: '' },
-            { title: '基金共现矩阵', path: '' },
-            { title: '机构共现矩阵', path: '' },
-            { title: '国家共现矩阵', path: '' }
-          ]
-        },
-        {
-          title: '散点图',
-          children: [
-            { title: '共现关键词散点图', path: '/scatter/coockeyword' },
-            { title: '共现主题词散点图', path: '/scatter/cooctopicword' }
+            { title: '关键词共现散点图', path: '/scatter/coockeyword' },
+            { title: '关键词共现关系图', path: '/circularGraph/coockeyword' },
+            { title: '作者共现矩阵', path: '/coocMatrix/author' },
+            { title: '基金共现矩阵', path: '/coocMatrix/fund' },
+            { title: '机构共现矩阵', path: '/coocMatrix/org' },
+            { title: '国家共现矩阵', path: '/coocMatrix/country' }
           ]
         },
         {

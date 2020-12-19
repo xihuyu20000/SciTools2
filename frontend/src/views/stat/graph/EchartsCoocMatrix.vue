@@ -80,10 +80,27 @@ export default {
             show: true
           }
         },
+        // dataZoom: [
+        //   {
+        //     show: true,
+        //     type: 'inside',
+        //     start: 0,
+        //     end: 10
+        //   },
+        //   {
+        //     type: 'slider',
+        //     showDataShadow: true,
+        //     start: 0,
+        //     end: 0,
+        //     height: '40'
+        //   }
+        // ],
         visualMap: {
+          type: 'piecewise',
           min: 0,
-          max: 10,
+          max: 100,
           calculable: true,
+          splitNumber: 10,
           orient: 'horizontal',
           left: 'center',
           bottom: '15%'
@@ -92,9 +109,9 @@ export default {
           {
             name: '',
             type: 'heatmap',
-
+            pointSize: 10,
             label: {
-              show: true
+              normal: { show: true }
             },
             emphasis: {
               itemStyle: {

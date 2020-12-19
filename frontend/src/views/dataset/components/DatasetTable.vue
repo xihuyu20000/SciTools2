@@ -5,10 +5,8 @@
         <vxe-button icon="fa fa-trash-o" status="perfect" @click="removeEvent">删除选中</vxe-button>
         <vxe-button status="warning" style="margin-left:50px;" @click="cleanDataset">清洗数据集</vxe-button>
         <el-link style="margin-left:20px;" @click="showCleanProcess">查看清洗进度</el-link>
-
-        <!--
-        <vxe-button status="warning" :round="true" @click="saveAsNewDataset">另存为新数据集</vxe-button>
-        -->
+        <vxe-button status="error" :round="true" style="margin-left:50px;" @click="filterDataset">高级清洗</vxe-button>
+        <vxe-button status="error" :round="true" style="margin-left:50px;" @click="saveAsNewDataset">另存为新数据集</vxe-button>
       </template>
     </vxe-toolbar>
     <!-- <div v-show="isShowFilterBuilder"><dataset-filter-builder></dataset-filter-builder></div> -->
@@ -145,7 +143,13 @@ export default {
         message: resp.data[0].status
       })
     },
+    filterDataset() {
+      // 高级过滤
+      return this.$message.error('正在开发中.....')
+    },
     saveAsNewDataset() {
+      // 另存为新的数据集
+      return this.$message.error('正在开发中.....')
       // setTimeout(() => {
       //   const { fullData, visibleData, tableData, footerData } = this.$refs.xGrid.getTableData()
       //   console.log(fullData, visibleData, tableData, footerData)

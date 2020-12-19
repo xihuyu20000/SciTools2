@@ -23,6 +23,7 @@
     "vue": "^2.6.12",
     "vue-contextmenu": "^1.5.10",
     "vue-loading-overlay": "^3.4.2",
+    "vue-plotly": "^1.1.0",
     "vue-router": "^3.2.0",
     "vue-tree-list": "^1.5.0",
     "vue-upload-component": "^2.8.20",

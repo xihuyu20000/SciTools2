@@ -29,6 +29,8 @@ export default {
     async fetch() {
       let _url = this.$api.dataset_list_names
       const { data: resp } = await this.$http.get(_url)
+      console.log('aaaaaaaa', resp)
+
       if (resp.status == 400) return this.$message.error(resp.msg)
       let top = resp.data
         .filter(function(v) {

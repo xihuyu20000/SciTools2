@@ -16,12 +16,12 @@ Vue.component('form-textarea', FormTextarea)
 Vue.component('form-textline', FormTextline)
 Vue.component('tooltip', Tooltip)
 
-import CommonTable from './CommonTable'
-import CommonTree from './CommonTree'
-import CountDown from './CountDown'
-import CreateForm from './CreateForm'
-import DataTemplate1 from './DataTemplate1'
-import DataTemplate2 from './DataTemplate2'
+import CommonTable from './form/CommonTable'
+import CommonTree from './form/CommonTree'
+import CountDown from './form/CountDown'
+import CreateForm from './form/CreateForm'
+import DataTemplate1 from './form/DataTemplate1'
+import DataTemplate2 from './form/DataTemplate2'
 
 Vue.component('common-table', CommonTable)
 Vue.component('common-tree', CommonTree)
@@ -29,3 +29,17 @@ Vue.component('count-down2', CountDown)
 Vue.component('create-form', CreateForm)
 Vue.component('dt1', DataTemplate1)
 Vue.component('dt2', DataTemplate2)
+
+import OptionLabel from './option/OptionLabel.vue'
+import OptionLegend from './option/OptionLegend.vue'
+import OptionTitle from './option/OptionTitle.vue'
+import OptionXaxis from './option/OptionXaxis.vue'
+import OptionYaxis from './option/OptionYaxis.vue'
+import OptionGrid from './option/OptionGrid.vue'
+
+Vue.component('option-label', OptionLabel)
+Vue.component('option-legend', OptionLegend)
+Vue.component('option-title', OptionTitle)
+Vue.component('option-xaxis', OptionXaxis)
+Vue.component('option-yaxis', OptionYaxis)
+Vue.component('option-grid', OptionGrid)

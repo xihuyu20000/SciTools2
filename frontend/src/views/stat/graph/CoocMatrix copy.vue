@@ -1,4 +1,3 @@
-<!-- 参考 https://blog.csdn.net/qq_29132907/article/details/96482497 -->
 <template>
   <div>
     <el-row>
@@ -81,122 +80,45 @@ export default {
             show: true
           }
         },
+        // dataZoom: [
+        //   {
+        //     show: true,
+        //     type: 'inside',
+        //     start: 0,
+        //     end: 10
+        //   },
+        //   {
+        //     type: 'slider',
+        //     showDataShadow: true,
+        //     start: 0,
+        //     end: 0,
+        //     height: '40'
+        //   }
+        // ],
+        visualMap: {
+          type: 'piecewise',
+          min: 0,
+          max: 100,
+          calculable: true,
+          splitNumber: 10,
+          orient: 'horizontal',
+          left: 'center',
+          bottom: '15%'
+        },
         series: [
           {
-            name: 'Punch Card',
+            name: '',
             type: 'heatmap',
-
+            pointSize: 10,
             label: {
-              show: true
+              normal: { show: true }
             },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
               }
-            },
-            rotationRange: [-50, 50],
-            textStyle: {
-              normal: {
-                color: function() {
-                  return 'rgb(' + [Math.round(Math.random() * 160), Math.round(Math.random() * 160), Math.round(Math.random() * 160)].join(',') + ')'
-                }
-              },
-              emphasis: {
-                shadowBlur: 10,
-                shadowColor: '#333'
-              }
-            },
-            data: [
-              {
-                name: 'Authentication',
-                value: 10000,
-                textStyle: {
-                  normal: {
-                    color: 'black'
-                  },
-                  emphasis: {
-                    color: 'red'
-                  }
-                }
-              },
-              {
-                name: 'Streaming of segmented content',
-                value: 6181
-              },
-              {
-                name: 'Amy Schumer',
-                value: 4386
-              },
-              {
-                name: 'Jurassic World',
-                value: 4055
-              },
-              {
-                name: 'Charter Communications',
-                value: 2467
-              },
-              {
-                name: 'Chick Fil A',
-                value: 2244
-              },
-              {
-                name: 'Planet Fitness',
-                value: 1898
-              },
-              {
-                name: 'Pitch Perfect',
-                value: 1484
-              },
-              {
-                name: 'Express',
-                value: 1112
-              },
-              {
-                name: 'Home',
-                value: 965
-              },
-              {
-                name: 'Johnny Depp',
-                value: 847
-              },
-              {
-                name: 'Lena Dunham',
-                value: 582
-              },
-              {
-                name: 'Lewis Hamilton',
-                value: 555
-              },
-              {
-                name: 'KXAN',
-                value: 550
-              },
-              {
-                name: 'Mary Ellen Mark',
-                value: 462
-              },
-              {
-                name: 'Farrah Abraham',
-                value: 366
-              },
-              {
-                name: 'Rita Ora',
-                value: 360
-              },
-              {
-                name: 'Serena Williams',
-                value: 282
-              },
-              {
-                name: 'NCAA baseball tournament',
-                value: 273
-              },
-              {
-                name: 'Point Break',
-                value: 265
-              }
-            ]
+            }
           }
         ]
       }
@@ -216,6 +138,7 @@ export default {
       this.option.xAxis.data = res.data.xData
       // 纵轴数据
       this.option.yAxis.data = res.data.yData
+      this.option.series[0].data = res.data.value
       // 更新数据
       this.optionData = { option: this.option }
       // 更新图像
@@ -225,7 +148,7 @@ export default {
   mounted() {
     // 基于准备好的dom，初始化echarts实例
     let myChart = this.$echarts.init(document.getElementById('chart'), null, { renderer: 'svg' })
-
+    myChart.showLoading()
     // 绘制图表
     myChart.setOption(this.option)
 
@@ -236,6 +159,7 @@ export default {
       myChart.setOption(option)
     })
     this.fetch()
+    myChart.hideLoading()
   }
 }
 </script>

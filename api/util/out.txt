@@ -1,4 +1,0 @@
-Thu, 17 Dec 2020 19:35:02-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Thu, 17 Dec 2020 19:35:02-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM default.ods_bib WHERE dsid ='0598e6faff54461281ac1be796a3d4af') GROUP BY kw HAVING COUNT(1)>4 ORDER BY count DESC
-Thu, 17 Dec 2020 19:35:50-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Thu, 17 Dec 2020 19:35:50-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM default.ods_bib WHERE dsid ='0598e6faff54461281ac1be796a3d4af') GROUP BY kw HAVING COUNT(1)>4 ORDER BY count DESC

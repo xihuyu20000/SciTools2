@@ -9,14 +9,19 @@ import FileIndex from '@/views/file/FileIndex.vue'
 import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
+import ReportIndex from '@/views/report/ReportIndex.vue'
 
+import circularGraphForKeyWord from '@/views/stat/components/circularGraphForKeyWord.vue'
 import clusterBurstingForKeyWord from '@/views/stat/components/clusterBurstingForKeyWord.vue'
 import clusterHierarchyForKeyWord from '@/views/stat/components/clusterHierarchyForKeyWord.vue'
 import clusterSpectralForKeyWord from '@/views/stat/components/clusterSpectralForKeyWord.vue'
 import clusterTrendForKeyWord from '@/views/stat/components/clusterTrendForKeyWord.vue'
 
+import coocMatrixForAuthor from '@/views/stat/components/coocMatrixForAuthor.vue'
+import coocMatrixForCountry from '@/views/stat/components/coocMatrixForCountry.vue'
+import coocMatrixForFund from '@/views/stat/components/coocMatrixForFund.vue'
 import coocMatrixForKeyWord from '@/views/stat/components/coocMatrixForKeyWord.vue'
-import coocMatrixForTopicWord from '@/views/stat/components/coocMatrixForTopicWord.vue'
+import coocMatrixForOrg from '@/views/stat/components/coocMatrixForOrg.vue'
 
 import kgConnect from '@/views/stat/components/kgConnect'
 // import kgIndexHtml from '@/views/stat/components/kgIndex.html'
@@ -54,7 +59,6 @@ const routes = [
         name: '首页',
         component: Default
       },
-
       {
         path: '/file/index',
         name: '分析数据',
@@ -71,6 +75,11 @@ const routes = [
         name: '知识图谱',
         component: StatIndex,
         children: [
+          {
+            path: '/circularGraph/keyword/:dsid',
+            name: '关键词共现关系图',
+            component: circularGraphForKeyWord
+          },
           {
             path: '/cluster/bursting/keyword/:dsid',
             name: '关键词突现图谱',
@@ -92,16 +101,30 @@ const routes = [
             component: clusterTrendForKeyWord
           },
           {
+            path: '/coocMatrix/author/:dsid',
+            name: '作者共现矩阵',
+            component: coocMatrixForAuthor
+          },
+          {
+            path: '/coocMatrix/country/:dsid',
+            name: '国家共现矩阵',
+            component: coocMatrixForCountry
+          },
+          {
+            path: '/coocMatrix/fund/:dsid',
+            name: '基金共现矩阵',
+            component: coocMatrixForFund
+          },
+          {
             path: '/coocMatrix/keyword/:dsid',
             name: '关键词共现矩阵',
             component: coocMatrixForKeyWord
           },
           {
-            path: '/coocMatrix/topicword/:dsid',
-            name: '主题词共现矩阵',
-            component: coocMatrixForTopicWord
+            path: '/coocMatrix/org/:dsid',
+            name: '机构共现矩阵',
+            component: coocMatrixForOrg
           },
-
           {
             path: '/kg/connect/:dsid',
             name: '知识关联',
@@ -122,7 +145,6 @@ const routes = [
             name: '共现关键词散点图',
             component: scatterCoocKeyWord
           },
-
           {
             path: '/stat/statArticlesByAuthor/:dsid',
             name: '作者发文量',
@@ -196,13 +218,17 @@ const routes = [
         ]
       },
       {
+        path: '/report/index',
+        name: '生成报告',
+        component: ReportIndex
+      },
+      {
         path: '/config/index',
         name: '配置信息',
         component: ConfigIndex
       }
     ]
   },
-
   {
     path: '/login',
     name: '登录',

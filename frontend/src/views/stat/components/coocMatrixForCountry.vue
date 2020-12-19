@@ -6,7 +6,7 @@ export default {
   data: function() {
     return {
       cfg: {
-        url: '/api/stat/coocMatrix/keyword/' + this.$route.params.dsid
+        url: '/api/stat/coocMatrix/country/' + this.$route.params.dsid
       }
     }
   },

@@ -3,7 +3,8 @@ from collections import defaultdict
 
 from api.util.utils import Logger
 from api import dao, config
-
+import numpy as np
+import pandas as pd
 
 class KGraphData:
     def __init__(self, all_rows):
@@ -213,20 +214,54 @@ class StatManager:
             yList.append(row['count'])
         return xList, yList
 
-    # 合著人数统计
+    # 合著人数统计 , 针对堆叠条形图生成数据结构
     def statPersonsByCoAuthor(self, dsid):
-        sql = "SELECT LENGTH (authors) as persons, COUNT(1) AS count FROM   {} WHERE dsid ='{}' AND LENGTH(authors)>0 GROUP BY persons ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
+        sql = "SELECT LENGTH (authors) as persons,  toInt32(pubyear) as pubyear , COUNT(1) AS count FROM {} WHERE dsid ='{}' AND LENGTH(authors)>0 GROUP BY persons,pubyear ORDER BY count ,pubyear".format(config.tbl_ods_bib, dsid)
         all = self.dao.find_ods_bib(sql)
-        xList = []
-        yList = []
-        for row in all:
-            xList.append(row['persons'])
-            yList.append(row['count'])
-        return xList, yList
+
+        def __find(pubyear, persons, datas):
+            for row in datas:
+                if row['pubyear'] == pubyear and row['persons'] == persons:
+                    return row['count']
+            return 0
+
+        allpubyears = np.array([row['pubyear'] for row in all])
+        allpubyears = [n for n in range(allpubyears.min(), allpubyears.max() + 1)]
+
+        allpersons = np.array([row['persons'] for row in all])
+        allpersons = [n for n in range(allpersons.min(), allpersons.max() + 1)]
+
+        series = []
+        for persons in allpersons: # 合著人数
+            count_list = [__find(pubyear, persons, all) for pubyear in allpubyears]    # 发表年份
+            series.append({'name': str(persons)+'人', 'type':'bar', 'stack':'总量', 'label':{'show':False, 'position':'insideRight'}, 'data':count_list})
+
+        legend = {'data': [str(persons)+'人' for persons in allpersons]}
+        yAxis = {'type':'category', 'data':allpubyears}
+
+        return legend, yAxis, series
 
     # 关键词词频统计
     def statKwsByCount(self, dsid):
         sql = "SELECT kw, COUNT(1) AS count FROM (SELECT arrayJoin(kws) AS kw FROM {} WHERE dsid ='{}') GROUP BY kw HAVING COUNT(1)>4 ORDER BY count DESC".format(config.tbl_ods_bib, dsid)
+        all = self.dao.find_ods_bib(sql) # 返回结构[ {'count': 1, 'pubyear': '2009', 'persons': 1} .....]
+        return all
+
+    # 作者共现矩阵
+    def coocmatrix_author(self, dsid):
+        sql = "SELECT authors FROM {} WHERE dsid ='{}' AND LENGTH(authors)>0".format(config.tbl_ods_bib, dsid)
+        all = self.dao.find_ods_bib(sql)
+        return all
+
+    # 机构共现矩阵
+    def coocmatrix_orgs2(self, dsid):
+        sql = "SELECT orgs2 FROM {} WHERE dsid ='{}' AND LENGTH(orgs2)>0".format(config.tbl_ods_bib, dsid)
+        all = self.dao.find_ods_bib(sql)
+        return all
+
+    # 关键词共现矩阵
+    def coocmatrix_keyword(self, dsid):
+        sql = "SELECT kws FROM {} WHERE dsid ='{}' AND LENGTH(kws)>0".format(config.tbl_ods_bib, dsid)
         all = self.dao.find_ods_bib(sql)
         return all
 

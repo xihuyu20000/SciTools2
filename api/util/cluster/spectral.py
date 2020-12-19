@@ -49,9 +49,9 @@ class SpectralClustering:
         dis_matrix = self.get_dis_matrix(data)
         W = np.zeros((len(data), len(data)))
         for idx, each in enumerate(dis_matrix):
-            index_array = np.argsort(each)
+            index_array = np.argsort(each)  # 数值由小到大排序，返回索引值的数组
             W[idx][index_array[1:k+1]] = 1
-        tmp_W = np.transpose(W)
+        tmp_W = np.transpose(W) # 按主对角线，数值对换
         W = (tmp_W+W)/2
         return W
 
@@ -59,9 +59,17 @@ class SpectralClustering:
     def getD(self, W):
         """
         获得度矩阵
+
+
+        可以发现，当 np.diag(array) 中
+        array是一个1维数组时，结果形成一个以一维数组为对角线元素的矩阵
+        array是一个二维矩阵时，结果输出矩阵的对角线元素
+
+
         :param W:  相似度矩阵
         :return:   度矩阵
         """
+
         D = np.diag(sum(W))
         return D
 
@@ -112,7 +120,7 @@ class SpectralClustering:
 
 
         data = self.load_data(data_path)
-        data = np.asarray(data)
+        # data = np.asarray(data)
         W = self.getW(data, KNN_k)
         D = self.getD(W)
         L = self.getL(D, W)

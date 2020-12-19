@@ -1,7 +1,7 @@
-<template><word-clound :cfg="cfg"></word-clound> </template>
+<template><echarts-word-clound :cfg="cfg"></echarts-word-clound> </template>
 
 <script>
-import WordClound from '../graph/WordClound'
+import EchartsWordClound from '../graph/EchartsWordClound'
 export default {
   data: function() {
     return {
@@ -10,7 +10,7 @@ export default {
       }
     }
   },
-  components: { WordClound }
+  components: { EchartsWordClound }
 }
 </script>
 
