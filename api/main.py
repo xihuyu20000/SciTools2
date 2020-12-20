@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from scrapy import Request
 from starlette.responses import JSONResponse
 
+from api.web.advanced.controller import router as advanced
 from api.web.common.controller import router as common
 from api.web.config.controller import router as config
 from api.web.dataset.controller import router as dataset
@@ -36,6 +37,7 @@ app.add_middleware(
 )
 
 
+app.include_router(advanced, prefix='/api/advanced')
 app.include_router(common, prefix='/api')
 app.include_router(config, prefix='/api/config')
 app.include_router(dataset, prefix='/api/dataset')

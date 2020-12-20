@@ -3,6 +3,7 @@ import logging
 import os
 
 import shutil
+import time
 import uuid
 
 from pdfminer.high_level import extract_text
@@ -86,14 +87,14 @@ def getFileMd5(filename):
     return myhash.hexdigest()
 
 
-def gen_uuid1() -> str:
-    '''
-    生成uuid
-    :return: uuid，共32位
-    '''
-    uid = str(uuid.uuid1())
-    suid = ''.join(uid.split('-'))
-    return suid
+# def gen_uuid1() -> str:
+#     '''
+#     生成uuid
+#     :return: uuid，共32位
+#     '''
+#     uid = str(uuid.uuid1())
+#     suid = ''.join(uid.split('-'))
+#     return suid
 
 
 def gen_uuid4() -> str:
@@ -162,6 +163,34 @@ def strings_is_eng(strings):
     words_en = len([word for word in words if is_all_eng(word)])
     return True if words_cn < words_en else False
 
+
+# 判断时数值，可能时整数，也可能时小数
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+
+    return False
+
+# 判断是日期
+def isVaildDate(date):
+    try:
+        if ":" in date:
+            time.strptime(date, "%Y-%m-%d %H:%M:%S")
+        else:
+            time.strptime(date, "%Y-%m-%d")
+        return True
+    except:
+        return False
 
 class Logger:
     def __init__(self, name=__name__):

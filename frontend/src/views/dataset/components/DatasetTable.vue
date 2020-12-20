@@ -5,7 +5,6 @@
         <vxe-button icon="fa fa-trash-o" status="perfect" @click="removeEvent">删除选中</vxe-button>
         <vxe-button status="warning" style="margin-left:50px;" @click="cleanDataset">清洗数据集</vxe-button>
         <el-link style="margin-left:20px;" @click="showCleanProcess">查看清洗进度</el-link>
-        <vxe-button status="error" :round="true" style="margin-left:50px;" @click="filterDataset">高级清洗</vxe-button>
         <vxe-button status="error" :round="true" style="margin-left:50px;" @click="saveAsNewDataset">另存为新数据集</vxe-button>
       </template>
     </vxe-toolbar>
@@ -142,10 +141,6 @@ export default {
         title: '数据集清洗进度',
         message: resp.data[0].status
       })
-    },
-    filterDataset() {
-      // 高级过滤
-      return this.$message.error('正在开发中.....')
     },
     saveAsNewDataset() {
       // 另存为新的数据集

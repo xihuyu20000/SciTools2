@@ -1,26 +1,31 @@
-Sat, 19 Dec 2020 21:14:21-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: 
-        SELECT * FROM default.dim_user WHERE username='root' AND password='admin' 
-    
-Sat, 19 Dec 2020 21:23:04-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:22:36-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: 
-        SELECT * FROM default.dim_user WHERE username='root' AND password='admin' 
-    
-Sun, 20 Dec 2020 05:22:52-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:24:34-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:24:51-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:24:51-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:25:02-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:26:48-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:27:28-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:27:39-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:36:20-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:37:09-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:43:44-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 05:58:40-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 06:00:17-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 06:01:03-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 06:56:32-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
-Sun, 20 Dec 2020 07:02:48-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: 
-        SELECT * FROM default.dim_user WHERE username='root' AND password='admin' 
-    
-Sun, 20 Dec 2020 07:02:51-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]:  SELECT * FROM default.dim_dataset 
+Mon, 21 Dec 2020 01:15:54-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT cols FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:15:54-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:15:54-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT dsid,c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_dataset WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:23:30-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT cols FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:23:30-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:23:30-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT dsid,c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_dataset WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:23:37-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:23:39-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT cols FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:23:39-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:23:39-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT dsid,c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_dataset WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:25:43-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT cols FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:25:43-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:25:43-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT dsid,c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_dataset WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:26:31-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:27:04-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:27:10-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT cols FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:27:10-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:27:10-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT dsid,c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_dataset WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:27:27-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:27:53-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:28:07-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:28:14-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:28:46-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:28:47-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT cols FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:28:47-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_tbls WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:28:47-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: SELECT dsid,c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24 FROM default.ad_dataset WHERE tblid='6d57da007dbb4469ad3b98aa9cc56c30'
+Mon, 21 Dec 2020 01:29:29-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:31:26-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:35:24-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:43:03-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
+Mon, 21 Dec 2020 01:43:41-api.dao.db-__init__.py-[line:19]-INFO-[日志信息]: select tblid, pid, tblname from default.ad_tbls where userid='f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'

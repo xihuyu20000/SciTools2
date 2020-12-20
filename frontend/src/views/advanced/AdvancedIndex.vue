@@ -1,14 +1,14 @@
 <template>
   <el-container>
     <el-aside width="300px">
-      <advanced-data-tree style="margin-top:20px;margin-bottom:20px"></advanced-data-tree>
+      <advanced-left-tree style="margin-top:20px;margin-bottom:20px"></advanced-left-tree>
     </el-aside>
     <el-main> <advanced-data-table></advanced-data-table></el-main>
   </el-container>
 </template>
 
 <script>
-import AdvancedDataTree from './components/AdvancedDataTree'
+import AdvancedLeftTree from './components/AdvancedLeftTree'
 import AdvancedDataTable from './components/AdvancedDataTable'
 
 export default {
@@ -17,7 +17,7 @@ export default {
   },
   mounted() {},
   methods: {},
-  components: { AdvancedDataTree, AdvancedDataTable }
+  components: { AdvancedLeftTree, AdvancedDataTable }
 }
 </script>
 

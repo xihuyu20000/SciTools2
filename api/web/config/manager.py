@@ -49,9 +49,10 @@ class ConfigManager:
         # 先删除再插入
         dao.delete_dim_config(userid)
         dd = [{'userid':'test', 'style':k, 'values':str(v)} for k,v in form.dict().items()]
-        dao.insert_dim_config(dd)
+        sql = """ INSERT INTO {} (userid, style, values) VALUES """.format(config.tbl_dim_config)
+        dao.insert_dim_config(sql, dd)
 
     def find(self, sql):
-        return dao.find_dim_config(sql)
+        return dao.query_dim_config(sql)
 
 configManager = ConfigManager()

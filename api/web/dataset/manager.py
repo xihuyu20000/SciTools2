@@ -315,7 +315,7 @@ class DatasetCleaner:
         查询dim_config文件的值。返回值是个字符串
         '''
         sql = "SELECT values FROM {} WHERE userid ='{}' AND style='{}'".format(config.tbl_dim_config, userid, style)
-        result = dao.find_dim_config(sql)
+        result = dao.query_dim_config(sql)
         return result[0]['values'] if result else ''
 
 

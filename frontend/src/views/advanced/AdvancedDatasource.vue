@@ -39,7 +39,8 @@ export default {
   data() {
     return {
       drawerTitle: '',
-      drawerVisible: false
+      drawerVisible: false,
+      uploadForm: {}
     }
   },
   computed: {},
@@ -48,7 +49,14 @@ export default {
     add_ds_form(name) {
       // 打开抽屉，数据源配置信息
       this.drawerTitle = '数据源：' + name
-      this.drawerVisible = true
+      this.drawerVisible = false
+      this.doUpload()
+    },
+    async doUpload() {
+      const { data: resp } = await this.$http.post(this.$api.advanced_upload, this.uploadForm)
+      if (resp.status == 400) return this.$message.error(resp.msg)
+      console.log('上传完成', resp)
+      return this.$message.error('上传完成.....')
     }
   }
 }

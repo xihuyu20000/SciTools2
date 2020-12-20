@@ -21,3 +21,4 @@ matplotlib
 networkx
 seaborn
 threadpool
+xlrd

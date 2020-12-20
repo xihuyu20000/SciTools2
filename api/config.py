@@ -27,10 +27,6 @@ dict_country = 'dict_country'  # 国家字典
 dict_province = 'dict_province'  # 省份字典
 dict_org = 'dict_org'  # 机构字典
 
-# 数据去重
-clean_article_redu = 'clean_article_redu'  # 文献去重
-clean_split_words = 'clean_split_words'  # 智能分词
-
 # 当前正在使用的数据库类型
 db_is_clickhouse = True
 
@@ -47,6 +43,10 @@ tbl_dim_org = 'default.dim_org'
 tbl_dim_user = 'default.dim_user'
 tbl_dim_dataset = 'default.dim_dataset'
 tbl_ods_bib = 'default.ods_bib'
+
+# 高级图表
+tbl_ad_dataset = 'default.ad_dataset'
+tbl_ad_tbls = 'default.ad_tbls'
 
 # 配置文件的路径
 # _base = os.path.join(os.path.abspath('.').split(r"api")[0], 'api', 'config')

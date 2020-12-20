@@ -55,7 +55,7 @@ export default {
           children: [
             { title: '关键词共现矩阵', path: '/coocMatrix/keyword' },
             { title: '关键词共现散点图', path: '/scatter/coockeyword' },
-            { title: '关键词共现关系图', path: '/circularGraph/coockeyword' },
+            // { title: '关键词共现关系图', path: '/circularGraph/coockeyword' },
             { title: '作者共现矩阵', path: '/coocMatrix/author' },
             { title: '基金共现矩阵', path: '/coocMatrix/fund' },
             { title: '机构共现矩阵', path: '/coocMatrix/org' },

@@ -3302,9 +3302,8 @@ class TestUtil(unittest.TestCase):
 
     def test_dim_dict(self):
         try:
-            dim_config.drop_dim_config()
-            dim_config.create_dim_config()
-            dim_config.truncate_dim_config()
+            dim_config.drop()
+            dim_config.create()
             # 年份
             self.__insert('year', '\n'.join([str(i) for i in range(1900, 2051)]))
             # 停用词字典
@@ -3320,7 +3319,7 @@ class TestUtil(unittest.TestCase):
         config.userid = 'default'
         config.style = style
         config.values = values
-        dim_config.insert_dim_config([config.__dict__])
+        dim_config.insert([config.__dict__])
 
 
 

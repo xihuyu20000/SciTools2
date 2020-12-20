@@ -7,19 +7,17 @@ from api.util import utils
 class TestUtil(unittest.TestCase):
     def test_ddl(self):
         try:
-            dim_dataset.drop_dim_dataset()
-            dim_dataset.create_dim_dataset()
-            dim_dataset.truncate_dim_dataset()
+            dim_dataset.drop()
+            dim_dataset.create()
         except Exception as e:
             self.fail('修改表{}失败'.format(config.tbl_dim_dataset))
 
 
     def test_insert(self):
         try:
-            dim_dataset.drop_dim_dataset()
-            dim_dataset.create_dim_dataset()
-            dim_dataset.truncate_dim_dataset()
-            dim_dataset.insert_dim_dataset([{'dsid':utils.gen_uuid1(), 'dsname': '数据集', 'status': '未解析'}])
+            dim_dataset.drop()
+            dim_dataset.create()
+            dim_dataset.insert([{'dsid':utils.gen_uuid1(), 'dsname': '数据集', 'status': '未解析'}])
             sql = 'select * from {}'.format(config.tbl_dim_dataset)
             file = dim_dataset.find_all_names(sql)
             self.assertIsNotNone(file, '应该存在一个文件')

@@ -11,5 +11,11 @@ Vue.prototype.$api = {
   dataset_rename: '/api/dataset/rename',
   dataset_show_process: '/api/dataset/show/process',
   datasete_odsbib_delete: '/api/dataset/odsbib/delete',
-  datasete_odsbib_update: '/api/dataset/odsbib/update'
+  datasete_odsbib_update: '/api/dataset/odsbib/update',
+
+  advanced_upload: '/api/advanced/upload',
+  advanced_tbls_list_names: '/api/advanced/tblnames',
+  advanced_tbls_rename: '/api/advanced/tblrename',
+  advanced_tbls_delete: '/api/advanced/delete',
+  advanced_dataset_query: '/api/advanced/dataset_query'
 }
