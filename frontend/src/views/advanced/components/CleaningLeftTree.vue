@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-tree-list @click="onClick" @change-name="onChangeName" @delete-node="onDel" :model="treeData">
+    <vue-tree-list @click="clickTreeNode" @change-name="onChangeName" @delete-node="onDel" :model="treeData">
       <template v-slot:leafNameDisplay="slotProps">
         <span class="icon">
           {{ slotProps.model.name }}
@@ -74,7 +74,7 @@ export default {
       if (resp.status == 400) return this.$message.error(resp.msg)
     },
 
-    onClick(params) {
+    clickTreeNode(params) {
       // 点击树节点
       this.$bus.$emit(this.$api.advanced_dataset_query, params.data)
     }

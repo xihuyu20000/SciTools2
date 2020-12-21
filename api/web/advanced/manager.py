@@ -97,11 +97,14 @@ class AdvancedManager:
         ParseExcel(userid, path, firstTitle=True).run()
 
     def find_tbl_by_userid(self, userid):
-        sql = "select tblid, pid, tblname from {} where userid='{}'".format(config.tbl_ad_tbls, userid)
+        sql = "select tblid, pid, tblname, cols from {} where userid='{}'".format(config.tbl_ad_tbls, userid)
         return self.dao.query_ad_dataset(sql)
 
     def find_tbl_by_tblid(self, tblid):
-        sql = "select * from {} where tblid='{}'".format(config.tbl_ad_tbls, tblid)
+        sql = "select cols from {} where tblid='{}'".format(config.tbl_ad_tbls, tblid)
+        ad_tbl = self.dao.query_ad_dataset(sql)
+        cols = ad_tbl[0]['cols']
+        sql = """select tblid, pid, tblname, {} from {} where tblid='{}'""".format(cols, config.tbl_ad_tbls, tblid)
         return self.dao.query_ad_dataset(sql)
 
 
@@ -119,7 +122,7 @@ class AdvancedManager:
         # 查询ad_tbls表，获取列数
         sql = """SELECT cols FROM {} WHERE tblid='{}'""".format(config.tbl_ad_tbls, tblid)
         cols = self.dao.query_ad_tbls(sql)
-        colstr = cols[0]['cols'] if cols else 0 # 取出记录
+        colstr = cols[0]['cols'] # 取出记录
 
         # 查询ad_tbls表，获取元表数据
         sql = "SELECT "+colstr+" FROM {} WHERE tblid='{}'".format(config.tbl_ad_tbls, tblid)

@@ -59,11 +59,12 @@ def dataset_query(tblid):
     # print('数据集', dataset)
     return ok([titles, dataset])
 
-
 # 显示列字段信息
 @router.get('/list_fieldconfigs/{tblid}')
 def list_fieldconfigs(tblid):
-    titles, dataset = advancedManager.query_dataset_by(tblid)
+    titles = advancedManager.find_tbl_by_tblid(tblid)
+    titles = titles[0]
+    [titles.pop(k) for k in ('tblid','pid','tblname') if k in titles.keys()]
     titles = sorted(titles.items(), key=lambda x:int(x[1][3]))  #dict转为list
     titles = [build_field_config(tc) for tc in titles]
     return ok(titles)

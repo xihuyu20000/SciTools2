@@ -4,7 +4,7 @@
       <template v-slot:buttons>
         <vxe-button @click="filterDataset">数据筛选</vxe-button>
         <vxe-button @click="toFieldConfig">字段设置</vxe-button>
-        <vxe-button @click="filterDataset">生成图表</vxe-button>
+        <vxe-button @click="buildGraph">生成图表</vxe-button>
       </template>
     </vxe-toolbar>
     <!-- <div v-show="isShowFilterBuilder"><dataset-filter-builder></dataset-filter-builder></div> -->
@@ -36,21 +36,19 @@
       @edit-actived="editActivedEvent"
     >
     </vxe-table>
-    <el-drawer :visible.sync="drawerVisible" direction="ltr" ref="drawer">
-      aaaaaaaaa
-    </el-drawer>
+    <cleaning-data-filter></cleaning-data-filter>
   </div>
 </template>
 
 <script>
+import CleaningDataFilter from './CleaningDataFilter.vue'
 export default {
-  components: {},
+  components: { CleaningDataFilter },
   data() {
     return {
       ad_tbl: '',
       loading: false,
       editDisabled: true,
-      drawerVisible: false,
       tableData: []
     }
   },
@@ -77,7 +75,7 @@ export default {
       })
       this.$refs.xGrid.reloadColumn(titles)
       this.$refs.xGrid.reloadData(dataset)
-      console.log('加载数据集', resp)
+      // console.log('加载数据集', resp)
       if (resp.status == 400) return this.$message.error(resp.msg)
       // this.tableData = resp.data
       this.loading = false
@@ -88,17 +86,18 @@ export default {
     editActivedEvent({ rowIndex, row }) {
       console.log('单元格编辑激活', rowIndex, row.title)
     },
-
     filterDataset() {
-      // 高级过滤
+      // 数据筛选
       if (this.ad_tbl == '') return this.$message.error('请选择数据集')
-      this.drawerVisible = true
-      return this.$message.error('正在开发中.....')
+      this.$bus.$emit('show_cleaning_data_filter', this.ad_tbl)
     },
     toFieldConfig() {
       // 字段设置
       if (this.ad_tbl == '') return this.$message.error('请选择数据集')
       this.$router.push('/advanced/fieldconfig/' + this.ad_tbl.tblid)
+    },
+    buildGraph() {
+      // 生成图表
     },
     editClosedEvent({ row, column }) {
       let xTable = this.$refs.xGrid
@@ -120,12 +119,8 @@ export default {
         }, 300)
       }
     },
-    FilterPubyear({ value, row }) {
-      console.log('过滤条件', value, row)
-      return true
-    },
     footerMethod({ columns, data }) {
-      console.log(data)
+      data
       return [
         columns.map((column, columnIndex) => {
           if (columnIndex === 0) {
@@ -167,4 +162,4 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>
