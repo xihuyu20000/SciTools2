@@ -8,7 +8,10 @@ import V404 from '@/views/common/404.vue'
 import FileIndex from '@/views/file/FileIndex.vue'
 import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import AdvancedIndex from '@/views/advanced/AdvancedIndex.vue'
-import AdvancedDatasource from '@/views/advanced/AdvancedDatasource.vue'
+import AdvancedCleaningIndex from '@/views/advanced/CleaningIndex.vue'
+import AdvancedDatasourceIndex from '@/views/advanced/DatasourceIndex.vue'
+import AdvancedFieldConfig from '@/views/advanced/Cleaning-FieldConfig.vue'
+import AdvancedGraphIndex from '@/views/advanced/GraphIndex.vue'
 import StatIndex from '@/views/stat/StatIndex.vue'
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 import ReportIndex from '@/views/report/ReportIndex.vue'
@@ -70,8 +73,33 @@ const routes = [
         name: '数据显示',
         component: DatasetIndex
       },
-      { path: '/advanced/index', name: '高级图表', component: AdvancedIndex },
-      { path: '/advanced/datasource', name: '数据源列表', component: AdvancedDatasource },
+      {
+        path: '/advanced/index',
+        name: '高级图表',
+        component: AdvancedIndex,
+        children: [
+          {
+            path: '/advanced/datasource/index',
+            name: '高级数据源首页',
+            component: AdvancedDatasourceIndex
+          },
+          {
+            path: '/advanced/cleaning/index',
+            name: '高级数据清洗首页',
+            component: AdvancedCleaningIndex
+          },
+          {
+            path: '/advanced/graph/index',
+            name: '高级图表展现首页',
+            component: AdvancedGraphIndex
+          },
+          {
+            path: '/advanced/fieldconfig/:tblid',
+            name: '字段配置',
+            component: AdvancedFieldConfig
+          }
+        ]
+      },
       {
         path: '/stat/index',
         name: '知识图谱',

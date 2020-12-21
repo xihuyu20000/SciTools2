@@ -1,15 +1,15 @@
 <template>
   <el-container>
     <el-aside width="300px">
-      <advanced-left-tree style="margin-top:20px;margin-bottom:20px"></advanced-left-tree>
+      <cleaning-left-tree style="margin-top:20px;margin-bottom:20px"></cleaning-left-tree>
     </el-aside>
-    <el-main> <advanced-data-table></advanced-data-table></el-main>
+    <el-main> <cleaning-data-table></cleaning-data-table></el-main>
   </el-container>
 </template>
 
 <script>
-import AdvancedLeftTree from './components/AdvancedLeftTree'
-import AdvancedDataTable from './components/AdvancedDataTable'
+import CleaningLeftTree from './components/CleaningLeftTree'
+import CleaningDataTable from './components/CleaningDataTable'
 
 export default {
   data() {
@@ -17,7 +17,7 @@ export default {
   },
   mounted() {},
   methods: {},
-  components: { AdvancedLeftTree, AdvancedDataTable }
+  components: { CleaningLeftTree, CleaningDataTable }
 }
 </script>
 

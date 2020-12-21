@@ -1,9 +1,18 @@
-import pymysql
+from typing import List
 
+import pymysql
+from pydantic.main import BaseModel
+
+from api.dao.db.ad_tbls import build_ad_tbl_insert
 from api.util.utils import Logger, is_number, isVaildDate, gen_uuid4
 from api import dao, config
 import xlrd
 
+
+class FieldsConfigForm(BaseModel):
+    tblid:str = None
+    dels: List = None
+    dataArray :List= None
 
 class ParseMySQL:
     def __init__(self, host='localhost', port=3306, database='test', user='root', password='admin'):
@@ -44,9 +53,10 @@ class ParseExcel:
             if rows:
                 titles = self.__titles(sheet)
                 dataset = self.__dataset(sheet)
-                titles = [(tit, self.__get_field_style(dataset, i)) for i, tit in enumerate(titles)]
+                # cxx数组中的元素分别是[标题, 类型, 宽度, 顺序号]
+                titles = [build_ad_tbl_insert(tit, self.__get_field_style(dataset, i), '200', str(i)) for i, tit in enumerate(titles)]
 
-                tblid = gen_uuid4() # 这是两个表都要用的
+                tblid = gen_uuid4() # 这是两个表都要用的字段，必须外部生成
                 tbl_name = name  # sheet名作为表名
                 dao.insert_ad_tbls(tblid, self.userid, tbl_name, titles)
                 dao.insert_ad_dataset(tblid, dataset)
@@ -86,9 +96,14 @@ class AdvancedManager:
     def parseExcel(self, userid, path):
         ParseExcel(userid, path, firstTitle=True).run()
 
-    def find_tblname(self, userid):
+    def find_tbl_by_userid(self, userid):
         sql = "select tblid, pid, tblname from {} where userid='{}'".format(config.tbl_ad_tbls, userid)
         return self.dao.query_ad_dataset(sql)
+
+    def find_tbl_by_tblid(self, tblid):
+        sql = "select * from {} where tblid='{}'".format(config.tbl_ad_tbls, tblid)
+        return self.dao.query_ad_dataset(sql)
+
 
     def rename(self, tblid, tblname):
         sql = "ALTER TABLE {} UPDATE tblname= '{}' WHERE tblid='{}'".format(config.tbl_ad_tbls, tblname, tblid)
@@ -104,14 +119,13 @@ class AdvancedManager:
         # 查询ad_tbls表，获取列数
         sql = """SELECT cols FROM {} WHERE tblid='{}'""".format(config.tbl_ad_tbls, tblid)
         cols = self.dao.query_ad_tbls(sql)
-        cols = cols[0]['cols']  # 取出记录条数
+        colstr = cols[0]['cols'] if cols else 0 # 取出记录
 
         # 查询ad_tbls表，获取元表数据
-        colstr = ', '.join(['c{}'.format(10+i) for i in range(cols)])
         sql = "SELECT "+colstr+" FROM {} WHERE tblid='{}'".format(config.tbl_ad_tbls, tblid)
         titles = self.dao.query_ad_tbls(sql)
         titles = titles[0]
-        # print('标题结构', titles)   # 结构 {'c10': ['SrcDatabase-来源库', '文本'], 'c11': ['Title-题名', '文本'], 'c12': ['Author-作者', '文本'], 'c13': ['Organ-单位', '文本'], 'c14': ['Source-文献来源', '文本'], 'c15': ['Keyword-关键词', '文本'], 'c16': ['Summary-摘要', '文本'], 'c17': ['PubTime-发表时间', '文本'], 'c18': ['FirstDuty-第一责任人', '文本'], 'c19': ['Fund-基金', '文本'], 'c20': ['Year-年', '数值'], 'c21': ['Volume-卷', '数值'], 'c22': ['Period-期', '数值'], 'c23': ['PageCount-页码', '数值'], 'c24': ['CLC-中图分类号', '文本']}
+        # print('标题结构', titles)
 
         # 最后查询ad_dataset表
         sql = """SELECT {} FROM {} WHERE tblid='{}'""".format('dsid,'+colstr, config.tbl_ad_dataset, tblid)
@@ -119,4 +133,17 @@ class AdvancedManager:
         # print('数据集', dataset)
 
         return titles, dataset
+
+    def updateFieldConfig(selff,form):
+        # 更新列名
+        cols = ','.join([data['field'] for data in form.dataArray])
+        sql = """ALTER TABLE {} UPDATE cols='{}' WHERE tblid='{}'""".format(config.tbl_ad_tbls, cols, form.tblid)
+        dao.execute_ad_tbls(sql)
+        # 更新每个字段的内容
+        sql = """ALTER TABLE {} UPDATE {}={} WHERE tblid='{}'"""
+        for i, row in enumerate(form.dataArray):
+            value = list(build_ad_tbl_insert(row['title'], row['style'], row['width'], str(i)))
+            sql1 = sql.format(config.tbl_ad_tbls, row['field'], value, form.tblid)
+            dao.execute_ad_tbls(sql1)
+
 advancedManager = AdvancedManager()

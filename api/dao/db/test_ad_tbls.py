@@ -21,3 +21,6 @@ class TestUtil(unittest.TestCase):
         ad_tbls.execute(sql, [('表面', 12, ['c10'], ['标题1'])])
         l2 = len(ad_tbls.query('select tblid from {}'.format(config.tbl_ad_tbls)))
         self.assertEquals(l2-l1,1)
+
+    def test_Nested(self):
+        ad_tbls.create()

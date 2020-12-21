@@ -4,7 +4,6 @@
       <template v-slot:buttons>
         <vxe-button @click="filterDataset">数据筛选</vxe-button>
         <vxe-button @click="toFieldConfig">字段设置</vxe-button>
-        <vxe-button @click="filterDataset">数据合并</vxe-button>
         <vxe-button @click="filterDataset">生成图表</vxe-button>
       </template>
     </vxe-toolbar>
@@ -37,6 +36,9 @@
       @edit-actived="editActivedEvent"
     >
     </vxe-table>
+    <el-drawer :visible.sync="drawerVisible" direction="ltr" ref="drawer">
+      aaaaaaaaa
+    </el-drawer>
   </div>
 </template>
 
@@ -48,6 +50,7 @@ export default {
       ad_tbl: '',
       loading: false,
       editDisabled: true,
+      drawerVisible: false,
       tableData: []
     }
   },
@@ -88,9 +91,13 @@ export default {
 
     filterDataset() {
       // 高级过滤
+      if (this.ad_tbl == '') return this.$message.error('请选择数据集')
+      this.drawerVisible = true
       return this.$message.error('正在开发中.....')
     },
     toFieldConfig() {
+      // 字段设置
+      if (this.ad_tbl == '') return this.$message.error('请选择数据集')
       this.$router.push('/advanced/fieldconfig/' + this.ad_tbl.tblid)
     },
     editClosedEvent({ row, column }) {

@@ -1,22 +1,32 @@
 <template>
   <!-- http://www.itxst.com/vue-draggable/tutorial.html -->
   <div class="main">
-    <el-row :gutter="20" style="margin-top:50px">
-      <el-col :offset="6" :span="12">
-        <!--使用draggable组件-->
-        <draggable v-model="dataArray" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
-          <transition-group>
-            <div class="item" v-for="element in dataArray" :key="element.id">
-              <span>{{ element.label }}</span>
-              <i class="el-icon-delete" @click="deleteItem(element.id)"></i>
-            </div>
-          </transition-group>
-        </draggable>
-      </el-col>
-      <el-col :offset="11" :span="2">
-        <el-button type="primary">生成报告</el-button>
-      </el-col>
-    </el-row>
+    <el-form :inline="true">
+      <el-row :gutter="20" style="margin-top:50px">
+        <el-col :offset="3" :span="18">
+          <!--使用draggable组件-->
+          <draggable v-model="dataArray" chosenClass="chosen" forceFallback="true" animation="200" @start="onStart" @end="onEnd">
+            <transition-group>
+              <div class="item" v-for="(element, i) in dataArray" :key="element.field">
+                <el-form-item label="列名称" size="small"> <el-input v-model="dataArray[i].title" placeholder="列名称"> </el-input></el-form-item>
+                <el-form-item label="列类型" size="small">
+                  <el-select v-model="dataArray[i].style" placeholder="列类型">
+                    <el-option label="文本" value="文本"></el-option>
+                    <el-option label="数值" value="数值"></el-option>
+                    <el-option label="日期" value="日期"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="列宽度" size="small"> <el-input v-model="dataArray[i].width" placeholder="列宽"> </el-input></el-form-item>
+                <i class="el-icon-delete" @click="deleteItem(element.field)"></i>
+              </div>
+            </transition-group>
+          </draggable>
+        </el-col>
+        <el-col :offset="11" :span="2">
+          <el-button type="primary" @click="saveFieldConfig">保存配置</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
   </div>
 </template>
 <style scoped>
@@ -32,7 +42,7 @@
   margin-bottom: 10px;
   cursor: move;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 /*选中样式*/
 .chosen {
@@ -49,11 +59,8 @@ export default {
   },
   data() {
     return {
-      //定义要被拖拽对象的数组
-      dataArray: [
-        { id: 1, label: '论文历年统计——图形' },
-        { id: 2, label: '论文历年统计——表格' }
-      ]
+      tblid: '',
+      dataArray: []
     }
   },
   created() {
@@ -61,8 +68,11 @@ export default {
   },
   methods: {
     async fetch() {
-      const { data: resp } = await this.$http.get(this.$api.advanced_tbls_list_fieldconfigs + '/6d57da007dbb4469ad3b98aa9cc56c30')
+      this.tblid = this.$route.params.tblid
+      const { data: resp } = await this.$http.get(this.$api.advanced_tbls_list_fieldconfigs + '/' + this.tblid)
       if (resp.status == 400) return this.$message.error(resp.msg)
+      // console.log('标题配置信息', resp)
+      this.dataArray = resp.data
     },
     //开始拖拽事件
     onStart() {
@@ -73,13 +83,18 @@ export default {
       this.drag = false
     },
     deleteItem(id) {
-      this.$confirm('此操作将删除该内容，不会添加到报告中, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该列，不会显示在表格中, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.dataArray = this.dataArray.filter(item => item.id != id)
+        this.dataArray = this.dataArray.filter(item => item.field != id)
       })
+    },
+    saveFieldConfig() {
+      // 保存配置信息
+      this.$http.post(this.$api.advanced_tbls_save_fieldconfigs, { tblid: this.tblid, dataArray: this.dataArray })
+      this.$router.push('/advanced/cleaning/index')
     }
   }
 }

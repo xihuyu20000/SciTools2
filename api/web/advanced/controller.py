@@ -4,7 +4,9 @@ from urllib import parse
 from fastapi import APIRouter
 
 from api import ok, fail
-from .manager import advancedManager
+from .manager import advancedManager, FieldsConfigForm
+from ...dao.db.ad_tbls import build_vxe_table, build_field_config
+
 router = APIRouter()
 
 
@@ -19,7 +21,7 @@ def upload():
 @router.get('/tblnames')
 def find_tblnames():
     userid = 'f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
-    ret = advancedManager.find_tblname(userid)
+    ret = advancedManager.find_tbl_by_userid(userid)
     return ok(ret)
 
 # 修改元表名称
@@ -35,13 +37,14 @@ def delete(tblid):
     advancedManager.delete(tblid)
     return ok()
 
-# 根据tlbid查询数据
-@router.get('/dataset_query/{tlbid}')
-def dataset_query(tlbid):
-    titles, dataset = advancedManager.query_dataset_by(tlbid)
-    # 先排序，再转成vxe-table需要的格式
-    titles = sorted(titles.items(), key=lambda x: x[0])
-    titles = [{'field':title[0], 'title':title[1][0], 'width':'200px', 'resizable':True, 'sortable':True } for title in titles]
+# 根据tblid查询并显示数据集
+@router.get('/dataset_query/{tblid}')
+def dataset_query(tblid):
+    titles, dataset = advancedManager.query_dataset_by(tblid)
+    # titles是list嵌套dict，{'c10': ['SrcDatabase-来源库', '文本', '200px', '0'],......}先排序
+    titles = sorted(titles.items(), key=lambda x: int(x[1][3])) # 按照顺序号 排序
+    # ，再转成vxe-table需要的格式
+    titles = [build_vxe_table(title) for title in titles]
     titles.insert(0, {'type':'checkbox', 'title':'dsid', 'width':'100px'})
     titles.insert(0, {'type':'seq', 'width':'60px'})
 
@@ -55,3 +58,19 @@ def dataset_query(tlbid):
     # print('标题', titles)
     # print('数据集', dataset)
     return ok([titles, dataset])
+
+
+# 显示列字段信息
+@router.get('/list_fieldconfigs/{tblid}')
+def list_fieldconfigs(tblid):
+    titles, dataset = advancedManager.query_dataset_by(tblid)
+    titles = sorted(titles.items(), key=lambda x:int(x[1][3]))  #dict转为list
+    titles = [build_field_config(tc) for tc in titles]
+    return ok(titles)
+
+# 保存字段配置信息
+@router.post(('/save_fieldconfigs'))
+def save_fieldconfigs(form:FieldsConfigForm):
+    print('字段配置信息', form)
+    advancedManager.updateFieldConfig(form)
+    return ok()

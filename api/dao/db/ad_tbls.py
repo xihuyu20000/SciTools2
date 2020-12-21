@@ -6,7 +6,8 @@ from api.util.utils import gen_uuid4
 
 TBL_NAME = config.tbl_ad_tbls
 '''
-高级图表：元数据表
+高级图表：元数据表。
+cxx数组中的元素分别是[ 标题, 类型, 宽度, 顺序号 ]
 '''
 create_sql = """
     CREATE TABLE ad_tbls(
@@ -14,7 +15,7 @@ create_sql = """
         pid String COMMENT '父主键',
         userid String NOT NULL COMMENT '用户表主键',
         tblname String COMMENT '表名称',
-        cols UInt32 COMMENT '数据表的列数',
+        cols String COMMENT '数据表的有效列',
         c10 Array(String) COMMENT '列名，列类型',
         c11 Array(String) COMMENT '列名，列类型',
         c12 Array(String) COMMENT '列名，列类型',
@@ -69,6 +70,18 @@ create_sql = """
     ) ENGINE = MergeTree() ORDER BY tblid PRIMARY KEY tblid
 """
 
+# 插入数据时，构造：[标题, 类型, 宽度, 顺序号]
+def build_ad_tbl_insert(title:str, style:str, width:str, no:str):
+    return (title, style, width, no)
+
+# 构造页面的vxe-table显示需要的内容
+def build_vxe_table(title):
+    return {'field':title[0], 'title':title[1][0], 'style':title[1][1], 'width':title[1][2]+'px', 'resizable':True, 'sortable':True}
+
+# 构造字段配置页面，显示的内容
+def build_field_config(title):
+    return {'field':title[0], 'title':title[1][0], 'style':title[1][1], 'width':title[1][2]}
+
 def create():
     __create(create_sql, TBL_NAME)
 
@@ -88,10 +101,9 @@ def insert(tblid, userid, tbl_name, titles):
     @param tbl_name 表名
     @param titles 表头数据
     '''
-    colstr = ', '.join([ 'c'+str(10+i) for i in range(len(titles))])
+    colstr = ','.join([ 'c'+str(10+i) for i in range(len(titles))])
     sql = """INSERT INTO {} ( tblid, userid, tblname, cols, {}) VALUES""".format(TBL_NAME, colstr)
-    values = [tblid, userid, tbl_name, len(titles)]
+    values = [tblid, userid, tbl_name, colstr]
     values.extend(titles)   # 合并list
     values = [values]   # 必须放入到一个list中
     return __execute(sql, params=values)
-
