@@ -45,8 +45,8 @@ def dataset_query(tblid):
     titles = sorted(titles.items(), key=lambda x: int(x[1][3])) # 按照顺序号 排序
     # ，再转成vxe-table需要的格式
     titles = [build_vxe_table(title) for title in titles]
-    titles.insert(0, {'type':'checkbox', 'title':'dsid', 'width':'100px'})
-    titles.insert(0, {'type':'seq', 'width':'60px'})
+    titles.insert(0, {'type': 'seq', 'width': '100px'})
+    titles.insert(0, {'type':'checkbox', 'title':'', 'width':'60px'})
 
     # 每个数据是数组，需要提取数据
     for index, row in enumerate(dataset):

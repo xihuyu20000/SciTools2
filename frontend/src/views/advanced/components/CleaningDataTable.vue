@@ -8,7 +8,7 @@
       </template>
     </vxe-toolbar>
     <!-- <div v-show="isShowFilterBuilder"><dataset-filter-builder></dataset-filter-builder></div> -->
-    <vxe-table
+    <vxe-grid
       ref="xGrid"
       border
       resizable
@@ -22,7 +22,6 @@
       max-height="500px"
       :print-config="{}"
       :loading="loading"
-      :data="tableData"
       :mouse-config="{ selected: true }"
       :edit-config="{ trigger: 'dblclick', mode: 'cell', showStatus: true }"
       :keyboard-config="{ isArrow: true }"
@@ -31,12 +30,14 @@
         { field: 'fileid', visible: false },
         { field: 'id', visible: false }
       ]"
+      :columns.sync="titles"
+      :data.sync="dataset"
       @cell-dblclick="dbclickCell"
       @edit-closed="editClosedEvent"
       @edit-actived="editActivedEvent"
     >
-    </vxe-table>
-    <cleaning-data-filter></cleaning-data-filter>
+    </vxe-grid>
+    <cleaning-data-filter :titles="titles" :dataset="dataset"></cleaning-data-filter>
   </div>
 </template>
 
@@ -49,7 +50,8 @@ export default {
       ad_tbl: '',
       loading: false,
       editDisabled: true,
-      tableData: []
+      titles: [],
+      dataset: []
     }
   },
   mounted() {
@@ -58,6 +60,7 @@ export default {
       this.ad_tbl = ad_tbl
       this.fetch()
     })
+    this.$bus.$on('advanced_reload_dataset', () => this.fetch())
   },
   methods: {
     async fetch() {
@@ -65,19 +68,22 @@ export default {
 
       let _url = this.$api.advanced_dataset_query + '/' + this.ad_tbl.tblid
       const { data: resp } = await this.$http.get(_url)
+      if (resp.status == 400) return this.$message.error(resp.msg)
+
       let titles = resp.data[0]
       let dataset = resp.data[1]
-      titles = titles.map(item => {
+      this.titles = titles.map(item => {
         return item
       })
-      dataset = dataset.map(item => {
+      this.dataset = dataset.map(item => {
         return item
       })
-      this.$refs.xGrid.reloadColumn(titles)
-      this.$refs.xGrid.reloadData(dataset)
-      // console.log('加载数据集', resp)
-      if (resp.status == 400) return this.$message.error(resp.msg)
-      // this.tableData = resp.data
+      if (this.$refs.xGrid) {
+        this.$refs.xGrid.reloadColumn(this.titles)
+        this.$refs.xGrid.reloadData(this.dataset)
+      }
+      console.log('表头信息', this.titles)
+      console.log('数据信息', this.dataset)
       this.loading = false
     },
     dbclickCell({ row, column }) {
@@ -97,15 +103,15 @@ export default {
       this.$router.push('/advanced/fieldconfig/' + this.ad_tbl.tblid)
     },
     buildGraph() {
-      // 生成图表
+      //为实现
     },
     editClosedEvent({ row, column }) {
-      let xTable = this.$refs.xGrid
+      let xGrid = this.$refs.xGrid
       let field = column.property
       let cellValue = row[field]
       let id = row['id']
       // 判断单元格值是否被修改
-      if (xTable.isUpdateByRow(row, field)) {
+      if (xGrid.isUpdateByRow(row, field)) {
         // console.log('实时保存', field, cellValue, id)
         setTimeout(async () => {
           let { data: resp } = await this.$http.post(this.$api.datasete_odsbib_update, { id: id, k: field, v: cellValue })
