@@ -4,8 +4,8 @@ from urllib import parse
 from fastapi import APIRouter
 
 from api import ok, fail
-from .manager import advancedManager, FieldsConfigForm
-from ...dao.db.ad_tbls import build_vxe_table, build_field_config
+from .manager import advancedManager, FieldsConfigForm, TblsDatasetForm
+from ...dao.db.ad_tbls import build_field_config, VxeColumnEdit
 
 router = APIRouter()
 
@@ -40,34 +40,29 @@ def delete(tblid):
 # 根据tblid查询并显示数据集
 @router.get('/dataset_query/{tblid}')
 def dataset_query(tblid):
-    titles, dataset = advancedManager.query_dataset_by(tblid)
-    # titles是list嵌套dict，{'c10': ['SrcDatabase-来源库', '文本', '200px', '0'],......}先排序
-    titles = sorted(titles.items(), key=lambda x: int(x[1][3])) # 按照顺序号 排序
-    # ，再转成vxe-table需要的格式
-    titles = [build_vxe_table(title) for title in titles]
-    titles.insert(0, {'type': 'seq', 'width': '100px'})
-    titles.insert(0, {'type':'checkbox', 'title':'', 'width':'60px'})
+    _, vxeColumns, dataset = advancedManager.query_dataset_by(tblid)
 
-    # 每个数据是数组，需要提取数据
-    for index, row in enumerate(dataset):
-        temp = {}
-        for k,v in row.items():
-            temp[k] = v[0]
-        dataset[index] = temp
+    vxeColumns.insert(0, {'type': 'seq', 'width': '100px'})
+    vxeColumns.insert(0, {'type':'checkbox', 'title':'', 'width':'60px'})
 
-    # print('标题', titles)
-    # print('数据集', dataset)
-    return ok([titles, dataset])
+    return ok([vxeColumns, dataset])
+
+# 保存元表信息和数据集
+@router.post('/dataset_update')
+def dataset_update(form:TblsDatasetForm):
+    # 先删除，再插入；不能使用UPDATE语法
+    advancedManager.update_tbl_dataset(form)
+    return ok()
 
 # 显示列字段信息
 @router.get('/list_fieldconfigs/{tblid}')
 def list_fieldconfigs(tblid):
-    titles = advancedManager.find_tbl_by_tblid(tblid)
-    titles = titles[0]
-    [titles.pop(k) for k in ('tblid','pid','tblname') if k in titles.keys()]
-    titles = sorted(titles.items(), key=lambda x:int(x[1][3]))  #dict转为list
-    titles = [build_field_config(tc) for tc in titles]
-    return ok(titles)
+    colstr, titles = advancedManager.find_tbl_by_tblid(tblid)
+    result = []
+    for name in colstr.split(','):
+        value = titles[name]
+        result.append(VxeColumnEdit(name, value[0], value[1], value[2]).toVxe())
+    return ok(result)
 
 # 保存字段配置信息
 @router.post(('/save_fieldconfigs'))

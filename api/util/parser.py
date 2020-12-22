@@ -226,7 +226,7 @@ class File_noteExpress_Parser:
         result = []
         for line in self.lines:
             if line.startswith('{Reference Type}:'):
-                noteExpress = model.OdsCnkiBib()
+                noteExpress = OdsCnkiBib()
                 noteExpress.id = util.gen_uuid4()
                 result.append(noteExpress)
                 noteExpress.referenceType = line[len('{Reference Type}:'):].strip()

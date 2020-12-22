@@ -38,13 +38,15 @@
     >
     </vxe-grid>
     <cleaning-data-filter :titles="titles" :dataset="dataset"></cleaning-data-filter>
+    <cleaning-field-config></cleaning-field-config>
   </div>
 </template>
 
 <script>
 import CleaningDataFilter from './CleaningDataFilter.vue'
+import CleaningFieldConfig from './CleaningFieldConfig.vue'
 export default {
-  components: { CleaningDataFilter },
+  components: { CleaningDataFilter, CleaningFieldConfig },
   data() {
     return {
       ad_tbl: '',
@@ -100,7 +102,7 @@ export default {
     toFieldConfig() {
       // 字段设置
       if (this.ad_tbl == '') return this.$message.error('请选择数据集')
-      this.$router.push('/advanced/fieldconfig/' + this.ad_tbl.tblid)
+      this.$bus.$emit('show_cleaning_data_fileconfig', this.ad_tbl)
     },
     buildGraph() {
       //为实现

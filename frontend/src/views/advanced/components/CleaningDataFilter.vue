@@ -43,7 +43,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-card style="display:flex; justify-content: space-around"> <el-button type="info" @click="rollbackDataset">还原数据</el-button><el-button type="primary" @click="batchRunCommand">批量执行</el-button> <el-button type="warning">保存变化</el-button> </el-card>
+      <el-card style="display:flex; justify-content: space-around"> <el-button type="info" @click="rollbackDataset">还原数据</el-button><el-button type="primary" @click="batchRunCommand">批量执行</el-button> <el-button type="warning" @click="saveNewDataset">保存变化</el-button> </el-card>
     </template>
   </vxe-modal>
 </template>
@@ -79,6 +79,13 @@ export default {
     }
   },
   watch: {},
+  mounted() {
+    this.$bus.$on('show_cleaning_data_filter', ad_tbl => {
+      this.ad_tbl = ad_tbl
+      this.drawerVisible = true
+      this.fetch()
+    })
+  },
   methods: {
     async fetch() {
       const { data: resp } = await this.$http.get(this.$api.advanced_tbls_list_fieldconfigs + '/' + this.ad_tbl.tblid)
@@ -133,14 +140,14 @@ export default {
       }
       if (func == 'delete_null') {
         for (let i = this.dataset.length - 1; i >= 0; i--) {
-          if (this.dataset[i][colname].length == 0) {
+          if ((this.dataset[i][colname].length == 0) | ((this.dataset[i][colname].length == 1) & (this.dataset[i][colname][0] == ''))) {
             this.dataset.splice(i, 1)
           }
         }
       }
       if (func == 'fill_null') {
         for (let i = this.dataset.length - 1; i >= 0; i--) {
-          if (this.dataset[i][colname].length == 0) {
+          if ((this.dataset[i][colname].length == 0) | ((this.dataset[i][colname].length == 1) & (this.dataset[i][colname][0] == ''))) {
             this.dataset[i][colname] = param1
           }
         }
@@ -265,14 +272,27 @@ export default {
     batchRunCommand() {
       // 批量执行命令
       this.expressArray.forEach(express => this.runExpress(express))
+    },
+    saveNewDataset() {
+      // 保存变化后的数据
+      this.$confirm('此操作永久性修改以前的数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        let titles2 = this.titles
+          .filter((x, i) => i > 1)
+          .map(x => {
+            x.width = x.width.replace(new RegExp('px', 'g'), '')
+            return x
+          })
+        // console.log('表头', titles2, this.dataset)
+        let _url = this.$api.advanced_dataset_update
+        const { data: resp } = await this.$http.post(_url, { tblid: this.ad_tbl.tblid, titles: titles2, dataset: this.dataset })
+        if (resp.status == 400) return this.$message.error(resp.msg)
+        this.$bus.$emit('advanced_reload_dataset')
+      })
     }
-  },
-  mounted() {
-    this.$bus.$on('show_cleaning_data_filter', ad_tbl => {
-      this.ad_tbl = ad_tbl
-      this.drawerVisible = true
-      this.fetch()
-    })
   }
 }
 </script>

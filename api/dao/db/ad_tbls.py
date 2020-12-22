@@ -7,7 +7,7 @@ from api.util.utils import gen_uuid4
 TBL_NAME = config.tbl_ad_tbls
 '''
 高级图表：元数据表。
-cxx数组中的元素分别是[ 标题, 类型, 宽度, 顺序号 ]
+cxx数组中的元素分别是[ 标题, 类型, 宽度 ]
 '''
 create_sql = """
     CREATE TABLE ad_tbls(
@@ -67,43 +67,88 @@ create_sql = """
         c58 Array(String) COMMENT '列名，列类型',
         c59 Array(String) COMMENT '列名，列类型',
         c60 Array(String) COMMENT '列名，列类型'
-    ) ENGINE = MergeTree() ORDER BY tblid PRIMARY KEY tblid
+    ) ENGINE = MergeTree() PARTITION  BY tblid ORDER BY tblid PRIMARY KEY tblid
 """
 
-# 插入数据时，构造：[标题, 类型, 宽度, 顺序号]
-def build_ad_tbl_insert(title:str, style:str, width:str, no:str):
-    return (title, style, width, no)
 
-# 构造页面的vxe-table显示需要的内容
-def build_vxe_table(title):
-    return {'field':title[0], 'title':title[1][0], 'style':title[1][1], 'width':title[1][2]+'px', 'resizable':True, 'sortable':True}
 
 # 构造字段配置页面，显示的内容
 def build_field_config(title):
-    return {'field':title[0], 'title':title[1][0], 'style':title[1][1], 'width':title[1][2]}
+    return {'field': title[0], 'title': title[1][0], 'style': title[1][1], 'width': title[1][2]}
+
 
 def create():
     __create(create_sql, TBL_NAME)
 
+
 def drop():
     __drop(TBL_NAME)
+
 
 def execute(sql, params=None):
     return __execute(sql, params)
 
-def query(sql, params=None, result_style = 'dict'):
+
+def query(sql, params=None, result_style='dict'):
     return __query(sql, params, result_style=result_style)
 
-def insert(tblid, userid, tbl_name, titles):
+
+class AdTblColumn:
+    def __init__(self, title: str, style: str, width: int = 200):
+        """
+        @param title: 表格显示的表头
+        @param style: 字段的类型：文本、数值、日期
+        @param width: 显示时的列宽
+        """
+        self.title = title
+        self.style = style
+        self.width = str(width)
+
+    def toch(self):
+        # [标题, 类型, 宽度]
+        return (self.title, self.style, self.width)
+
+class VxeTableColumn:
+    def __init__(self, field, title, style, width):
+        """
+        @param field
+        @param title
+        @param style
+        @param width
+        """
+        self.field = field
+        self.title = title
+        self.style = style
+        self.width = width
+    def toVxe(self):
+        return {'field': self.field, 'title': self.title, 'style': self.style, 'width': self.width + 'px', 'resizable': True, 'sortable': True}
+
+class VxeColumnEdit:
+    def __init__(self, field, title, style, width):
+        """
+        @param field
+        @param title
+        @param style
+        @param width
+        """
+        self.field = field
+        self.title = title
+        self.style = style
+        self.width = width
+    def toVxe(self):
+        return {'field': self.field, 'title': self.title, 'style': self.style, 'width': self.width}
+
+def insert(tblid: str, userid: str, tbl_name: str, titles: List[AdTblColumn]):
     '''
     @param tbid 一定是自动生成的id
     @param userid 一定是用户的id
     @param tbl_name 表名
-    @param titles 表头数据
+    @param titles 表头数据是一个list，里面是AdTblColumn
     '''
-    colstr = ','.join([ 'c'+str(10+i) for i in range(len(titles))])
+    colstr = ','.join(['c' + str(10 + i) for i in range(len(titles))])
     sql = """INSERT INTO {} ( tblid, userid, tblname, cols, {}) VALUES""".format(TBL_NAME, colstr)
     values = [tblid, userid, tbl_name, colstr]
-    values.extend(titles)   # 合并list
-    values = [values]   # 必须放入到一个list中
+    titles = [t.toch() for t in titles]  # 对titles进行结构转换
+    values.extend(titles)  # 合并list
+    values = [values]  # 必须放入到一个list中
     return __execute(sql, params=values)

@@ -5,49 +5,51 @@ import Default from '@/views/common/Default.vue'
 import Login from '@/views/common/Login.vue'
 import V404 from '@/views/common/404.vue'
 
-import FileIndex from '@/views/file/FileIndex.vue'
-import DatasetIndex from '@/views/dataset/DatasetIndex.vue'
 import AdvancedIndex from '@/views/advanced/AdvancedIndex.vue'
 import AdvancedCleaningIndex from '@/views/advanced/CleaningIndex.vue'
 import AdvancedDatasourceIndex from '@/views/advanced/DatasourceIndex.vue'
-import AdvancedFieldConfig from '@/views/advanced/Cleaning-FieldConfig.vue'
 import AdvancedGraphIndex from '@/views/advanced/GraphIndex.vue'
-import StatIndex from '@/views/stat/StatIndex.vue'
+
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 import ReportIndex from '@/views/report/ReportIndex.vue'
 
-import circularGraphForKeyWord from '@/views/stat/components/circularGraphForKeyWord.vue'
-import clusterBurstingForKeyWord from '@/views/stat/components/clusterBurstingForKeyWord.vue'
-import clusterHierarchyForKeyWord from '@/views/stat/components/clusterHierarchyForKeyWord.vue'
-import clusterSpectralForKeyWord from '@/views/stat/components/clusterSpectralForKeyWord.vue'
-import clusterTrendForKeyWord from '@/views/stat/components/clusterTrendForKeyWord.vue'
+import circularGraphForKeyWord from '@/views/scimetrics-stat/components/circularGraphForKeyWord.vue'
+import clusterBurstingForKeyWord from '@/views/scimetrics-stat/components/clusterBurstingForKeyWord.vue'
+import clusterHierarchyForKeyWord from '@/views/scimetrics-stat/components/clusterHierarchyForKeyWord.vue'
+import clusterSpectralForKeyWord from '@/views/scimetrics-stat/components/clusterSpectralForKeyWord.vue'
+import clusterTrendForKeyWord from '@/views/scimetrics-stat/components/clusterTrendForKeyWord.vue'
 
-import coocMatrixForAuthor from '@/views/stat/components/coocMatrixForAuthor.vue'
-import coocMatrixForCountry from '@/views/stat/components/coocMatrixForCountry.vue'
-import coocMatrixForFund from '@/views/stat/components/coocMatrixForFund.vue'
-import coocMatrixForKeyWord from '@/views/stat/components/coocMatrixForKeyWord.vue'
-import coocMatrixForOrg from '@/views/stat/components/coocMatrixForOrg.vue'
+import coocMatrixForAuthor from '@/views/scimetrics-stat/components/coocMatrixForAuthor.vue'
+import coocMatrixForCountry from '@/views/scimetrics-stat/components/coocMatrixForCountry.vue'
+import coocMatrixForFund from '@/views/scimetrics-stat/components/coocMatrixForFund.vue'
+import coocMatrixForKeyWord from '@/views/scimetrics-stat/components/coocMatrixForKeyWord.vue'
+import coocMatrixForOrg from '@/views/scimetrics-stat/components/coocMatrixForOrg.vue'
 
-import kgConnect from '@/views/stat/components/kgConnect'
-// import kgIndexHtml from '@/views/stat/components/kgIndex.html'
-import kgIndex from '@/views/stat/components/kgIndex'
-import kgSearch from '@/views/stat/components/kgSearch'
+import kgConnect from '@/views/scimetrics-stat/components/kgConnect'
+// import kgIndexHtml from '@/views/scimetrics-stat/components/kgIndex.html'
+import kgIndex from '@/views/scimetrics-stat/components/kgIndex'
+import kgSearch from '@/views/scimetrics-stat/components/kgSearch'
 
-import scatterCoocKeyWord from '@/views/stat/components/scatterCoocKeyWord.vue'
+import scatterCoocKeyWord from '@/views/scimetrics-stat/components/scatterCoocKeyWord.vue'
 
-import statArticlesByAuthor from '@/views/stat/components/statArticlesByAuthor.vue'
-import statArticlesByCountry from '@/views/stat/components/statArticlesByCountry.vue'
-import statArticlesByFirstDuty from '@/views/stat/components/statArticlesByFirstDuty.vue'
-import statArticlesByFund from '@/views/stat/components/statArticlesByFund.vue'
-import statArticlesByJournal from '@/views/stat/components/statArticlesByJournal.vue'
-import statArticlesByOrg from '@/views/stat/components/statArticlesByOrg.vue'
-import statArticlesByProvince from '@/views/stat/components/statArticlesByProvince.vue'
-import statArticlesBySubject from '@/views/stat/components/statArticlesBySubject.vue'
-import statArticlesByYear from '@/views/stat/components/statArticlesByYear.vue'
-import statKwsByCount from '@/views/stat/components/statKwsByCount.vue'
-import statPersonsByCoAuthor from '@/views/stat/components/statPersonsByCoAuthor.vue'
+import ScimetricsIndex from '@/views/scimetrics/ScimetricsIndex.vue'
+import ScimetricsDataSourceIndex from '@/views/scimetrics/ScimetricsDataSourceIndex.vue'
+import ScimetricsCleaningIndex from '@/views/scimetrics/ScimetricsCleaningIndex.vue'
+import ScimetricsGraphIndex from '@/views/scimetrics-stat/ScimetricsGraphIndex.vue'
 
-import wordCloundForKeyWord from '@/views/stat/components/wordCloundForKeyWord.vue'
+import statArticlesByAuthor from '@/views/scimetrics-stat/components/statArticlesByAuthor.vue'
+import statArticlesByCountry from '@/views/scimetrics-stat/components/statArticlesByCountry.vue'
+import statArticlesByFirstDuty from '@/views/scimetrics-stat/components/statArticlesByFirstDuty.vue'
+import statArticlesByFund from '@/views/scimetrics-stat/components/statArticlesByFund.vue'
+import statArticlesByJournal from '@/views/scimetrics-stat/components/statArticlesByJournal.vue'
+import statArticlesByOrg from '@/views/scimetrics-stat/components/statArticlesByOrg.vue'
+import statArticlesByProvince from '@/views/scimetrics-stat/components/statArticlesByProvince.vue'
+import statArticlesBySubject from '@/views/scimetrics-stat/components/statArticlesBySubject.vue'
+import statArticlesByYear from '@/views/scimetrics-stat/components/statArticlesByYear.vue'
+import statKwsByCount from '@/views/scimetrics-stat/components/statKwsByCount.vue'
+import statPersonsByCoAuthor from '@/views/scimetrics-stat/components/statPersonsByCoAuthor.vue'
+
+import wordCloundForKeyWord from '@/views/scimetrics-stat/components/wordCloundForKeyWord.vue'
 
 Vue.use(VueRouter)
 
@@ -63,16 +65,7 @@ const routes = [
         name: '首页',
         component: Default
       },
-      {
-        path: '/file/index',
-        name: '分析数据',
-        component: FileIndex
-      },
-      {
-        path: '/dataset/index',
-        name: '数据显示',
-        component: DatasetIndex
-      },
+
       {
         path: '/advanced/index',
         name: '高级图表',
@@ -92,156 +85,169 @@ const routes = [
             path: '/advanced/graph/index',
             name: '高级图表展现首页',
             component: AdvancedGraphIndex
-          },
-          {
-            path: '/advanced/fieldconfig/:tblid',
-            name: '字段配置',
-            component: AdvancedFieldConfig
           }
         ]
       },
       {
-        path: '/stat/index',
-        name: '知识图谱',
-        component: StatIndex,
+        path: '/scimetrics/scimetricsIndex',
+        name: '科学计量',
+        component: ScimetricsIndex,
         children: [
           {
-            path: '/circularGraph/keyword/:dsid',
-            name: '关键词共现关系图',
-            component: circularGraphForKeyWord
+            path: '/scimetrics/datasource/index',
+            name: '科学计量数据源',
+            component: ScimetricsDataSourceIndex
           },
           {
-            path: '/cluster/bursting/keyword/:dsid',
-            name: '关键词突现图谱',
-            component: clusterBurstingForKeyWord
+            path: '/scimetrics/cleaning/index',
+            name: '科学计量数据清洗',
+            component: ScimetricsCleaningIndex
           },
           {
-            path: '/cluster/hierarchy/keyword/:dsid',
-            name: '关键词层级聚类',
-            component: clusterHierarchyForKeyWord
-          },
-          {
-            path: '/cluster/spectral/keyword/:dsid',
-            name: '关键词谱聚类',
-            component: clusterSpectralForKeyWord
-          },
-          {
-            path: '/cluster/trend/keyword/:dsid',
-            name: '关键词聚类趋势',
-            component: clusterTrendForKeyWord
-          },
-          {
-            path: '/coocMatrix/author/:dsid',
-            name: '作者共现矩阵',
-            component: coocMatrixForAuthor
-          },
-          {
-            path: '/coocMatrix/country/:dsid',
-            name: '国家共现矩阵',
-            component: coocMatrixForCountry
-          },
-          {
-            path: '/coocMatrix/fund/:dsid',
-            name: '基金共现矩阵',
-            component: coocMatrixForFund
-          },
-          {
-            path: '/coocMatrix/keyword/:dsid',
-            name: '关键词共现矩阵',
-            component: coocMatrixForKeyWord
-          },
-          {
-            path: '/coocMatrix/org/:dsid',
-            name: '机构共现矩阵',
-            component: coocMatrixForOrg
-          },
-          {
-            path: '/kg/connect/:dsid',
-            name: '知识关联',
-            component: kgConnect
-          },
-          {
-            path: '/kg/index/:dsid',
-            name: '全局图谱',
-            component: kgIndex
-          },
-          {
-            path: '/kg/search/:dsid',
-            name: '知识搜索',
-            component: kgSearch
-          },
-          {
-            path: '/scatter/coockeyword/:dsid',
-            name: '共现关键词散点图',
-            component: scatterCoocKeyWord
-          },
-          {
-            path: '/stat/statArticlesByAuthor/:dsid',
-            name: '作者发文量',
-            component: statArticlesByAuthor
-          },
-          {
-            path: '/stat/statArticlesByCountry/:dsid',
-            name: '国家发文量',
-            component: statArticlesByCountry
-          },
-          {
-            path: '/stat/statArticlesByFirstDuty/:dsid',
-            name: '一作发文量',
-            component: statArticlesByFirstDuty
-          },
-          {
-            path: '/stat/statArticlesByFund/:dsid',
-            name: '基金支持发文量',
-            component: statArticlesByFund
-          },
-          {
-            path: '/stat/statArticlesByJournal/:dsid',
-            name: '期刊来源统计',
-            component: statArticlesByJournal
-          },
-          {
-            path: '/stat/statArticlesByOrg/:dsid',
-            name: '机构发文量',
-            component: statArticlesByOrg
-          },
-          {
-            path: '/stat/statArticlesByProvince/:dsid',
-            name: '地区发文量',
-            component: statArticlesByProvince
-          },
-          {
-            path: '/stat/statArticlesByJournal/:dsid',
-            name: '期刊发文量',
-            component: statArticlesByJournal
-          },
-          {
-            path: '/stat/statArticlesBySubject/:dsid',
-            name: '学科分布统计',
-            component: statArticlesBySubject
-          },
-          {
-            path: '/stat/statArticlesByYear/:dsid',
-            name: '历年发文量',
-            component: statArticlesByYear
-          },
-          {
-            path: '/stat/statKwsByCount/:dsid',
-            name: '关键词词频',
-            component: statKwsByCount
-          },
-          {
-            path: '/stat/statPersonsByCoAuthor/:dsid',
-            name: '合著人数统计',
-            component: statPersonsByCoAuthor
-          },
-          {
-            path: '/wordclound/keyword/:dsid',
-            name: '关键词词频',
-            component: wordCloundForKeyWord
+            path: '/scimetrics/graph/index',
+            name: '科学计量图表展现首页',
+            component: ScimetricsGraphIndex,
+            children: [
+              {
+                path: '/circularGraph/keyword/:dsid',
+                name: '关键词共现关系图',
+                component: circularGraphForKeyWord
+              },
+              {
+                path: '/cluster/bursting/keyword/:dsid',
+                name: '关键词突现图谱',
+                component: clusterBurstingForKeyWord
+              },
+              {
+                path: '/cluster/hierarchy/keyword/:dsid',
+                name: '关键词层级聚类',
+                component: clusterHierarchyForKeyWord
+              },
+              {
+                path: '/cluster/spectral/keyword/:dsid',
+                name: '关键词谱聚类',
+                component: clusterSpectralForKeyWord
+              },
+              {
+                path: '/cluster/trend/keyword/:dsid',
+                name: '关键词聚类趋势',
+                component: clusterTrendForKeyWord
+              },
+              {
+                path: '/coocMatrix/author/:dsid',
+                name: '作者共现矩阵',
+                component: coocMatrixForAuthor
+              },
+              {
+                path: '/coocMatrix/country/:dsid',
+                name: '国家共现矩阵',
+                component: coocMatrixForCountry
+              },
+              {
+                path: '/coocMatrix/fund/:dsid',
+                name: '基金共现矩阵',
+                component: coocMatrixForFund
+              },
+              {
+                path: '/coocMatrix/keyword/:dsid',
+                name: '关键词共现矩阵',
+                component: coocMatrixForKeyWord
+              },
+              {
+                path: '/coocMatrix/org/:dsid',
+                name: '机构共现矩阵',
+                component: coocMatrixForOrg
+              },
+              {
+                path: '/kg/connect/:dsid',
+                name: '知识关联',
+                component: kgConnect
+              },
+              {
+                path: '/kg/index/:dsid',
+                name: '全局图谱',
+                component: kgIndex
+              },
+              {
+                path: '/kg/search/:dsid',
+                name: '知识搜索',
+                component: kgSearch
+              },
+              {
+                path: '/scatter/coockeyword/:dsid',
+                name: '共现关键词散点图',
+                component: scatterCoocKeyWord
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByAuthor/:dsid',
+                name: '作者发文量',
+                component: statArticlesByAuthor
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByCountry/:dsid',
+                name: '国家发文量',
+                component: statArticlesByCountry
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByFirstDuty/:dsid',
+                name: '一作发文量',
+                component: statArticlesByFirstDuty
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByFund/:dsid',
+                name: '基金支持发文量',
+                component: statArticlesByFund
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByJournal/:dsid',
+                name: '期刊来源统计',
+                component: statArticlesByJournal
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByOrg/:dsid',
+                name: '机构发文量',
+                component: statArticlesByOrg
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByProvince/:dsid',
+                name: '地区发文量',
+                component: statArticlesByProvince
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByJournal/:dsid',
+                name: '期刊发文量',
+                component: statArticlesByJournal
+              },
+              {
+                path: '/scimetrics-stat/statArticlesBySubject/:dsid',
+                name: '学科分布统计',
+                component: statArticlesBySubject
+              },
+              {
+                path: '/scimetrics-stat/statArticlesByYear/:dsid',
+                name: '历年发文量',
+                component: statArticlesByYear
+              },
+              {
+                path: '/scimetrics-stat/statKwsByCount/:dsid',
+                name: '关键词词频',
+                component: statKwsByCount
+              },
+              {
+                path: '/scimetrics-stat/statPersonsByCoAuthor/:dsid',
+                name: '合著人数统计',
+                component: statPersonsByCoAuthor
+              },
+              {
+                path: '/wordclound/keyword/:dsid',
+                name: '关键词词频',
+                component: wordCloundForKeyWord
+              }
+            ]
           }
         ]
       },
+
       {
         path: '/report/index',
         name: '生成报告',

@@ -1,3 +1,5 @@
+from typing import List
+
 from api import config
 from api.dao.db import __create, __drop, __truncate, __execute, __query
 
@@ -61,30 +63,37 @@ create_sql = """
         c58 Array(String) COMMENT '列名，列类型',
         c59 Array(String) COMMENT '列名，列类型',
         c60 Array(String) COMMENT '列名，列类型'
-    ) ENGINE = MergeTree() ORDER BY dsid PRIMARY KEY dsid
+    ) ENGINE = MergeTree() PARTITION BY tblid ORDER BY dsid PRIMARY KEY dsid
 """
+
+
 def create():
     __create(create_sql, TBL_NAME)
+
 
 def drop():
     __drop(TBL_NAME)
 
+
 def execute(sql, params=None):
     return __execute(sql, params)
 
-def insert(tblid, dataset):
+
+def insert(tblid, dataset: List[List[str]]):
     '''
     @param tblid : 元表id
-    @param dataset : 数据集
+    @param dataset : 数据集，是二维list，数值类型是str
     '''
     colstr = 'tblid, ' + ', '.join(['c' + str(10 + i) for i in range(len(dataset[0]))])
     sql = 'INSERT INTO {} ({}) VALUES '.format(TBL_NAME, colstr)
-    for i, row in enumerate(dataset):
-        row = [[col] for col in row]
-        values = [tblid]
-        values.extend(row)  # 把tblid插入到前面
-        dataset[i] = tuple(values) # 必须替换，否则不生效
-    return __execute(sql, dataset)
 
-def query(sql, params=None, result_style = 'dict'):
+    dataset2 = []
+    for i, row in enumerate(dataset):
+        row = [[col] for col in row]  # 因为列字段是数组类型，所以插入到每个字段的，必须是一个list
+        row.insert(0, tblid)  # 第一列是tblid字段
+        dataset2.append(row)
+    return __execute(sql, dataset2)
+
+
+def query(sql, params=None, result_style='dict'):
     return __query(sql, params, result_style=result_style)

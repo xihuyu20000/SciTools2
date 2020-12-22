@@ -14,7 +14,7 @@ import '@/plugins/markdown.js'
 import '@/plugins/treelist.js'
 import '@/plugins/vxetable'
 import '@/components/_globals.js'
-import '@/views/stat/_stat.js'
+import '@/views/scimetrics-stat/_stat.js'
 import '@/assets/fonts/iconfont.css'
 import '@/assets/css/global.css'
 

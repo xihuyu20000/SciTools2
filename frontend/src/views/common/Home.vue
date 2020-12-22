@@ -48,12 +48,10 @@ export default {
       collapsed: false,
       menuTree: [],
       headerMenus: [
-        { label: '上传文件', path: '/file/index' },
-        { label: '数据表格', path: '/dataset/index' },
-        { label: '图形展现', path: '/stat/index' },
+        { label: '科学计量', path: '/scimetrics/scimetricsIndex' },
+        { label: '高级图表', path: '/advanced/index' },
         { label: '生成报告', path: '/report/index' },
-        { label: '配置参数', path: '/config/index' },
-        { label: '高级图表', path: '/advanced/index' }
+        { label: '配置参数', path: '/config/index' }
       ],
       activeTopMenu: '2',
       activeLeftActive: '',

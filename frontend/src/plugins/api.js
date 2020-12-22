@@ -18,6 +18,7 @@ Vue.prototype.$api = {
   advanced_tbls_rename: '/api/advanced/tblrename',
   advanced_tbls_delete: '/api/advanced/delete',
   advanced_dataset_query: '/api/advanced/dataset_query',
+  advanced_dataset_update: '/api/advanced/dataset_update',
   advanced_tbls_list_fieldconfigs: '/api/advanced/list_fieldconfigs',
   advanced_tbls_save_fieldconfigs: '/api/advanced/save_fieldconfigs'
 }
