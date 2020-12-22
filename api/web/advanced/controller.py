@@ -67,6 +67,6 @@ def list_fieldconfigs(tblid):
 # 保存字段配置信息
 @router.post(('/save_fieldconfigs'))
 def save_fieldconfigs(form:FieldsConfigForm):
-    print('字段配置信息', form)
+    # print('字段配置信息', form)
     advancedManager.updateFieldConfig(form)
     return ok()
