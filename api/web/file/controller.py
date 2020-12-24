@@ -4,8 +4,6 @@ import uuid
 import zipfile
 from pathlib import Path
 from api.config import get_upload_home
-from threading import Thread
-from api.util.utils import remove_dir
 from typing import List
 
 from fastapi import APIRouter, UploadFile, File, Form

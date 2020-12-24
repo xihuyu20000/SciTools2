@@ -33,16 +33,14 @@ update_dim_dataset = dim_dataset.update if config.db_is_clickhouse else None
 
 create_dim_org = dim_org.create_dim_org if config.db_is_clickhouse else None
 drop_dim_org = dim_org.drop_dim_org if config.db_is_clickhouse else None
-truncate_dim_org = dim_org.truncate_dim_org if config.db_is_clickhouse else None
 insert_dim_org = dim_org.insert_dim_org if config.db_is_clickhouse else None
 find_dim_org = dim_org.find_dim_org if config.db_is_clickhouse else None
 
 ###################################################################################
 
-create_dim_user = dim_user.create_dim_user if config.db_is_clickhouse else None
-drop_dim_user = dim_user.drop_dim_user if config.db_is_clickhouse else None
-truncate_dim_user = dim_user.truncate_dim_user if config.db_is_clickhouse else None
-insert_dim_user = dim_user.insert_dim_user if config.db_is_clickhouse else None
+create_dim_user = dim_user.create if config.db_is_clickhouse else None
+drop_dim_user = dim_user.drop if config.db_is_clickhouse else None
+insert_dim_user = dim_user.insert if config.db_is_clickhouse else None
 get_user = dim_user.get_user if config.db_is_clickhouse else None
 
 ##################################################################################

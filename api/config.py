@@ -5,9 +5,13 @@ api/config负责管理所有的配置信息
 # 存放数据文件的个目录
 import os
 import time
+from queue import LifoQueue
 from pathlib import Path
 
 base_file_dir = '.'
+
+# 消息队列
+IMQ = LifoQueue()
 
 # 系统内置的默认用户名
 default_user = 'default'
@@ -47,6 +51,7 @@ tbl_ods_bib = 'default.ods_bib'
 # 高级图表
 tbl_ad_dataset = 'default.ad_dataset'
 tbl_ad_tbls = 'default.ad_tbls'
+tbl_ad_graphs = 'default.ad_graphs'
 
 # 配置文件的路径
 # _base = os.path.join(os.path.abspath('.').split(r"api")[0], 'api', 'config')

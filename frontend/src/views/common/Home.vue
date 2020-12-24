@@ -49,7 +49,7 @@ export default {
       menuTree: [],
       headerMenus: [
         { label: '科学计量', path: '/scimetrics/scimetricsIndex' },
-        { label: '高级图表', path: '/advanced/index' },
+        { label: '数据分析', path: '/advanced/index' },
         { label: '生成报告', path: '/report/index' },
         { label: '配置参数', path: '/config/index' }
       ],
@@ -58,11 +58,13 @@ export default {
       activeTabName: '首页',
       headerMenus1: [],
       leftMenus: [],
-      tabs: []
+      tabs: [],
+      im: ''
     }
   },
   computed: {},
   watch: {},
+  mounted() {},
   methods: {
     toggle() {
       this.collapsed = !this.collapsed
@@ -76,6 +78,19 @@ export default {
     logout() {
       window.sessionStorage.clear()
       this.$router.push(this.$api.login)
+    },
+    showWebSocketMsg(title) {
+      this.$notify({
+        title: title,
+        message: this.im,
+        position: 'bottom-right'
+      })
+    },
+    websocketonmessage(e) {
+      //数据接收
+      let data = JSON.parse(e.data)
+      console.log('接收的websocket数据', data)
+      this.im = data
     }
   },
   created() {
@@ -83,6 +98,13 @@ export default {
     this.activeTopMenu = sessionStorage.getItem('top_menu') || '1'
     // 左侧激活菜单
     this.activeLeftActive = sessionStorage.getItem('active_left_menu')
+    // 注册事件
+    // this.$bus.$on('showWebSocketMsg', title => this.showWebSocketMsg(title))
+    // 接收消息时的回调函数
+    // this.$socket.onmessage = this.websocketonmessage
+  },
+  destoryed() {
+    this.$socket.close()
   }
 }
 </script>

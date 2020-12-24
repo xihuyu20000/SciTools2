@@ -9,12 +9,11 @@ import 'nprogress/nprogress.css'
 axios.interceptors.request.use(
   config => {
     NProgress.start()
-    console.log('请求', config)
-    config.headers['Authorization'] = sessionStorage.getItem('token')
+    config.headers['Authorization'] = window.sessionStorage.getItem('token')
     return config
   },
   error => {
-    console.log('axios报错', error) // for debug
+    console.log('axios.js报错', error) // for debug
     return Promise.reject(error)
   }
 )

@@ -8,7 +8,7 @@ import V404 from '@/views/common/404.vue'
 import AdvancedIndex from '@/views/advanced/AdvancedIndex.vue'
 import AdvancedCleaningIndex from '@/views/advanced/CleaningIndex.vue'
 import AdvancedDatasourceIndex from '@/views/advanced/DatasourceIndex.vue'
-import AdvancedGraphIndex from '@/views/advanced/GraphIndex.vue'
+import AdvancedGraphIndex from '@/views/advanced-graph/GraphIndex.vue'
 
 import ConfigIndex from '@/views/config/ConfigIndex.vue'
 import ReportIndex from '@/views/report/ReportIndex.vue'

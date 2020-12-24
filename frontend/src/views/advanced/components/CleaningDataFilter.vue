@@ -43,7 +43,12 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-card style="display:flex; justify-content: space-around"> <el-button type="info" @click="rollbackDataset">还原数据</el-button><el-button type="primary" @click="batchRunCommand">批量执行</el-button> <el-button type="warning" @click="saveNewDataset">保存变化</el-button> </el-card>
+      <el-card style="display:flex; justify-content: space-around">
+        <el-button type="info" @click="rollbackDataset">还原数据</el-button>
+        <el-button type="primary" @click="batchRunCommand">批量执行</el-button>
+        <el-button type="warning" @click="saveNewDataset">保存变化</el-button>
+        <el-button type="danger" @click="saveAsNewDataset">另存为</el-button>
+      </el-card>
     </template>
   </vxe-modal>
 </template>
@@ -291,6 +296,27 @@ export default {
         const { data: resp } = await this.$http.post(_url, { tblid: this.ad_tbl.tblid, titles: titles2, dataset: this.dataset })
         if (resp.status == 400) return this.$message.error(resp.msg)
         this.$bus.$emit('advanced_reload_dataset')
+        this.$bus.$emit('advanced_reload_adtbl_names')
+        this.drawerVisible = false
+      })
+    },
+    saveAsNewDataset() {
+      // 保存变化后的数据
+      this.$confirm('此操作会产生一个新的数据集，不会影响当前的数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        let titles2 = this.titles
+          .filter((x, i) => i > 1)
+          .map(x => {
+            x.width = x.width.replace(new RegExp('px', 'g'), '')
+            return x
+          })
+        let _url = this.$api.advanced_dataset_saveAsNew
+        const { data: resp } = await this.$http.post(_url, { tblid: this.ad_tbl.tblid, titles: titles2, dataset: this.dataset })
+        if (resp.status == 400) return this.$message.error(resp.msg)
+        this.$bus.$emit('advanced_reload_adtbl_names')
       })
     }
   }

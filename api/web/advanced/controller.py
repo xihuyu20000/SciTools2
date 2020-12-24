@@ -1,11 +1,15 @@
+import json
 import  os
 from urllib import parse
 
+import demjson
 from fastapi import APIRouter
 
 from api import ok, fail
 from .manager import advancedManager, FieldsConfigForm, TblsDatasetForm
-from ...dao.db.ad_tbls import build_field_config, VxeColumnEdit
+from ...dao.db.ad_tbls import VxeColumnEdit
+
+from ...util.utils import read_lines
 
 router = APIRouter()
 
@@ -54,6 +58,13 @@ def dataset_update(form:TblsDatasetForm):
     advancedManager.update_tbl_dataset(form)
     return ok()
 
+# 另存为新的元表信息和数据集
+@router.post('/dataset_saveAsNew')
+def dataset_saveAsNew(form:TblsDatasetForm):
+    # 先删除，再插入；不能使用UPDATE语法
+    advancedManager.saveAsNew_tbl_dataset(form)
+    return ok()
+
 # 显示列字段信息
 @router.get('/list_fieldconfigs/{tblid}')
 def list_fieldconfigs(tblid):
@@ -70,3 +81,14 @@ def save_fieldconfigs(form:FieldsConfigForm):
     # print('字段配置信息', form)
     advancedManager.updateFieldConfig(form)
     return ok()
+
+import os
+# 加载图表的配置信息和数据
+@router.get('/graph/load_option_data/{graphStyle}')
+def graph_load_option_data(graphStyle:str):
+    jsfile = os.path.join(os.getcwd(), 'graph-options', graphStyle+'.js')
+    jsstr = ''.join(read_lines(jsfile)).strip()
+    jsstr = jsstr[:-1] if jsstr.endswith(';') else jsstr
+    option = demjson.decode(jsstr)
+    print('加载的配置', option)
+    return ok({'option':option})

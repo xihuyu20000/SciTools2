@@ -4,7 +4,7 @@
       <template v-slot:buttons>
         <vxe-button @click="filterDataset">数据筛选</vxe-button>
         <vxe-button @click="toFieldConfig">字段设置</vxe-button>
-        <vxe-button @click="buildGraph">生成图表</vxe-button>
+        <vxe-button @click="showProcessing">显示进度</vxe-button>
       </template>
     </vxe-toolbar>
     <!-- <div v-show="isShowFilterBuilder"><dataset-filter-builder></dataset-filter-builder></div> -->
@@ -84,8 +84,8 @@ export default {
         this.$refs.xGrid.reloadColumn(this.titles)
         this.$refs.xGrid.reloadData(this.dataset)
       }
-      console.log('表头信息', this.titles)
-      console.log('数据信息', this.dataset)
+      //console.log('表头信息', this.titles)
+      //console.log('数据信息', this.dataset)
       this.loading = false
     },
     dbclickCell({ row, column }) {
@@ -104,8 +104,8 @@ export default {
       if (this.ad_tbl == '') return this.$message.error('请选择数据集')
       this.$bus.$emit('show_cleaning_data_fileconfig', this.ad_tbl)
     },
-    buildGraph() {
-      //为实现
+    showProcessing() {
+      this.$bus.$emit('showWebSocketMsg', '执行进度')
     },
     editClosedEvent({ row, column }) {
       let xGrid = this.$refs.xGrid
@@ -134,34 +134,6 @@ export default {
           if (columnIndex === 0) {
             return '空值'
           }
-          // if (['title', 'firstduty', 'pubyear', 'publication'].includes(column.property)) {
-          //   let count = 0
-          //   if (column.property == 'title') {
-          //     count = 0
-          //     data.forEach(ele => {
-          //       if (ele.title.length == 0) count += 1
-          //     })
-          //   }
-          //   if (column.property == 'firstduty') {
-          //     count = 0
-          //     data.forEach(ele => {
-          //       if (ele.firstduty.length == 0) count += 1
-          //     })
-          //   }
-          //   if (column.property == 'pubyear') {
-          //     count = 0
-          //     data.forEach(ele => {
-          //       if (ele.pubyear.length == 0) count += 1
-          //     })
-          //   }
-          //   if (column.property == 'publication') {
-          //     count = 0
-          //     data.forEach(ele => {
-          //       if (ele.publication.length == 0) count += 1
-          //     })
-          //   }
-          //   return count
-          // }
           return null
         })
       ]

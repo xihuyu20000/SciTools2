@@ -70,13 +70,6 @@ create_sql = """
     ) ENGINE = MergeTree() PARTITION  BY tblid ORDER BY tblid PRIMARY KEY tblid
 """
 
-
-
-# 构造字段配置页面，显示的内容
-def build_field_config(title):
-    return {'field': title[0], 'title': title[1][0], 'style': title[1][1], 'width': title[1][2]}
-
-
 def create():
     __create(create_sql, TBL_NAME)
 

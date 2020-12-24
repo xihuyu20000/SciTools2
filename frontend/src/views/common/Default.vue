@@ -1,30 +1,15 @@
 <template>
   <div>
-    首页
-    <table>
-      <tr v-for="(v, i) in dataArr" :key="i">
-        <td>{{ v.label }}</td>
-      </tr>
-    </table>
-
-    <el-button @click="btn1">点击</el-button>
+    <h1>论文一作或者项目主要负责人是学生时，使用本软件免费； 其余人员使用本软件发文，请使用会员。</h1>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      dataArr: [{ label: 'aaa' }, { label: 'bbb' }, { label: 'ccc' }]
-    }
+    return {}
   },
-  methods: {
-    btn1() {
-      let tmp = this.dataArr[1]
-      this.dataArr[1] = this.dataArr[0]
-      this.dataArr[0] = tmp
-    }
-  },
+  methods: {},
   mounted: function() {}
 }
 </script>

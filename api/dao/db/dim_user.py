@@ -6,38 +6,31 @@ from api.dao.db import __create, __drop, __truncate, __execute, __query
 TBL_NAME = config.tbl_dim_user
 
 
-def create_dim_user():
+def create():
     """
     创建用户表
     """
     sql = """
             CREATE TABLE  {}(
-            id String(64) NOT NULL,
+            userid String DEFAULT toString(generateUUIDv4()) COMMENT '主键',
             username String(128) NOT NULL,
             password String(512) NOT NULL
-            )ENGINE=MergeTree() ORDER BY (id) PARTITION BY (id);
+            )ENGINE=MergeTree() ORDER BY (userid);
         """.format(TBL_NAME)
     return __create(sql, TBL_NAME)
 
 
-def drop_dim_user():
+def drop():
     """
     删除用户表
     """
     return __drop(TBL_NAME)
 
 
-def truncate_dim_user():
-    """
-    截断用户表
-    """
-    return __truncate(TBL_NAME)
-
-def insert_dim_user(params: Optional[List[dict]]):
+def insert(sql, params: Optional[List[dict]]):
     """
     插入用户表
     """
-    sql = """ INSERT INTO {} (id, username, password) VALUES """.format(TBL_NAME)
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))
 
 def get_user(username:str, password:str):

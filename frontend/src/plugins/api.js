@@ -1,6 +1,7 @@
 import Vue from 'vue'
 Vue.prototype.$api = {
   login: '/api/login',
+  token: '/api/token',
   file_upload: '/api/file/upload',
   config: '/api/config/',
   config_save: '/api/config/save',
@@ -19,6 +20,8 @@ Vue.prototype.$api = {
   advanced_tbls_delete: '/api/advanced/delete',
   advanced_dataset_query: '/api/advanced/dataset_query',
   advanced_dataset_update: '/api/advanced/dataset_update',
+  advanced_dataset_saveAsNew: '/api/advanced/dataset_saveAsNew',
   advanced_tbls_list_fieldconfigs: '/api/advanced/list_fieldconfigs',
-  advanced_tbls_save_fieldconfigs: '/api/advanced/save_fieldconfigs'
+  advanced_tbls_save_fieldconfigs: '/api/advanced/save_fieldconfigs',
+  advanced_graphs_load_option_data: '/api/advanced/graph/load_option_data'
 }

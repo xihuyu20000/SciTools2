@@ -1,7 +1,7 @@
 import Vue from 'vue'
 Vue.prototype.$config = {
   title: '科研助手',
-  subtitle: '做最好用的科研助手',
+  subtitle: '做好用的科研助手',
   defaultOption: {
     tooltip: {
       //弹窗组件
@@ -28,17 +28,6 @@ Vue.prototype.$config = {
           show: true
         }
       }
-    },
-    xAxis: {
-      data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '销量',
-        type: 'line',
-        data: [5, 20, 36, 10, 10, 20]
-      }
-    ]
+    }
   }
 }

@@ -1,5 +1,5 @@
 import unittest
-from api import config, util
+from api import config, util, dao
 from api.dao.db import dim_user
 
 
@@ -7,10 +7,10 @@ class TestUtil(unittest.TestCase):
 
     def test_insert(self):
         try:
-            dim_user.drop_dim_user()
-            dim_user.create_dim_user()
-            dim_user.truncate_dim_user()
-            dim_user.insert_dim_user([{'id':util.gen_uuid1(), 'username': 'root', 'password': 'admin'}])
+            dao.drop_dim_user()
+            dao.create_dim_user()
+            sql = "INSERT INTO {} (username,password) VALUES".format(config.tbl_dim_user)
+            dao.insert_dim_user(sql, [{'username': 'root', 'password': 'admin'}])
             user = dim_user.get_user('root', 'admin')
             self.assertIsNotNone(user, '应该存在一个用户')
         except Exception as e:

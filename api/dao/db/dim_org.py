@@ -30,13 +30,6 @@ def drop_dim_org():
     return __drop(TBL_NAME)
 
 
-def truncate_dim_org():
-    """
-    截断机构表
-    """
-    return __truncate(TBL_NAME)
-
-
 def insert_dim_org(params: Optional[List[dict]]):
     sql = """ INSERT INTO {} (orgname, province) VALUES """.format(TBL_NAME)
     return __execute(sql, params=params, msg='插入{}失败'.format(TBL_NAME))

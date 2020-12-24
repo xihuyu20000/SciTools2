@@ -39,7 +39,7 @@ export default {
         const { data: resp } = await this.$http.post(this.$api.login, this.loginForm)
         if (resp.status == 400) return this.$message.error(resp.msg)
         // 写入session
-        window.sessionStorage.setItem('token', resp.token)
+        window.sessionStorage.setItem('token', resp.data.token)
         // 获取导航菜单
         // const { data: resp1 } = await this.$http.get(this.$api.navs)
         // localStorage.setItem('menuTree', JSON.stringify(resp1.data))

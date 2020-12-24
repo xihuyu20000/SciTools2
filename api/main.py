@@ -16,6 +16,9 @@ from api.web.stat.controller import router as stat
 
 app = FastAPI()
 
+@app.get('/')
+def index():
+    return 'test'
 
 
 # 全局统一异常处理
@@ -47,7 +50,7 @@ app.include_router(stat, prefix='/api/stat')
 
 
 def start():
-    uvicorn.run(app='main:app', host='127.0.0.1', port=8000, reload=True, debug=True)
+    uvicorn.run(app='main:app', host='127.0.0.1', port=8000, reload=True, debug=True, log_level='debug')
 
 if __name__ == '__main__':
     start()

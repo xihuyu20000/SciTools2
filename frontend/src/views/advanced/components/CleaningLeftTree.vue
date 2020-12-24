@@ -24,6 +24,8 @@ export default {
   computed: {},
   mounted() {
     this.fetch()
+
+    this.$bus.$on('advanced_reload_adtbl_names', () => this.fetch())
   },
   methods: {
     async fetch() {
@@ -31,6 +33,8 @@ export default {
       const { data: resp } = await this.$http.get(_url)
 
       if (resp.status == 400) return this.$message.error(resp.msg)
+
+      this.treeData = new Tree([])
       let top = resp.data
         .filter(function(v) {
           return v.pid == '' ? true : false

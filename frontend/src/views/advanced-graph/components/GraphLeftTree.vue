@@ -18,7 +18,13 @@ export default {
   },
   data() {
     return {
-      treeData: new Tree([])
+      treeData: new Tree([
+        {
+          name: 'Node 2',
+          id: 3,
+          pid: 0
+        }
+      ])
     }
   },
   computed: {},
@@ -29,7 +35,6 @@ export default {
     async fetch() {
       let _url = this.$api.advanced_graphs_list_names
       const { data: resp } = await this.$http.get(_url)
-
       if (resp.status == 400) return this.$message.error(resp.msg)
       let top = resp.data
         .filter(function(v) {

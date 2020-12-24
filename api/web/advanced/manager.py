@@ -209,6 +209,32 @@ class AdvancedManager:
             values.append(row_values)
         dao.insert_ad_dataset(form.tblid, values)
 
+    def saveAsNew_tbl_dataset(self, form: TblsDatasetForm):
+        # print('传入的表单数据集', form)
+        _, adtbl = self.find_tbl_by_tblid(form.tblid)
+
+        new_tblid = gen_uuid4()
+        adTblColumns = [AdTblColumn(title['title'], title['style'], title['width']) for title in form.titles if str(title['field']).startswith('c')]
+        dao.insert_ad_tbls(new_tblid, adtbl['userid'], adtbl['tblname']+'(新)', adTblColumns)
+
+        '''
+        页面传入的数据集结构
+        [
+           {'dsid': '01cc781b-1f68-4381-9f54-0b0c40b10bd0', 'c17': ['2020-12-10'], 'c10': ['期刊'], 'c11': ['“医学继续教育”答题'], 'c12': [''], 'c13': ['上海医药'], 'c14': ['上海医药'], 'c15': ['医学继续教育;医学影像分析;'], ......
+           ......
+        ]
+        '''
+        cols, adtbl = self.find_tbl_by_tblid(form.tblid)
+        values = []
+        for row in form.dataset:
+            row_values = []
+            for name in cols.split(','):
+                v = row[name][0]
+                row_values.append(v)
+            values.append(row_values)
+        dao.insert_ad_dataset(new_tblid, values)
+
+
     def updateFieldConfig(self, form: FieldsConfigForm):
         # 更新列名
         cols = ','.join([data['field'] for data in form.colArray])

@@ -1,3 +1,5 @@
+# websocket 没搞定  token存储sessionStorage没搞定
+
 # 0 准备
 
 ##### 从 E:\workspace\workspace-js\scitools 复制来的项目

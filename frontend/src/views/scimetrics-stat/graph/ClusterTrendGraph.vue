@@ -1,9 +1,15 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="1"><option-title :optionData="optionData"></option-title> </el-col>
-      <el-col :span="22"><div id="chart" class="chart"></div></el-col>
-      <el-col :span="1"></el-col>
+      <el-col :span="2">
+        <option-title :optionData="option"></option-title>
+        <option-legend :optionData="option"></option-legend>
+        <option-grid :optionData="option"></option-grid>
+        <option-xaxis :optionData="option"></option-xaxis>
+        <option-yaxis :optionData="option"></option-yaxis>
+      </el-col>
+      <el-col :span="22"><chart :options="option"></chart></el-col>
+      <el-col :span="0"></el-col>
     </el-row>
   </div>
 </template>

@@ -3,13 +3,13 @@
     <el-aside width="300px">
       <graph-left-tree style="margin-top:20px;margin-bottom:20px"></graph-left-tree>
     </el-aside>
-    <el-main> <graph-data-table></graph-data-table></el-main>
+    <el-main> <graph-design></graph-design></el-main>
   </el-container>
 </template>
 
 <script>
-import GraphLeftTree from './components/GraphLeftTree'
-import GraphDataTable from './components/GraphDataTable'
+import GraphLeftTree from './components/GraphLeftTree.vue'
+import GraphDesign from './components/GraphDesign.vue'
 
 export default {
   data() {
@@ -17,7 +17,7 @@ export default {
   },
   mounted() {},
   methods: {},
-  components: { GraphLeftTree, GraphDataTable }
+  components: { GraphLeftTree, GraphDesign }
 }
 </script>
 

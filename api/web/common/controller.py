@@ -1,9 +1,8 @@
-import datetime
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 from typing import Optional
 
 import jwt as jwt
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
@@ -43,38 +42,41 @@ def authenticate_user(username: str, password: str):
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 ######################   https://www.cnblogs.com/mazhiyong/p/13219300.html
 
-@router.post("/token", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    print('在这里更新token信息')
+@router.post("/token")
+async def login_for_access_token(token: Optional[str] = Header(None)):
+    print('在这里更新token信息', token)
     # 首先校验用户信息
-    user = authenticate_user(form_data.username, form_data.password)
-    if not user:
-        return fail('不正确的用户名或密码')
+    # user = authenticate_user(form_data.username, form_data.password)
+    # if not user:
+    #     return fail('不正确的用户名或密码')
 
     # 生成并返回token信息
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": "test"}, expires_delta=access_token_expires
+        data={"userid": 'userid'}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return ok(data={'token': access_token})
+
 
 # 登录
 @router.post('/login')
 def login(form : LoginForm):
     user = commonManager.getUser(form.username, form.password)
-    return ok(user)
+    if not user:
+        return fail(msg='用户名或者密码不正确')
 
-# 导航菜单
-# @router.get('/navs')
-# def navs():
-#     menus = commonManager.findMenu()
-#     return ok(menus)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"userid": user['userid']}, expires_delta=access_token_expires
+    )
+    return ok(data={'token':access_token})
+
