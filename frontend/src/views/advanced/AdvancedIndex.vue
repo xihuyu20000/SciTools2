@@ -27,7 +27,7 @@ export default {
       activeMenu: '/advanced/datasource/index'
     }
   },
-  mounted() {
+  created() {
     this.$router.push(this.activeMenu)
   },
   methods: {},

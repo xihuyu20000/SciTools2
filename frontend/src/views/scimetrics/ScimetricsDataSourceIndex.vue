@@ -15,8 +15,9 @@
           <el-form-item label="上传文件" prop="files">
             <el-upload multiple :limit="1" action="string" list-type="text" :file-list="fileList" :auto-upload="false" :on-change="OnChange" :on-remove="OnRemove" :on-preview="handlePictureCardPreview" :before-remove="beforeRemove" accept=".zip">
               <el-button size="small" type="primary">选择数据文件</el-button>
-              <div slot="tip" class="el-upload__tip" style="color:green">只能上传zip格式，如果是多个文件，请压缩到一起再上传</div></el-upload
-            >
+              <div slot="tip" class="el-upload__tip" style="color:green">只能上传zip格式</div>
+              <div slot="tip" class="el-upload__tip" style="color:green">如果是多个文件，请压缩到一起再上传</div>
+            </el-upload>
           </el-form-item>
           <el-form-item>
             <el-button type="success" @click="onSubmit">开始上传</el-button>
