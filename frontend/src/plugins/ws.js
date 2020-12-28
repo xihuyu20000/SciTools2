@@ -1,8 +1,11 @@
-import Vue from 'vue'
-import websocket from 'vue-native-websocket'
-Vue.use(websocket, 'ws://localhost:8000/ws', {
-  reconnection: true, // (Boolean) whether to reconnect automatically (false)
-  reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
-  reconnectionDelay: 3000, // (Number) how long to initially wait before attempting a new (1000)
-  format: 'json'
-})
+// import Vue from 'vue'
+// import VueSocketIO from 'vue-socket.io'
+
+// Vue.use(
+//   new VueSocketIO({
+//     debug: true,
+//     // 服务器端地址
+//     connection: 'http://localhost:8000/wss',
+//     vuex: {}
+//   })
+// )

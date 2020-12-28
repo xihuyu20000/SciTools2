@@ -37,6 +37,7 @@
       @edit-actived="editActivedEvent"
     >
     </vxe-grid>
+    <div style="color:red" v-if="ad_tbl">当前数据集：{{ ad_tbl.tblname }}</div>
     <cleaning-data-filter :titles="titles" :dataset="dataset"></cleaning-data-filter>
     <cleaning-field-config></cleaning-field-config>
   </div>

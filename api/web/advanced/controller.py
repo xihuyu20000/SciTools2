@@ -1,24 +1,46 @@
-import json
-import  os
+import shutil
+import uuid
+import zipfile
+from typing import List
 from urllib import parse
 
 import demjson
-from fastapi import APIRouter
+from fastapi import APIRouter, Form, UploadFile, File
 
-from api import ok, fail
-from .manager import advancedManager, FieldsConfigForm, TblsDatasetForm
-from ...dao.db.ad_tbls import VxeColumnEdit
+from api import ok
+from .manager import advancedManager, FieldsConfigForm, TblsDatasetForm, DatasetCleaningForm
+from api.dao.ad_tbls import VxeColumnEdit
 
-from ...util.utils import read_lines
+from api.util.utils import read_lines
+from ...const import get_upload_home
 
 router = APIRouter()
 
 
 # 上传数据文件并分析
 @router.post('/upload')
-def upload():
+def upload(style:str =Form(...), files: List[UploadFile] = File(...)):
+    # 文件真实名称
+    file_name = files[0].filename
+    # 随机名称
+    raw_name = uuid.uuid4().hex
+    # 文件绝对路径
+    save_path = os.path.join(get_upload_home(), raw_name)
+    with open(save_path, 'wb+') as upload_folder:
+        shutil.copyfileobj(files[0].file, upload_folder)
+    # # 文件大小
+    # file_size = zipfile.Path(save_path).stat().st_size
+    #
+    # save_path_dir = save_path + "_dir"
+    # with zipfile.ZipFile(save_path, "r") as zFile:
+    #     # ZipFile.namelist(): 获取ZIP文档内所有文件的名称列表
+    #     for fileM in zFile.namelist():
+    #         zFile.extract(fileM, save_path_dir)
+    print('上传文件', file_name[:-4], style, save_path)
+    # datasetManager.saveUpload(file_name[:-4], style, save_path_dir)
+
     userid = 'f6d2dd05-3cb4-4989-8c22-48c7899d0d0b'
-    advancedManager.parseExcel(userid, r'C:\Users\Administrator\Desktop\论文\人工智能500条.xls')
+    advancedManager.parseExcel(userid, save_path)
     return ok()
 
 # 查询元表名称信息
@@ -51,6 +73,10 @@ def dataset_query(tblid):
 
     return ok([vxeColumns, dataset])
 
+@router.post('/dataset_cleaning')
+def dataset_cleaning(form:DatasetCleaningForm):
+    advancedManager.cleaning_dataset(form)
+
 # 保存元表信息和数据集
 @router.post('/dataset_update')
 def dataset_update(form:TblsDatasetForm):
@@ -68,7 +94,7 @@ def dataset_saveAsNew(form:TblsDatasetForm):
 # 显示列字段信息
 @router.get('/list_fieldconfigs/{tblid}')
 def list_fieldconfigs(tblid):
-    colstr, titles = advancedManager.find_tbl_by_tblid(tblid)
+    colstr, titles = advancedManager.query_tbl_by_tblid(tblid)
     result = []
     for name in colstr.split(','):
         value = titles[name]

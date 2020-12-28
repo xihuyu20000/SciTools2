@@ -240,7 +240,7 @@ const routes = [
               },
               {
                 path: '/wordclound/keyword/:dsid',
-                name: '关键词词频',
+                name: '关键词词频词云',
                 component: wordCloundForKeyWord
               }
             ]

@@ -24,7 +24,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item label="列宽度" size="small"> <el-input v-model="dataArray[i].width" placeholder="列宽"> </el-input></el-form-item>
-                  <i class="el-icon-delete" @click="deleteItem(element.field)"></i>
+                  <i class="el-icon-delete" size="medium" @click="deleteItem(element.field)"></i>
                 </div>
               </transition-group>
             </draggable>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-tree-list @click="clickTreeNode" @change-name="onChangeName" @delete-node="onDel" :model="treeData">
+    <vue-tree-list @click="onClick" @change-name="onChangeName" @delete-node="onDel" :model="treeData">
       <template v-slot:leafNameDisplay="slotProps">
         <span class="icon">
           {{ slotProps.model.name }}
@@ -24,24 +24,23 @@ export default {
   computed: {},
   mounted() {
     this.fetch()
-    this.$bus.$on('advanced_reload_adtbl_names', () => this.fetch())
   },
   methods: {
     async fetch() {
-      let _url = this.$api.advanced_tbls_list_names
+      let _url = this.$api.dataset_list_names
       const { data: resp } = await this.$http.get(_url)
+      console.log('数据集树', resp)
 
       if (resp.status == 400) return this.$message.error(resp.msg)
-
-      this.treeData = new Tree([])
       let top = resp.data
         .filter(function(v) {
-          return v.pid == '' ? true : false
+          return v.pid == '' || v.pid == '00000000-0000-0000-0000-000000000000' ? true : false
         })
         .map(function(v) {
           return {
-            name: v.tblname,
-            id: v.tblid,
+            name: v.dsname,
+            id: v.dsid,
+            pid: v.pid,
             data: v, // 自定义属性，保存数据
             dragDisabled: true,
             addTreeNodeDisabled: true,
@@ -56,30 +55,27 @@ export default {
       })
     },
     onDel(node) {
-      // 删除树节点
       this.$confirm('此操作将永久删除该数据集, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
-        let _url = this.$api.advanced_tbls_delete + '/' + node.id
+        let _url = this.$api.dataset_delete + '/' + node.id
         const { data: resp } = await this.$http.get(_url)
         if (resp.status == 400) return this.$message.error(resp.msg)
         node.remove()
         this.$bus.$emit(this.$api.dataset_list, '1')
       })
     },
+
     async onChangeName(node) {
-      // 修改节点名称
-      let _url = this.$api.advanced_tbls_rename + '/' + node.id + '/' + node.newName
+      let _url = this.$api.dataset_rename + '/' + node.id + '/' + node.newName
       const { data: resp } = await this.$http.get(_url)
       if (resp.status == 400) return this.$message.error(resp.msg)
     },
-    clickTreeNode(params) {
-      // 需要变色
-      //background-color: #d0cfcf;
-      // 点击树节点
-      this.$bus.$emit(this.$api.advanced_dataset_query, params.data)
+
+    onClick(params) {
+      this.$bus.$emit(this.$api.dataset_list, params.data)
     }
   }
 }

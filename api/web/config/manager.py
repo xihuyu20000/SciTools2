@@ -1,7 +1,6 @@
 from pydantic.main import BaseModel
 
 
-
 class ConfigForm(BaseModel):
     stopwords_style: str= '1'
     stopwords_text: str = ''
@@ -38,7 +37,9 @@ class ConfigForm(BaseModel):
 
 
 
-from api import dao, config
+from api import dao
+from api.web import config
+
 
 class ConfigManager:
     def __init__(self):

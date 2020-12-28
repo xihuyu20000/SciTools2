@@ -28,8 +28,7 @@
                   <el-upload multiple :limit="1" action="string" list-type="text" :file-list="fileList" :auto-upload="false" :on-change="OnChange" :on-remove="OnRemove" :on-preview="handlePictureCardPreview" :before-remove="beforeRemove" :accept="acceptFiles">
                     <el-button size="small" type="primary">选择数据文件</el-button>
                     <div slot="tip" class="el-upload__tip" style="color:green">只能上传{{ acceptFiles }}格式</div>
-                    <div slot="tip" class="el-upload__tip" style="color:green">如果是多个文件，请压缩到一起再上传</div></el-upload
-                  >
+                  </el-upload>
                 </el-form-item>
                 <el-form-item>
                   <el-button type="success" @click="onSubmit">开始上传</el-button>
@@ -74,11 +73,11 @@ export default {
   methods: {
     add_ds_form(name) {
       if (name == 'excel') {
-        this.acceptFiles = '.xls,.zip'
+        this.acceptFiles = '.xls'
       } else if (name == 'csv') {
-        this.acceptFiles = '.csv,.zip'
+        this.acceptFiles = '.csv'
       } else if (name == 'tsv') {
-        this.acceptFiles = '.tsv,.zip'
+        this.acceptFiles = '.tsv'
       }
       this.form.style = name
       this.uploadVisible = true
@@ -106,7 +105,7 @@ export default {
         this.param.append(x, _form[x])
       }
       this.param.append('files', this.fileList[0].raw)
-      const { data: resp } = await this.$http.post(this.$api.file_upload, this.param)
+      const { data: resp } = await this.$http.post(this.$api.advanced_upload, this.param)
       if (resp.status != 200) return this.$message.error('上传失败')
       this.$refs['form'].resetFields()
       this.fileList = []

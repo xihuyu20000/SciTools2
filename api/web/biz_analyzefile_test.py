@@ -1,8 +1,7 @@
 import unittest
 
-from api import config
 from api.dao import db
-from api.web import biz_cleaningfiles, biz_analyzefile
+from api.web import biz_cleaningfiles, biz_analyzefile, config
 
 
 class TestUtil(unittest.TestCase):

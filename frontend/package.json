@@ -28,6 +28,7 @@
     "vue-native-websocket": "^2.0.14",
     "vue-plotly": "^1.1.0",
     "vue-router": "^3.2.0",
+    "vue-socket.io": "^3.0.10",
     "vue-tree-list": "^1.5.0",
     "vue-upload-component": "^2.8.20",
     "vue2-countdown": "^1.0.8",

@@ -3,11 +3,18 @@ from typing import List
 import pymysql
 from pydantic.main import BaseModel
 
-from api.dao.db.ad_tbls import AdTblColumn, VxeTableColumn
+from api.dao.ad_tbls import AdTblColumn, VxeTableColumn
 from api.util.utils import Logger, is_number, isVaildDate, gen_uuid4
-from api import dao, config
+from api import dao, const
+from api.web import config
 import xlrd
+from sklearn.preprocessing import OneHotEncoder
 
+class DatasetCleaningForm(BaseModel):
+    tblid: str = None
+    func: str = None
+    newcol: bool = None
+    colname: str = None
 
 class FieldsConfigForm(BaseModel):
     tblid: str = None
@@ -104,30 +111,30 @@ class AdvancedManager:
         ParseExcel(userid, path, firstTitle=True).run()
 
     def find_tbl_by_userid(self, userid):
-        sql = "SELECT tblid, pid, tblname, cols FROM {} WHERE userid='{}'".format(config.tbl_ad_tbls, userid)
+        sql = "SELECT tblid, pid, tblname, cols FROM {} WHERE userid='{}'".format(const.tbl_ad_tbls, userid)
         return self.dao.query_ad_dataset(sql)
 
-    def find_tbl_by_tblid(self, tblid):
+    def query_tbl_by_tblid(self, tblid):
         """
         @return 返回2条记录，第1个是field名称str，第2个是行记录
         """
-        sql = "SELECT cols FROM {} WHERE tblid='{}'".format(config.tbl_ad_tbls, tblid)
+        sql = "SELECT cols FROM {} WHERE tblid='{}'".format(const.tbl_ad_tbls, tblid)
         ad_tbl = self.dao.query_ad_dataset(sql)
         cols = ad_tbl[0]['cols']    # str类型
         assert type(cols)==str
 
-        sql = "SELECT tblid, pid, tblname, userid, {} FROM {} WHERE tblid='{}'".format(cols, config.tbl_ad_tbls, tblid)
+        sql = "SELECT tblid, pid, tblname, userid, {} FROM {} WHERE tblid='{}'".format(cols, const.tbl_ad_tbls, tblid)
         resultset = self.dao.query_ad_dataset(sql)
         return cols, resultset[0]
 
     def rename(self, tblid, tblname):
-        sql = "ALTER TABLE {} UPDATE tblname= '{}' WHERE tblid='{}'".format(config.tbl_ad_tbls, tblname, tblid)
+        sql = "ALTER TABLE {} UPDATE tblname= '{}' WHERE tblid='{}'".format(const.tbl_ad_tbls, tblname, tblid)
         return self.dao.execute_ad_dataset(sql)
 
     def delete(self, tblid):
-        sql = "ALTER TABLE {} DELETE WHERE tblid='{}'".format(config.tbl_ad_dataset, tblid)
+        sql = "ALTER TABLE {} DELETE WHERE tblid='{}'".format(const.tbl_ad_dataset, tblid)
         self.dao.execute_ad_dataset(sql)
-        sql = "ALTER TABLE {} DELETE WHERE tblid='{}'".format(config.tbl_ad_tbls, tblid)
+        sql = "ALTER TABLE {} DELETE WHERE tblid='{}'".format(const.tbl_ad_tbls, tblid)
         self.dao.execute_ad_tbls(sql)
 
     def query_dataset_by(self, tblid):
@@ -159,12 +166,12 @@ class AdvancedManager:
 
         """
         # 查询ad_tbls表，获取列数
-        sql = """SELECT cols FROM {} WHERE tblid='{}'""".format(config.tbl_ad_tbls, tblid)
+        sql = """SELECT cols FROM {} WHERE tblid='{}'""".format(const.tbl_ad_tbls, tblid)
         resultset = self.dao.query_ad_tbls(sql)
         colstr = resultset[0]['cols']  # 取出记录
 
         # 查询ad_tbls表，获取元表数据
-        sql = "SELECT " + colstr + " FROM {} WHERE tblid='{}'".format(config.tbl_ad_tbls, tblid)
+        sql = "SELECT " + colstr + " FROM {} WHERE tblid='{}'".format(const.tbl_ad_tbls, tblid)
         titles = self.dao.query_ad_tbls(sql)
         titles = titles[0]  # 结果是dict类型
         # print('标题结构', titles)
@@ -177,15 +184,40 @@ class AdvancedManager:
         # print('表头形式' , vxeColumns)
 
         # 最后查询ad_dataset表
-        sql = """SELECT {} FROM {} WHERE tblid='{}'""".format('dsid,' + colstr, config.tbl_ad_dataset, tblid)
+        sql = """SELECT {} FROM {} WHERE tblid='{}'""".format('dsid,' + colstr, const.tbl_ad_dataset, tblid)
         dataset = self.dao.query_ad_dataset(sql)
         # print('数据集', dataset[:3])
 
         return titles, vxeColumns, dataset
 
+
+    def cleaning_dataset(self, form:DatasetCleaningForm):
+        titles, _, dataset = self.query_dataset_by(form.tblid)
+        values = [row[form.colname] for row in dataset]
+
+        max_len = 0
+        for i, row in enumerate(values):
+            row = row[0]
+            row = row.split(';')
+            row = [word for word in row if word]
+            row = row if type(row)==list else [row]
+            if len(row)>max_len:
+                max_len = len(row)
+            values[i] = row
+
+        for i,row in enumerate(values):
+            for i in range(max_len-len(row)):
+                row.append('')
+            values[i] = row
+
+        ohenc = OneHotEncoder()
+        ohenc.fit(values)
+        for i, row in enumerate(values):
+            print(i, row, ohenc.transform([row]).toarray())
+
     def update_tbl_dataset(self, form: TblsDatasetForm):
         # print('传入的表单数据集', form)
-        _, adtbl = self.find_tbl_by_tblid(form.tblid)
+        _, adtbl = self.query_tbl_by_tblid(form.tblid)
         self.delete(form.tblid)
 
 
@@ -199,7 +231,7 @@ class AdvancedManager:
            ......
         ]
         '''
-        cols, adtbl = self.find_tbl_by_tblid(form.tblid)
+        cols, adtbl = self.query_tbl_by_tblid(form.tblid)
         values = []
         for row in form.dataset:
             row_values = []
@@ -211,7 +243,7 @@ class AdvancedManager:
 
     def saveAsNew_tbl_dataset(self, form: TblsDatasetForm):
         # print('传入的表单数据集', form)
-        _, adtbl = self.find_tbl_by_tblid(form.tblid)
+        _, adtbl = self.query_tbl_by_tblid(form.tblid)
 
         new_tblid = gen_uuid4()
         adTblColumns = [AdTblColumn(title['title'], title['style'], title['width']) for title in form.titles if str(title['field']).startswith('c')]
@@ -224,7 +256,7 @@ class AdvancedManager:
            ......
         ]
         '''
-        cols, adtbl = self.find_tbl_by_tblid(form.tblid)
+        cols, adtbl = self.query_tbl_by_tblid(form.tblid)
         values = []
         for row in form.dataset:
             row_values = []
@@ -238,14 +270,14 @@ class AdvancedManager:
     def updateFieldConfig(self, form: FieldsConfigForm):
         # 更新列名
         cols = ','.join([data['field'] for data in form.colArray])
-        sql = "ALTER TABLE {} UPDATE cols='{}' WHERE tblid='{}'".format(config.tbl_ad_tbls, cols, form.tblid)
+        sql = "ALTER TABLE {} UPDATE cols='{}' WHERE tblid='{}'".format(const.tbl_ad_tbls, cols, form.tblid)
         dao.execute_ad_tbls(sql)
 
         # 更新每个字段的内容
         sql = "ALTER TABLE {} UPDATE {}={} WHERE tblid='{}'"
         for i, row in enumerate(form.colArray):
             value = AdTblColumn(row['title'], row['style'], row['width']).toch()
-            sql1 = sql.format(config.tbl_ad_tbls, row['field'], list(value), form.tblid)
+            sql1 = sql.format(const.tbl_ad_tbls, row['field'], list(value), form.tblid)
             dao.execute_ad_tbls(sql1)
 
 

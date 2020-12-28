@@ -1,37 +1,36 @@
 '''
 api/util负责管理所有的工具类代码
 '''
-from typing import List, Set
+from typing import List
 import os
 import copy
-import jieba
-import nltk
 from lxml import etree
 from scrapy import Selector
 
-from api import config, util
-from api.dao.db.ods_bib import OdsCnkiBib
+from api import util, const
+from api.web import config
+from api.dao.sci_dataset import SciDataset
 from api.util import utils
 
 
-def parsefiles(format, files: List[str]) -> List[OdsCnkiBib]:
+def parsefiles(format, files: List[str]) -> List[SciDataset]:
     """
     根据文件类型，解析文件
     """
 
     def __parse_onefile(file):
         result = []
-        if format == config.ds_gbt_7714_2015:
+        if format == const.ds_gbt_7714_2015:
             result = File_gbt_7714_2015_Parser(file).parse()
-        elif format == config.ds_cnki_es5:
+        elif format == const.ds_cnki_es5:
             result = File_cnki_es5_Parser(file).parse()
-        elif format == config.ds_note_express:
+        elif format == const.ds_note_express:
             result = File_noteExpress_Parser(file).parse()
-        elif format == config.ds_cnki_self:
+        elif format == const.ds_cnki_self:
             result = File_cnki_self_Parser(file).parse()
-        elif format == config.ds_cssci_format:
+        elif format == const.ds_cssci_format:
             result = File_cssci_Parser(file).parse()
-        elif format == config.ds_wos_tab_format:
+        elif format == const.ds_wos_tab_format:
             result = File_wos_tab_Parser(file).parse()
 
         return result
@@ -65,7 +64,7 @@ class File_cnki_es5_Parser:
         return [self.__parse(cnkidata) for cnkidata in self.cnkidatas]
 
     def __parse(self, cnkidata):
-        cnkiEs5 = OdsCnkiBib()
+        cnkiEs5 = SciDataset()
         cnkiEs5.id = utils.gen_uuid4()
         for child in cnkidata.getchildren():
             tag = child.tag.lower()
@@ -163,7 +162,7 @@ class File_gbt_7714_2015_Parser:
             return '不确定类型'
 
     def __parse_eng(self, line):
-        entity = OdsCnkiBib()
+        entity = SciDataset()
         entity.id = utils.gen_uuid4()
         entity.line = line
         # 语种
@@ -179,7 +178,7 @@ class File_gbt_7714_2015_Parser:
         return entity
 
     def __parse_cn(self, line):
-        entity = OdsCnkiBib()
+        entity = SciDataset()
         entity.id = utils.gen_uuid4()
         entity.line = line
         subs = line.split('.')
@@ -226,7 +225,7 @@ class File_noteExpress_Parser:
         result = []
         for line in self.lines:
             if line.startswith('{Reference Type}:'):
-                noteExpress = OdsCnkiBib()
+                noteExpress = SciDataset()
                 noteExpress.id = util.gen_uuid4()
                 result.append(noteExpress)
                 noteExpress.referenceType = line[len('{Reference Type}:'):].strip()
@@ -353,7 +352,7 @@ class File_cnki_self_Parser:
         return arts
 
     def __parse_raw_article(self, lines):
-        model = OdsCnkiBib()
+        model = SciDataset()
         model.id = utils.gen_uuid4()
         model.line = '\t'.join(lines)
         model.style = '期刊'
@@ -445,7 +444,7 @@ class File_cssci_Parser:
             return model
 
     def __parse_raw_article(self, lines):
-        model = OdsCnkiBib()
+        model = SciDataset()
         model.id = utils.gen_uuid4()
         model.line = '\t'.join(lines)
 
@@ -490,7 +489,7 @@ class File_cssci_Parser:
             model.refs = ref_ids
             refs = [ref[ref.find('.') + 1:] for ref in refs]
             for ref in refs:
-                model_ref = OdsCnkiBib()
+                model_ref = SciDataset()
                 model_ref.id = utils.gen_uuid4()
                 model_ref.pid = model.id
                 model_ref.ref_style = 'cited'
@@ -588,7 +587,7 @@ class File_wos_tab_Parser:
             self.filepath = filepath
 
     def __parse(self, row):
-        model = OdsCnkiBib()
+        model = SciDataset()
         model.id = utils.gen_uuid4()
         model.line = str(row)
 

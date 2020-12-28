@@ -2,7 +2,7 @@
 /api/util/.pytest_cache
 /.idea
 /api/__pycache__
-/api/config/__pycache__
+/api/web/config/__pycache__
 /api/dao/db/__pycache__
 /api/dao/db/clickhouse_db/.pytest_cache
 /api/dao/db/clickhouse_db/__pycache__

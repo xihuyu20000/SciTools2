@@ -4,6 +4,7 @@
       <span style="color: red;">数据清洗引擎</span>
     </template>
     <template v-slot>
+      <loading :active.sync="isLoading"></loading>
       <el-card style="display:flex; justify-content: flex-start">
         <el-button type="primary" plain v-for="(field, i) in fieldArray" :key="i" @click="clickFieldBtn(field)" style="margin-bottom:10px">{{ field.title }}</el-button>
       </el-card>
@@ -54,11 +55,17 @@
 </template>
 
 <script>
+// Import component
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
+
 export default {
   props: ['titles', 'dataset'],
-  components: {},
+  components: { Loading },
   data() {
     return {
+      isLoading: false,
       drawerVisible: false,
       ad_tbl: {},
       fieldArray: [],
@@ -71,7 +78,8 @@ export default {
       text_funcs: [
         { label: '包含', name: 'text_include', p1editable: true, p2editable: false, neweditable: false, desc: '判断是否特定内容' },
         { label: '合并', name: 'text_join', p1editable: true, p2editable: true, neweditable: true, desc: '合并列，第1个参数是列名,多列名之间使用空格，第2个参数是连接符' },
-        { label: '替换', name: 'text_replace', p1editable: true, p2editable: true, neweditable: false, desc: '替换文本，第1个参数是原文本，第2个参数是新文本' }
+        { label: '替换', name: 'text_replace', p1editable: true, p2editable: true, neweditable: false, desc: '替换文本，第1个参数是原文本，第2个参数是新文本' },
+        { label: 'one-hot编码', name: 'text_onehot_encoding', p1editable: false, p2editable: false, neweditable: true, desc: '独热编码' }
       ],
       number_funcs: [
         { label: '等于', name: 'number_eq', p1editable: true, p2editable: false, neweditable: false, desc: '等于某个数' },
@@ -130,7 +138,7 @@ export default {
     beforeChooseCommand(i, cmd) {
       return { index: i, cmd: cmd }
     },
-    runExpress(express) {
+    async runExpress(express) {
       // 运行表达式
       console.log('运行表达式', express)
       let colname = express.field.field
@@ -202,6 +210,19 @@ export default {
             row[colname] = row[colname].replace(new RegExp(param1, 'g'), param2)
           }
         })
+      }
+      if (func == 'text_onehot_encoding') {
+        console.log('独热编码', colname, newcol, this.ad_tbl.tblid)
+        let _url = this.$api.advanced_dataset_cleaning
+        let _form = {
+          tblid: this.ad_tbl.tblid,
+          func: func,
+          newcol: newcol,
+          colname
+        }
+        const { data: resp } = await this.$http.post(_url, _form)
+        if (resp.status == 400) return this.$message.error(resp.msg)
+        this.$bus.$emit('advanced_reload_dataset')
       }
       if (func == 'number_eq') {
         for (let i = this.dataset.length - 1; i >= 0; i--) {
@@ -307,14 +328,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
-        let titles2 = this.titles
+        let _titles2 = this.titles
           .filter((x, i) => i > 1)
           .map(x => {
             x.width = x.width.replace(new RegExp('px', 'g'), '')
             return x
           })
         let _url = this.$api.advanced_dataset_saveAsNew
-        const { data: resp } = await this.$http.post(_url, { tblid: this.ad_tbl.tblid, titles: titles2, dataset: this.dataset })
+        const { data: resp } = await this.$http.post(_url, { tblid: this.ad_tbl.tblid, titles: _titles2, dataset: this.dataset })
         if (resp.status == 400) return this.$message.error(resp.msg)
         this.$bus.$emit('advanced_reload_adtbl_names')
       })
