@@ -33,7 +33,7 @@ class DatasetManager:
         for entity in datas:
             entity.dsid = dsid
         datas = [data.__dict__ for data in datas]
-        dao.insert_ods_bib(datas)
+        dao.insert_sci_dataset(datas)
         dao.insert_dim_dataset([{'dsid':dsid, 'dsname':file_name, 'status':'未解析'}])
 
 
@@ -63,7 +63,7 @@ class DatasetManager:
         sql = "ALTER TABLE  {} DELETE WHERE dsid = '{}'".format(const.tbl_sci_meta, dsid)
         dao.update_dim_dataset(sql)
         sql = "ALTER TABLE  {} DELETE WHERE dsid='{}'".format(const.tbl_sci_dataset, dsid)
-        dao.update_ods_bib(sql)
+        dao.update_sci_dataset(sql)
 
     # 修改数据集名称
     def rename(self, dsid, newName):
@@ -74,7 +74,7 @@ class DatasetManager:
     def deleteOdsbibById(self, ids):
         for id in ids:
             sql = "ALTER TABLE  {} DELETE WHERE id = '{}'".format(const.tbl_sci_dataset, id)
-            dao.update_ods_bib(sql)
+            dao.update_sci_dataset(sql)
 
     # 更新ods_bib表中的数据
     def updateOdsbib(self, form):
@@ -83,7 +83,7 @@ class DatasetManager:
             sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, form.k, form.v.split(','), form.id)
         else:
             sql = "ALTER TABLE {} UPDATE {}='{}' WHERE id='{}'".format(const.tbl_sci_dataset, form.k, form.v, form.id)
-        dao.update_ods_bib(sql)
+        dao.update_sci_dataset(sql)
 
     # 清洗数据集，清洗结束，修改dim_dataset的状态
     def clean(self, dsid, userid):
@@ -208,7 +208,7 @@ class DatasetCleaner:
             sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'title_words', words,
                                                                      row['id'])
             sqls.append(sql)
-        requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
+        requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
         pool.wait()
 
@@ -220,7 +220,7 @@ class DatasetCleaner:
             words = [self.synonydict.get(x) if x in self.synonydict.keys() else x for x in words]  # 同义词处理，替换为新的词
             sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'summary_words', words, row['id'])
             sqls.append(sql)
-        requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
+        requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
         pool.wait()
 
@@ -232,7 +232,7 @@ class DatasetCleaner:
             row['org2'] = orgs2 # 填充数据，在后面清洗时立刻使用
             sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'orgs2', orgs2, row['id'])
             sqls.append(sql)
-        requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
+        requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
         pool.wait()
 
@@ -252,7 +252,7 @@ class DatasetCleaner:
                 province = [p for p in province if p]   # 去除空白
                 sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'province', province, row['id'])
                 sqls.append(sql)
-        requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
+        requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
         pool.wait()
 
@@ -280,7 +280,7 @@ class DatasetCleaner:
                sqls.append(sql)
 
 
-        requests = threadpool.makeRequests(dao.update_ods_bib, sqls)
+        requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
         pool.wait()
 

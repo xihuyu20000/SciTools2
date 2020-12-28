@@ -50,10 +50,10 @@ get_user = dim_user.get_user
 
 ##################################################################################
 
-create_ods_bib = sci_dataset.create
-drop_ods_bib = sci_dataset.drop
-insert_ods_bib = sci_dataset.insert
-update_ods_bib = sci_dataset.update
+create_sci_dataset = sci_dataset.create
+drop_sci_dataset = sci_dataset.drop
+insert_sci_dataset = sci_dataset.insert
+update_sci_dataset = sci_dataset.update
 # delete_ods_bib = sci_dataset.delete
 query_sci_dataset = sci_dataset.query
 

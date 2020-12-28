@@ -1,6 +1,6 @@
 import unittest
 
-from api.dao import db
+from api import dao
 from api.web import biz_cleaningfiles, biz_analyzefile, config
 
 
@@ -8,8 +8,8 @@ class TestUtil(unittest.TestCase):
 
     def test_analyzefile(self):
         try:
-            db.drop_ods_bib()
-            db.create_ods_bib()
+            dao.drop_sci_dataset()
+            dao.create_sci_dataset()
             fileid, count = biz_cleaningfiles.import_file(config.ds_cnki_es5, 'dataset/importfile_biz/CNKI-02.es5')
 
             biz_analyzefile.analyzefile(fileid)
