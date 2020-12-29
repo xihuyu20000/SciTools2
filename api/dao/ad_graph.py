@@ -7,9 +7,9 @@ from api.util.utils import Logger
 '''
 class ad_graph(BaseDao):
     def __init__(self):
-        self.log = Logger(__name__).get_log
+        self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_ad_graphs
-        self.create_sql = """
+        self._create_sql = """
             CREATE TABLE ad_graphs(
                 graphid String DEFAULT toString(generateUUIDv4()) COMMENT '主键',
                 userid String NOT NULL COMMENT '用户表主键',

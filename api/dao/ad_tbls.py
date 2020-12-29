@@ -56,9 +56,9 @@ cxx数组中的元素分别是[ 标题, 类型, 宽度 ]
 class ad_tbls(BaseDao):
 
     def __init__(self):
-        self.log = Logger(__name__).get_log
+        self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_ad_tbls
-        self.create_sql = """
+        self._create_sql = """
             CREATE TABLE ad_tbls(
                 tblid String DEFAULT toString(generateUUIDv4()) COMMENT '主键',
                 pid String COMMENT '父主键',

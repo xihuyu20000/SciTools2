@@ -8,9 +8,9 @@ from api.util.utils import Logger
 class dim_user(BaseDao):
 
     def __init__(self):
-        self.log = Logger(__name__).get_log
+        self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_dim_user
-        self.create_sql = """
+        self._create_sql = """
                 CREATE TABLE  {}(
                 userid String DEFAULT toString(generateUUIDv4()) COMMENT '主键',
                 username String(128) NOT NULL,

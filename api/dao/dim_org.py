@@ -12,9 +12,9 @@ class dim_org(BaseDao):
 
 
     def __init__(self):
-        self.log = Logger(__name__).get_log
+        self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_dim_org
-        self.create_sql ="""
+        self._create_sql ="""
             CREATE TABLE  {}(
             orgname String(512) NOT NULL,
             province String(100)

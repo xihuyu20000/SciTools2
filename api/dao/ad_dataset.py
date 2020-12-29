@@ -11,9 +11,9 @@ from api.util.utils import Logger
 
 class ad_dataset(BaseDao):
     def __init__(self):
-        self.log = Logger(__name__).get_log
+        self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_ad_dataset
-        self.create_sql = """
+        self._create_sql = """
             CREATE TABLE ad_dataset(
                 dsid String default toString(generateUUIDv4()) COMMENT '主键',
                 tblid String NOT NULL COMMENT '元表主键',

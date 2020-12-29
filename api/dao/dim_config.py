@@ -18,9 +18,9 @@ class DimConfig:
 class dim_config(BaseDao):
 
     def __init__(self):
-        self.log = Logger(__name__).get_log
+        self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_dim_config
-        self.create_sql = """
+        self._create_sql = """
             CREATE TABLE  {}(
             userid String default toString(generateUUIDv4()) COMMENT '主键',
             style String(16) NOT NULL,

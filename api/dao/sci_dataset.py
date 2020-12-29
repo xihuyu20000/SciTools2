@@ -50,9 +50,9 @@ class SciDataset:
 class sci_dataset(BaseDao):
 
     def __init__(self):
-        self.log = Logger(__name__).get_log
+        self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_sci_dataset
-        self.create_sql = """
+        self._create_sql = """
             CREATE TABLE  {}(
             id String default toString(generateUUIDv4()) COMMENT '主键',
             dsid String NOT NULL,
