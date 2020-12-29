@@ -97,7 +97,7 @@ def list_fieldconfigs(tblid):
     colstr, titles = advancedManager.query_tbl_by_tblid(tblid)
     result = []
     for name in colstr.split(','):
-        value = titles[name]
+        value = getattr(titles, name)
         result.append(VxeColumnEdit(name, value[0], value[1], value[2]).toVxe())
     return ok(result)
 

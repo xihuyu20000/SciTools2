@@ -182,7 +182,7 @@ class DatasetCleaner:
         print('机构名称规范词典大小', len(self.orgnorm))
         # 该属性在处理province的时候使用
         self.dim_orgs = dao.find_dim_org("""SELECT * FROM {} """.format(const.tbl_dim_org))
-        orgnames = [org['orgname'] for org in self.dim_orgs]
+        orgnames = [org.orgname for org in self.dim_orgs]
         orgnames.extend([org.split(';')[0].strip() for org in self.orgnorm])
         for name in orgnames:
             jieba.add_word(name)
@@ -203,10 +203,10 @@ class DatasetCleaner:
         # 标题分词，填充title_words
         sqls = []
         for row in self.dataset:
-            words = [x for x in jieba.cut(row['title']) if x not in self.stopwords]
+            words = [x for x in jieba.cut(row.title) if x not in self.stopwords]
             words = [self.synonydict.get(x) if x in self.synonydict.keys() else x for x in words]  # 同义词处理，替换为新的词
             sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'title_words', words,
-                                                                     row['id'])
+                                                                     row.id)
             sqls.append(sql)
         requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
@@ -216,9 +216,9 @@ class DatasetCleaner:
         # 摘要分词，填充summary_words
         sqls = []
         for row in self.dataset:
-            words = [x for x in jieba.cut(row['summary']) if x not in self.stopwords]
+            words = [x for x in jieba.cut(row.summary) if x not in self.stopwords]
             words = [self.synonydict.get(x) if x in self.synonydict.keys() else x for x in words]  # 同义词处理，替换为新的词
-            sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'summary_words', words, row['id'])
+            sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'summary_words', words, row.id)
             sqls.append(sql)
         requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
@@ -228,9 +228,9 @@ class DatasetCleaner:
         # 判断机构名称，填充orgs2
         sqls = []
         for row in self.dataset:
-            orgs2 = [[x for x in jieba.cut(org)][0] for org in row['orgs']]
-            row['org2'] = orgs2 # 填充数据，在后面清洗时立刻使用
-            sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'orgs2', orgs2, row['id'])
+            orgs2 = [[x for x in jieba.cut(org)][0] for org in row.orgs]
+            row.org2 = orgs2 # 填充数据，在后面清洗时立刻使用
+            sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'orgs2', orgs2, row.id)
             sqls.append(sql)
         requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
@@ -238,7 +238,7 @@ class DatasetCleaner:
 
     def fill_province(self):
         # 根据orgs2判断地区，填充province
-        org_dict = dict([(org['orgname'],org['province']) for org in self.dim_orgs])
+        org_dict = dict([(org.orgname,org.province) for org in self.dim_orgs])
         org_dict_user = dict([(org.split(';')[0].strip(), org.split(';')[1].strip()) for org in self.orgnorm])    # 这是用户自己输入的
         org_dict = {**org_dict, **org_dict_user}    # 把2个字典合并成一个
 
@@ -247,10 +247,10 @@ class DatasetCleaner:
 
         sqls = []
         for row in self.dataset:
-            if row['orgs2']:    # 可能没有值
-                province = [__get_province(org_name) for org_name in row['orgs2']]
+            if row.orgs2:    # 可能没有值
+                province = [__get_province(org_name) for org_name in row.orgs2]
                 province = [p for p in province if p]   # 去除空白
-                sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'province', province, row['id'])
+                sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'province', province, row.id)
                 sqls.append(sql)
         requests = threadpool.makeRequests(dao.update_sci_dataset, sqls)
         [pool.putRequest(req) for req in requests]
@@ -274,9 +274,9 @@ class DatasetCleaner:
 
         sqls = []
         for row in self.dataset:
-            if row['funds']:
-               funds2 = [__get_fund_style(fund) for fund in row['funds']]
-               sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'funds2', funds2, row['id'])
+            if row.funds:
+               funds2 = [__get_fund_style(fund) for fund in row.funds]
+               sql = "ALTER TABLE {} UPDATE {}={} WHERE id='{}'".format(const.tbl_sci_dataset, 'funds2', funds2, row.id)
                sqls.append(sql)
 
 
@@ -328,7 +328,7 @@ class DatasetCleaner:
         '''
         sql = "SELECT values FROM {} WHERE userid ='{}' AND style='{}'".format(const.tbl_dim_config, userid, style)
         result = dao.query_dim_config(sql)
-        return result[0]['values'] if result else ''
+        return result[0].values if result else ''
 
 
 OdsbibDeleteForm

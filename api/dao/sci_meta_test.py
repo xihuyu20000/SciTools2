@@ -15,15 +15,14 @@ class TestUtil(unittest.TestCase):
             self.fail('修改表{}失败'.format(const.tbl_sci_meta))
 
     def test_002(self):
-        sci_meta.drop()
-        sci_meta.create()
+
         sci_meta.insert([{'dsid': utils.gen_uuid4(), 'dsname': '数据集', 'status': '未解析'}])
-        sql = 'select * from {}'.format(const.tbl_sci_meta)
+        sql = 'select * from {table}'
         file = sci_meta.query(sql)
         self.assertIsNotNone(file, '应该存在一个文件')
 
     def test_003(self):
-        ret = sci_meta.query('select * from {}'.format(const.tbl_sci_meta))
+        ret = sci_meta.query('select * from {table}')
         print('\n', ret[0])
 
 

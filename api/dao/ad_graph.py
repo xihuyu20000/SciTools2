@@ -5,8 +5,14 @@ from api.util.utils import Logger
 '''
 高级图表：图表定义。
 '''
-class ad_graph(BaseDao):
+class AdGraph(BaseDao):
     def __init__(self):
+        self.graphid = ''
+        self.userid = ''
+        self.tblid = ''
+        self.graphname = ''
+        self.option = ''
+
         self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_ad_graphs
         self._create_sql = """
@@ -19,4 +25,4 @@ class ad_graph(BaseDao):
             ) ENGINE = MergeTree() PARTITION  BY graphid ORDER BY graphid PRIMARY KEY graphid
         """
 
-ad_graph = ad_graph()
+ad_graph = AdGraph()

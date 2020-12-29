@@ -9,7 +9,7 @@ from api.util.utils import Logger
 高级图表：数据表
 '''
 
-class ad_dataset(BaseDao):
+class AdDataset(BaseDao):
     def __init__(self):
         self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_ad_dataset
@@ -86,4 +86,4 @@ class ad_dataset(BaseDao):
             dataset2.append(row)
         return self.execute(sql, dataset2)
 
-ad_dataset = ad_dataset()
+ad_dataset = AdDataset()

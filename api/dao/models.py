@@ -22,8 +22,8 @@ class BaseDao:
                       database=const.clickhouse_db)
         return client.execute(sql, params=params, with_column_types=True, settings={'max_block_size': 100000})
 
-    def query(self, sql, params: dict = None, msg: str = None, result_style: str = 'dict'):
-
+    def query(self, sql:str, params: dict = None, msg: str = None, result_style: str = 'dict'):
+        sql = sql.format(table = self.TBL_NAME)
         result, columns = self.execute(sql, params=params)
         labels = [x[0] for x in columns]
         if result_style == 'dict':
@@ -46,6 +46,13 @@ class BaseDao:
 
     def update(self, sql, params=None):
         return self.execute(sql, params=params, msg='更新{}失败'.format(self.TBL_NAME))
+
+    def dict(self):
+        dd = self.__dict__
+        for k in ['_log', '_create_sql', 'TBL_NAME']:
+            if k in dd.keys():
+                del dd[k]
+        return dd
 
     def __repr__(self):
         return str(self.__dict__)

@@ -120,7 +120,7 @@ class AdvancedManager:
         """
         sql = "SELECT cols FROM {} WHERE tblid='{}'".format(const.tbl_ad_tbls, tblid)
         ad_tbl = self.dao.query_ad_dataset(sql)
-        cols = ad_tbl[0]['cols']    # str类型
+        cols = ad_tbl[0].cols    # str类型
         assert type(cols)==str
 
         sql = "SELECT tblid, pid, tblname, userid, {} FROM {} WHERE tblid='{}'".format(cols, const.tbl_ad_tbls, tblid)
@@ -168,7 +168,7 @@ class AdvancedManager:
         # 查询ad_tbls表，获取列数
         sql = """SELECT cols FROM {} WHERE tblid='{}'""".format(const.tbl_ad_tbls, tblid)
         resultset = self.dao.query_ad_tbls(sql)
-        colstr = resultset[0]['cols']  # 取出记录
+        colstr = resultset[0].cols  # 取出记录
 
         # 查询ad_tbls表，获取元表数据
         sql = "SELECT " + colstr + " FROM {} WHERE tblid='{}'".format(const.tbl_ad_tbls, tblid)
@@ -179,7 +179,8 @@ class AdvancedManager:
         # 格式转换
         vxeColumns = []
         for name in str(colstr).split(','):
-            value = titles[name]    # 返回值是list类型
+
+            value = getattr(titles, name)    # 返回值是list类型
             vxeColumns.append(VxeTableColumn(name, value[0], value[1], value[2]).toVxe())
         # print('表头形式' , vxeColumns)
 

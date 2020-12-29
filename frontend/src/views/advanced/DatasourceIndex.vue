@@ -110,6 +110,7 @@ export default {
       this.$refs['form'].resetFields()
       this.fileList = []
       loader.hide()
+      this.uploadVisible = false
       return this.$notify({
         title: '成功',
         message: '导入成功',

@@ -8,10 +8,13 @@ from api.util.utils import Logger
 机构信息表
 包括机构名称、机构所在省市
 '''
-class dim_org(BaseDao):
+class DimOrg(BaseDao):
 
 
     def __init__(self):
+        self.orgname = ''
+        self.province = ''
+
         self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_dim_org
         self._create_sql ="""
@@ -26,4 +29,4 @@ class dim_org(BaseDao):
         sql = """ INSERT INTO {} (orgname, province) VALUES """.format(self.TBL_NAME)
         return self.execute(sql, params=params, msg='插入{}失败'.format(self.TBL_NAME))
 
-dim_org = dim_org()
+dim_org = DimOrg()

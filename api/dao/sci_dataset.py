@@ -11,7 +11,8 @@ from api.util.utils import Logger
 
 [k for k,v in SciDataset().__dict__.items() if type(v) == list]
 '''
-class SciDataset:
+class SciDataset(BaseDao):
+
     def __init__(self):
         self.dsid = ''
         self.id = ''
@@ -41,15 +42,6 @@ class SciDataset:
         self.refs = []          # 参考文献集合
         self.line = ''           # 原始记录
 
-    def __repr__(self):
-        return str(self.to_dict())
-
-    def keys(self):
-        return ','.join([k for k,v in vars(self).items()])
-
-class sci_dataset(BaseDao):
-
-    def __init__(self):
         self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_sci_dataset
         self._create_sql = """
@@ -84,15 +76,19 @@ class sci_dataset(BaseDao):
             )ENGINE=MergeTree() ORDER BY (dsid) PARTITION BY (dsid);
         """.format(self.TBL_NAME)
 
-
     def insert(self, params: Optional[List[dict]]):
         """
         插入到ods_bib表
         :return 返回两个值：dsid、插入条数
         """
         sql = """
-            INSERT INTO {} ({}) VALUES
-        """.format(self.TBL_NAME, SciDataset().keys())
+            INSERT INTO {table} ({fields}) VALUES
+        """.format(table=self.TBL_NAME, fields=SciDataset().keys())
         return self.execute(sql, params=params, msg='插入{}失败'.format(self.TBL_NAME))
 
-sci_dataset = sci_dataset()
+    def keys(self):
+        return ','.join([k for k,v in self.dict().items() ])
+
+
+
+sci_dataset = SciDataset()

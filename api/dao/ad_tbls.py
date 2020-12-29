@@ -53,7 +53,7 @@ class VxeColumnEdit:
 高级图表：元数据表。
 cxx数组中的元素分别是[ 标题, 类型, 宽度 ]
 '''
-class ad_tbls(BaseDao):
+class AdTbls(BaseDao):
 
     def __init__(self):
         self._log = Logger(__name__).get_log
@@ -135,4 +135,4 @@ class ad_tbls(BaseDao):
         values = [values]  # 必须放入到一个list中
         return self.execute(sql, params=values)
 
-ad_tbls = ad_tbls()
+ad_tbls = AdTbls()

@@ -5,16 +5,20 @@ from api.dao.models import BaseDao
 from api.util.utils import Logger
 
 
-class dim_user(BaseDao):
+class DimUser(BaseDao):
 
     def __init__(self):
+        self.userid = ''
+        self.username = ''
+        self.password = ''
+
         self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_dim_user
         self._create_sql = """
                 CREATE TABLE  {}(
                 userid String DEFAULT toString(generateUUIDv4()) COMMENT '主键',
-                username String(128) NOT NULL,
-                password String(512) NOT NULL
+                username String NOT NULL,
+                password String NOT NULL
                 )ENGINE=MergeTree() ORDER BY (userid);
             """.format(self.TBL_NAME)
 
@@ -36,4 +40,4 @@ class dim_user(BaseDao):
         return self.query(sql, params=None, msg='查询{}失败'.format(self.TBL_NAME))
 
 
-dim_user = dim_user()
+dim_user = DimUser()

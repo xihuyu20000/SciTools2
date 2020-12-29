@@ -10,9 +10,14 @@ from api.util.utils import Logger
 表示用户一次性上传的数据集，也包括用户etl后产生的数据集。
 数据集是进行数据分析和图表展示的数据来源。
 '''
-class sci_meta(BaseDao):
+class SciMeta(BaseDao):
 
     def __init__(self):
+        self.dsid = ''
+        self.pid = ''
+        self.dsname = ''
+        self.status = ''
+
         self._log = Logger(__name__).get_log
         self.TBL_NAME = const.tbl_sci_meta
         self._create_sql = """
@@ -34,4 +39,4 @@ class sci_meta(BaseDao):
     def update(self,sql):
         return self.execute(sql, msg='更新{}失败'.format(self.TBL_NAME))
 
-sci_meta = sci_meta()
+sci_meta = SciMeta()
